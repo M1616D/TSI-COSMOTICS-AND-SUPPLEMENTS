@@ -1,0 +1,13 @@
+name = "tsi-order-worker"
+main = "src/index.js"
+compatibility_date = "2024-09-23"
+
+# Routes — uncomment and edit after deploying to connect to a custom domain
+# routes = [
+#   { pattern = "tsicosmetics.com/api/order", zone_name = "tsicosmetics.com" }
+# ]
+
+[vars]
+# Set to your website URL to restrict access (e.g. "https://tsicosmetics.com").
+# Empty string = allow all origins (use only for testing, lock down before going public).
+ALLOWED_ORIGIN = ""

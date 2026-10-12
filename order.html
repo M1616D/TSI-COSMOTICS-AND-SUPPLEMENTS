@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Place an Order — TSI Cosmetics</title>
+<meta name="description" content="Place your order with TSI Cosmetics. Fill in your details and we will contact you to confirm."/>
+<meta name="robots" content="noindex"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --rg:#C4896F;--rg-l:#ddb8a8;--rg-d:#a36b53;
+  --ivory:#FDFAF7;--bg:#FAF7F4;--white:#fff;
+  --dark:#1A1A1A;--text:#3D3535;--muted:#7A6E6E;
+  --border:rgba(196,137,111,.18);
+  --sh-sm:0 2px 12px rgba(0,0,0,.06);
+  --sh:0 8px 32px rgba(0,0,0,.08);
+  --r-sm:8px;--r:14px;--r-lg:22px;
+  --tr:.25s ease;
+  --fh:'Playfair Display',serif;--fb:'Poppins',sans-serif
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);line-height:1.7;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+img{max-width:100%;display:block}
+button{font-family:var(--fb);cursor:pointer}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important}}
+
+/* NAVBAR */
+.navbar{background:rgba(253,250,247,.96);backdrop-filter:blur(18px);border-bottom:1px solid var(--border);padding:14px 0;position:sticky;top:0;z-index:100}
+.nav-wrap{max-width:1160px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{display:flex;align-items:center;gap:9px;font-family:var(--fh);font-size:1.4rem;font-weight:700;color:var(--dark)}
+.logo-mark{width:32px;height:32px;background:linear-gradient(135deg,var(--rg),var(--rg-d));border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.85rem}
+.logo-acc{color:var(--rg)}
+.logo-sub{display:block;font-family:var(--fb);font-size:.42rem;font-weight:500;letter-spacing:3px;color:var(--rg);text-transform:uppercase;margin-top:-3px}
+.nav-back{display:inline-flex;align-items:center;gap:7px;font-size:.8rem;font-weight:500;color:var(--muted);border:1.5px solid var(--border);border-radius:50px;padding:7px 16px;transition:all var(--tr)}
+.nav-back:hover{border-color:var(--rg);color:var(--rg)}
+
+/* LAYOUT */
+.order-page{max-width:1060px;margin:0 auto;padding:40px 24px 80px;display:grid;grid-template-columns:1fr 1.1fr;gap:32px;align-items:start}
+@media(max-width:860px){.order-page{grid-template-columns:1fr;padding:28px 16px 60px}}
+
+/* PANEL */
+.panel{background:#fff;border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden}
+.panel-head{padding:20px 24px;border-bottom:1px solid var(--border);background:rgba(196,137,111,.04)}
+.panel-head h2{font-family:var(--fh);font-size:1.3rem;font-weight:700;color:var(--dark)}
+.panel-head p{font-size:.78rem;color:var(--muted);font-weight:300;margin-top:2px}
+.panel-body{padding:20px 24px}
+
+/* ORDER SUMMARY */
+.summary-items{display:flex;flex-direction:column;gap:14px}
+.s-item{display:flex;gap:12px;align-items:flex-start}
+.s-img{width:60px;height:60px;border-radius:var(--r-sm);object-fit:cover;flex-shrink:0;background:#f4ede9}
+.s-info{flex:1;min-width:0}
+.s-brand{font-size:.6rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--rg);font-weight:600}
+.s-name{font-size:.9rem;font-weight:600;color:var(--dark);margin-bottom:2px}
+.s-line{font-size:.82rem;color:var(--muted)}
+.s-qty-row{display:flex;align-items:center;gap:8px;margin-top:6px}
+.s-qb{width:24px;height:24px;border-radius:50%;border:1px solid var(--border);background:none;font-size:.85rem;display:flex;align-items:center;justify-content:center;color:var(--text);transition:all var(--tr)}
+.s-qb:hover{border-color:var(--rg);color:var(--rg)}
+.s-qv{font-size:.85rem;font-weight:600;min-width:18px;text-align:center}
+.s-rm{background:none;border:none;color:#ccc;font-size:.9rem;padding:2px 4px;transition:color var(--tr);margin-left:auto}
+.s-rm:hover{color:#e55}
+.summary-divider{border:none;border-top:1px solid var(--border);margin:16px 0}
+.summary-total{display:flex;justify-content:space-between;align-items:center;font-weight:600;font-size:.9rem;color:var(--dark)}
+.summary-total span:last-child{font-family:var(--fh);font-size:1.15rem;color:var(--rg)}
+.summary-note{margin-top:12px;font-size:.72rem;color:var(--muted);font-style:italic;line-height:1.6;padding:8px 10px;background:rgba(196,137,111,.05);border-radius:var(--r-sm);border-left:2px solid var(--rg-l)}
+
+/* EMPTY CART */
+.empty-cart{text-align:center;padding:40px 20px}
+.empty-cart i{font-size:2.5rem;color:var(--rg-l);margin-bottom:14px;display:block}
+.empty-cart h3{font-family:var(--fh);font-size:1.2rem;color:var(--dark);margin-bottom:8px}
+.empty-cart p{font-size:.86rem;color:var(--muted);margin-bottom:20px}
+.btn-back-shop{display:inline-flex;align-items:center;gap:8px;padding:12px 26px;background:var(--rg);color:#fff;border:none;border-radius:50px;font-size:.88rem;font-weight:600;transition:all var(--tr);cursor:pointer}
+.btn-back-shop:hover{background:var(--rg-d);transform:translateY(-1px)}
+
+/* FORM */
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-size:.78rem;font-weight:600;color:var(--text);margin-bottom:5px}
+.req{color:var(--rg)}
+.form-group input,
+.form-group textarea{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:var(--r-sm);background:#fff;font-family:var(--fb);font-size:.86rem;color:var(--text);outline:none;transition:border-color var(--tr)}
+.form-group input:focus,
+.form-group textarea:focus{border-color:var(--rg)}
+.form-group input.err,
+.form-group textarea.err{border-color:#d9534f}
+.form-group textarea{resize:vertical;min-height:72px}
+.field-err{font-size:.72rem;color:#d9534f;margin-top:3px;display:none}
+.field-err.on{display:block}
+.form-check{display:flex;align-items:flex-start;gap:10px;margin-bottom:6px}
+.form-check input[type=checkbox]{width:16px;height:16px;margin-top:3px;flex-shrink:0;accent-color:var(--rg)}
+.form-check label{font-size:.78rem;color:var(--muted);line-height:1.55}
+.honeypot{position:absolute;left:-9999px;opacity:0;pointer-events:none;tab-index:-1}
+.disclaimer{font-size:.72rem;color:var(--muted);font-style:italic;margin-bottom:16px;padding:10px 12px;background:rgba(196,137,111,.05);border-radius:var(--r-sm);border-left:2px solid var(--rg-l);line-height:1.6}
+.btn-submit{width:100%;padding:15px;background:var(--rg);color:#fff;border:none;border-radius:50px;font-size:.95rem;font-weight:600;transition:all var(--tr);display:flex;align-items:center;justify-content:center;gap:9px}
+.btn-submit:hover:not(:disabled){background:var(--rg-d);transform:translateY(-1px)}
+.btn-submit:disabled{opacity:.6;cursor:not-allowed}
+
+/* STATES */
+.state-sending,
+.state-success,
+.state-error{display:none;padding:28px 24px;text-align:center}
+.state-sending.on,
+.state-success.on,
+.state-error.on{display:block}
+.state-icon{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:1.6rem}
+.state-icon.loading{background:rgba(196,137,111,.1);color:var(--rg)}
+.state-icon.ok{background:rgba(80,180,100,.1);color:#3a9a50}
+.state-icon.fail{background:rgba(220,80,80,.08);color:#c0392b}
+.state-sending h3,
+.state-success h3,
+.state-error h3{font-family:var(--fh);font-size:1.25rem;color:var(--dark);margin-bottom:8px}
+.state-sending p,
+.state-success p,
+.state-error p{font-size:.86rem;color:var(--muted);font-weight:300;line-height:1.7;max-width:340px;margin:0 auto 8px}
+.ref-badge{display:inline-block;background:rgba(196,137,111,.1);color:var(--rg);border:1px solid rgba(196,137,111,.2);padding:6px 18px;border-radius:50px;font-size:.82rem;font-weight:700;letter-spacing:1px;margin:10px 0 14px}
+.spin{animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.fallback-links{display:flex;flex-direction:column;gap:8px;margin-top:16px}
+.fallback-links a{display:flex;align-items:center;justify-content:center;gap:8px;padding:11px 20px;border-radius:50px;font-size:.86rem;font-weight:600;transition:all var(--tr)}
+.fl-tg{background:#0088cc;color:#fff}
+.fl-tg:hover{background:#0077bb}
+.fl-call{background:var(--rg);color:#fff}
+.fl-call:hover{background:var(--rg-d)}
+.btn-retry{display:inline-flex;align-items:center;gap:7px;padding:10px 22px;background:var(--rg);color:#fff;border:none;border-radius:50px;font-size:.84rem;font-weight:600;transition:all var(--tr);margin-top:10px}
+.btn-retry:hover{background:var(--rg-d)}
+
+/* FOOTER MINI */
+.order-footer{text-align:center;padding:20px 24px 32px;border-top:1px solid var(--border);font-size:.72rem;color:var(--muted);font-weight:300}
+.order-footer a{color:var(--rg)}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" aria-label="Order page navigation">
+  <div class="nav-wrap">
+    <a href="index.html" class="nav-logo" aria-label="TSI Cosmetics home">
+      <span class="logo-mark"><i class="fas fa-leaf" aria-hidden="true"></i></span>
+      TSI<span class="logo-acc">.</span><small class="logo-sub">Cosmetics</small>
+    </a>
+    <a href="index.html#shop" class="nav-back">
+      <i class="fas fa-arrow-left" aria-hidden="true"></i> Continue Shopping
+    </a>
+  </div>
+</nav>
+
+<!-- ORDER PAGE -->
+<main class="order-page" id="order-page">
+
+  <!-- LEFT: ORDER SUMMARY -->
+  <div class="panel" id="summary-panel">
+    <div class="panel-head">
+      <h2>Order Summary</h2>
+      <p>Review your items before submitting</p>
+    </div>
+    <div class="panel-body" id="summary-body">
+      <!-- rendered by JS -->
+    </div>
+  </div>
+
+  <!-- RIGHT: CUSTOMER FORM -->
+  <div class="panel" id="form-panel">
+    <div class="panel-head">
+      <h2>Your Details</h2>
+      <p>We will contact you to confirm your order</p>
+    </div>
+
+    <!-- FORM STATE -->
+    <div id="form-state">
+      <div class="panel-body">
+        <form id="order-form" novalidate autocomplete="on">
+
+          <!-- Honeypot anti-spam -->
+          <div class="honeypot" aria-hidden="true">
+            <label for="hp-field">Leave this blank</label>
+            <input type="text" id="hp-field" name="website" tabindex="-1" autocomplete="off"/>
+          </div>
+
+          <div class="form-group">
+            <label for="f-name">Full Name <span class="req">*</span></label>
+            <input type="text" id="f-name" name="name" placeholder="Your full name" autocomplete="name" required/>
+            <span class="field-err" id="e-name">Please enter your full name.</span>
+          </div>
+
+          <div class="form-group">
+            <label for="f-phone">Phone Number <span class="req">*</span></label>
+            <input type="tel" id="f-phone" name="phone" placeholder="09XXXXXXXX or +2519XXXXXXXX" autocomplete="tel" required/>
+            <span class="field-err" id="e-phone">Please enter a valid Ethiopian phone number (e.g. 0911695289 or +251911695289).</span>
+          </div>
+
+          <div class="form-group">
+            <label for="f-alt">Alternative Phone <span style="font-weight:300;color:var(--muted)">(optional)</span></label>
+            <input type="tel" id="f-alt" name="altPhone" placeholder="Optional second number" autocomplete="tel"/>
+          </div>
+
+          <div class="form-group">
+            <label for="f-city">City / Area <span class="req">*</span></label>
+            <input type="text" id="f-city" name="city" placeholder="e.g. Addis Ababa, Bahir Dar" required/>
+            <span class="field-err" id="e-city">Please enter your city or area.</span>
+          </div>
+
+          <div class="form-group">
+            <label for="f-address">Delivery Address <span class="req">*</span></label>
+            <textarea id="f-address" name="address" rows="2" placeholder="Street, neighbourhood, or pickup preference" required></textarea>
+            <span class="field-err" id="e-address">Please enter your delivery address.</span>
+          </div>
+
+          <div class="form-group">
+            <label for="f-notes">Delivery Instructions <span style="font-weight:300;color:var(--muted)">(optional)</span></label>
+            <input type="text" id="f-notes" name="notes" placeholder="Any special delivery instructions"/>
+          </div>
+
+          <div class="form-group">
+            <label for="f-ordernote">Note to Seller <span style="font-weight:300;color:var(--muted)">(optional)</span></label>
+            <textarea id="f-ordernote" name="orderNote" rows="2" placeholder="Questions or comments for TSI Cosmetics"></textarea>
+          </div>
+
+          <div class="form-check">
+            <input type="checkbox" id="f-consent" name="consent" required/>
+            <label for="f-consent">I understand this is an order request. TSI Cosmetics will contact me to confirm availability, final pricing, and payment before the order is finalised.</label>
+          </div>
+          <span class="field-err" id="e-consent" style="margin-bottom:12px;display:none">Please acknowledge this to continue.</span>
+
+          <div class="disclaimer">
+            <i class="fas fa-lock" aria-hidden="true" style="color:var(--rg);margin-right:5px"></i>
+            Your details are sent securely to TSI Cosmetics. No payment is collected here. The owner will contact you to arrange payment and delivery.
+          </div>
+
+          <button type="submit" class="btn-submit" id="btn-submit">
+            <i class="fas fa-paper-plane" aria-hidden="true"></i> Send Order Request
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- SENDING STATE -->
+    <div class="state-sending" id="state-sending">
+      <div class="state-icon loading"><i class="fas fa-circle-notch spin" aria-hidden="true"></i></div>
+      <h3>Sending your order&hellip;</h3>
+      <p>Please wait while we submit your request.</p>
+    </div>
+
+    <!-- SUCCESS STATE -->
+    <div class="state-success" id="state-success">
+      <div class="state-icon ok"><i class="fas fa-check" aria-hidden="true"></i></div>
+      <h3>Order Request Sent!</h3>
+      <div class="ref-badge" id="success-ref">TSI-XXXXXX</div>
+      <p>Your order request has been received by TSI Cosmetics.</p>
+      <p>The owner will contact you at <strong id="success-phone"></strong> to confirm your order, discuss pricing, and arrange delivery.</p>
+      <p style="margin-top:10px;font-size:.75rem">Keep your order reference for your records. This is not a payment confirmation.</p>
+      <a href="index.html" class="btn-back-shop" style="margin-top:18px;text-decoration:none">
+        <i class="fas fa-arrow-left" aria-hidden="true"></i> Back to Shop
+      </a>
+    </div>
+
+    <!-- ERROR STATE -->
+    <div class="state-error" id="state-error">
+      <div class="state-icon fail"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i></div>
+      <h3>Could Not Send Order</h3>
+      <p id="error-msg">There was a problem submitting your order. Your form details are preserved — please try again or contact us directly.</p>
+      <button class="btn-retry" id="btn-retry">
+        <i class="fas fa-redo" aria-hidden="true"></i> Try Again
+      </button>
+      <div class="fallback-links">
+        <a href="https://t.me/Tsi27278" target="_blank" rel="noopener" class="fallback-links fl-tg">
+          <i class="fab fa-telegram-plane" aria-hidden="true"></i> Contact on Telegram
+        </a>
+        <a href="tel:+251911695289" class="fallback-links fl-call">
+          <i class="fas fa-phone" aria-hidden="true"></i> Call +251 911 695 289
+        </a>
+      </div>
+    </div>
+
+    <div class="order-footer">
+      TSI Cosmetics &nbsp;·&nbsp;
+      <a href="tel:+251911695289">+251 911 695 289</a> &nbsp;·&nbsp;
+      <a href="https://t.me/Tsi27278" target="_blank" rel="noopener">Telegram @Tsi27278</a>
+    </div>
+  </div>
+</main>
+
+<script src="products.js"></script>
+<script>
+/* ================================================================
+   ORDER PAGE — Configuration
+   Set WORKER_URL to your deployed Cloudflare Worker endpoint.
+   During local development leave it as the placeholder below
+   and the form will show a clear error instead of silently failing.
+   ================================================================ */
+const WORKER_URL = 'https://tsi-order-worker.bereket1515mamuye.workers.dev/api/order';
+/* ================================================================ */
+
+/* ---- State references ---- */
+const formState    = document.getElementById('form-state');
+const sendingState = document.getElementById('state-sending');
+const successState = document.getElementById('state-success');
+const errorState   = document.getElementById('state-error');
+const form         = document.getElementById('order-form');
+const btnSubmit    = document.getElementById('btn-submit');
+
+/* ---- Helpers ---- */
+function showState(name) {
+  formState.style.display    = name === 'form'    ? '' : 'none';
+  sendingState.classList.toggle('on', name === 'sending');
+  successState.classList.toggle('on', name === 'success');
+  errorState.classList.toggle('on',   name === 'error');
+}
+
+function fieldErr(fieldId, errId, show) {
+  const f = document.getElementById(fieldId);
+  const e = document.getElementById(errId);
+  f.classList.toggle('err', show);
+  e.classList.toggle('on',  show);
+}
+
+/* ---- Render summary ---- */
+function renderSummary() {
+  const cart = tsiGetCart();
+  const body = document.getElementById('summary-body');
+
+  if (!cart.length) {
+    body.innerHTML = `<div class="empty-cart">
+      <i class="fas fa-shopping-bag" aria-hidden="true"></i>
+      <h3>Your cart is empty</h3>
+      <p>Go back to the shop and add products before placing an order.</p>
+      <a href="index.html#shop" class="btn-back-shop">
+        <i class="fas fa-arrow-left" aria-hidden="true"></i> Browse Products
+      </a>
+    </div>`;
+    btnSubmit.disabled = true;
+    return;
+  }
+
+  let html = '<div class="summary-items">';
+  cart.forEach(item => {
+    const p = tsiGetProductById(item.id);
+    if (!p) return;
+    const lineTotal = (p.price * item.qty).toLocaleString();
+    html += `<div class="s-item" data-id="${p.id}">
+      <img class="s-img" src="${p.image}" alt="${p.name}" loading="lazy"/>
+      <div class="s-info">
+        <div class="s-brand">${p.brand}</div>
+        <div class="s-name">${p.name}</div>
+        <div class="s-line">${p.price.toLocaleString()} ETB &times; ${item.qty} = ${lineTotal} ETB</div>
+        <div class="s-qty-row">
+          <button class="s-qb" data-id="${p.id}" data-d="-1" aria-label="Decrease quantity">&#8722;</button>
+          <span class="s-qv" id="sqv-${p.id}">${item.qty}</span>
+          <button class="s-qb" data-id="${p.id}" data-d="1"  aria-label="Increase quantity">+</button>
+          <button class="s-rm" data-id="${p.id}" aria-label="Remove ${p.name}">
+            <i class="fas fa-times" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>`;
+  });
+  html += '</div>';
+  html += '<hr class="summary-divider"/>';
+  html += `<div class="summary-total"><span>Estimated Subtotal</span><span>${tsiGetCartTotal().toLocaleString()} ETB</span></div>`;
+  html += `<div class="summary-note">Final pricing, availability, delivery costs, and payment method will be confirmed by the owner when they contact you.</div>`;
+  body.innerHTML = html;
+  btnSubmit.disabled = false;
+
+  body.querySelectorAll('.s-qb').forEach(b => {
+    b.addEventListener('click', () => {
+      tsiUpdateQty(b.dataset.id, parseInt(b.dataset.d));
+      renderSummary();
+    });
+  });
+  body.querySelectorAll('.s-rm').forEach(b => {
+    b.addEventListener('click', () => {
+      tsiRemoveFromCart(b.dataset.id);
+      renderSummary();
+    });
+  });
+}
+
+/* ---- Validate form ---- */
+function validateForm() {
+  let ok = true;
+  const name    = document.getElementById('f-name').value.trim();
+  const phone   = document.getElementById('f-phone').value.trim();
+  const city    = document.getElementById('f-city').value.trim();
+  const address = document.getElementById('f-address').value.trim();
+  const consent = document.getElementById('f-consent').checked;
+
+  fieldErr('f-name',    'e-name',    !name);    if (!name)                       ok = false;
+  fieldErr('f-phone',   'e-phone',   !tsiValidatePhone(phone)); if (!tsiValidatePhone(phone)) ok = false;
+  fieldErr('f-city',    'e-city',    !city);    if (!city)                       ok = false;
+  fieldErr('f-address', 'e-address', !address); if (!address)                   ok = false;
+
+  const ce = document.getElementById('e-consent');
+  if (!consent) { ce.style.display='block'; ce.classList.add('on'); ok = false; }
+  else          { ce.style.display='none';  ce.classList.remove('on'); }
+
+  return ok;
+}
+
+/* ---- Build order payload ---- */
+function buildPayload(ref) {
+  const cart = tsiGetCart();
+  return {
+    ref,
+    name:      document.getElementById('f-name').value.trim(),
+    phone:     document.getElementById('f-phone').value.trim(),
+    altPhone:  document.getElementById('f-alt').value.trim(),
+    city:      document.getElementById('f-city').value.trim(),
+    address:   document.getElementById('f-address').value.trim(),
+    notes:     document.getElementById('f-notes').value.trim(),
+    orderNote: document.getElementById('f-ordernote').value.trim(),
+    items: cart.map(item => {
+      const p = tsiGetProductById(item.id);
+      if (!p) return null;
+      return { id: p.id, name: p.name, brand: p.brand, qty: item.qty, unitPrice: p.price };
+    }).filter(Boolean),
+    subtotal: tsiGetCartTotal()
+  };
+}
+
+/* ---- Submit ---- */
+let submitting = false;
+
+form.addEventListener('submit', async function(e) {
+  e.preventDefault();
+
+  /* Honeypot check */
+  if (document.getElementById('hp-field').value) return;
+
+  if (submitting) return;
+  if (!validateForm()) return;
+  if (!tsiGetCart().length) {
+    alert('Your cart is empty. Please add products before ordering.');
+    return;
+  }
+
+  submitting = true;
+  btnSubmit.disabled = true;
+  showState('sending');
+
+  const ref = tsiGenerateRef();
+
+  /* Check worker URL is configured */
+  if (WORKER_URL.includes('YOUR-SUBDOMAIN')) {
+    showState('error');
+    document.getElementById('error-msg').textContent =
+      'The ordering system is not yet configured. Please contact us directly on Telegram or by phone.';
+    submitting = false;
+    return;
+  }
+
+  const payload = buildPayload(ref);
+
+  try {
+    const res = await fetch(WORKER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+      signal: AbortSignal.timeout(15000)
+    });
+
+    const data = await res.json().catch(() => ({}));
+
+    if (res.ok && data.ok) {
+      /* SUCCESS */
+      tsiClearCart();
+      document.getElementById('success-ref').textContent   = data.ref || ref;
+      document.getElementById('success-phone').textContent = payload.phone;
+      showState('success');
+    } else {
+      /* SERVER RETURNED ERROR */
+      showState('error');
+      document.getElementById('error-msg').textContent =
+        data.error || 'The server could not process your order. Please try again or contact us directly.';
+      submitting = false;
+    }
+  } catch (err) {
+    /* NETWORK / TIMEOUT ERROR */
+    showState('error');
+    document.getElementById('error-msg').textContent =
+      'Could not connect to the order server. Please check your internet connection and try again, or contact us directly.';
+    submitting = false;
+  }
+});
+
+/* ---- Retry button ---- */
+document.getElementById('btn-retry').addEventListener('click', () => {
+  submitting = false;
+  btnSubmit.disabled = false;
+  showState('form');
+});
+
+/* ---- Init ---- */
+renderSummary();
+showState('form');
+</script>
+</body>
+</html>
