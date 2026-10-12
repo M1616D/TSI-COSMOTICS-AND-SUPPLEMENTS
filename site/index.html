@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>TSI Cosmetics — Beauty, Skincare &amp; Wellness | Ethiopia</title>
+<meta name="description" content="Shop original imported cosmetics, skincare, and health supplements at TSI Cosmetics, Ethiopia. Order by phone or Telegram."/>
+<link rel="canonical" href="https://tsicosmetics.com"/>
+<meta property="og:title" content="TSI Cosmetics — Beauty, Skincare &amp; Wellness | Ethiopia"/>
+<meta property="og:description" content="Shop original imported cosmetics, skincare, and health supplements at TSI Cosmetics, Ethiopia."/>
+<meta property="og:type" content="website"/>
+<meta property="og:url" content="https://tsicosmetics.com"/>
+<meta property="og:image" content="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=1200&h=630&fit=crop"/>
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:title" content="TSI Cosmetics — Beauty, Skincare &amp; Wellness | Ethiopia"/>
+<meta name="twitter:description" content="Shop original imported cosmetics, skincare, and health supplements at TSI Cosmetics, Ethiopia."/>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Organization","name":"TSI Cosmetics","description":"Original imported cosmetics, skincare, beauty and health products in Ethiopia.","telephone":"+251911695289","url":"https://tsicosmetics.com","address":{"@type":"PostalAddress","addressCountry":"ET"},"sameAs":["https://t.me/Tsi27278","https://www.tiktok.com/@tsi.cosmotics"]}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --rg:#C4896F;--rg-l:#ddb8a8;--rg-d:#a36b53;
+  --ivory:#FDFAF7;--bg:#FAF7F4;--white:#fff;
+  --dark:#1A1A1A;--text:#3D3535;--muted:#7A6E6E;
+  --border:rgba(196,137,111,.18);
+  --sh-sm:0 2px 12px rgba(0,0,0,.06);
+  --sh:0 8px 32px rgba(0,0,0,.08);
+  --sh-lg:0 20px 60px rgba(0,0,0,.10);
+  --r-sm:8px;--r:14px;--r-lg:22px;
+  --tr:.25s ease;
+  --fh:'Playfair Display',serif;--fb:'Poppins',sans-serif
+}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+img{max-width:100%;display:block}
+button{font-family:var(--fb);cursor:pointer}
+ul{list-style:none}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--rg-l);border-radius:10px}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important}}
+
+/* SCROLL PROGRESS */
+#sp{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--rg),var(--rg-d));z-index:9999;width:0%;transition:width .1s linear}
+
+/* LOADER */
+#loader{position:fixed;inset:0;z-index:9998;background:var(--ivory);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .5s ease,visibility .5s ease}
+#loader.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.loader-ring{width:48px;height:48px;border-radius:50%;border:2px solid var(--border);border-top-color:var(--rg);animation:spin .9s linear infinite}
+.loader-txt{margin-top:14px;font-family:var(--fh);font-size:1rem;color:var(--rg);letter-spacing:4px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ANNOUNCE BAR */
+#ab{background:var(--rg);color:#fff;font-size:.75rem;font-weight:500;padding:10px 24px;text-align:center;position:relative;letter-spacing:.3px;transition:height .3s,padding .3s,opacity .3s}
+#ab.hidden{height:0;padding:0;opacity:0;overflow:hidden}
+#ab a{color:#fff;text-decoration:underline;text-underline-offset:2px}
+.ab-close{position:absolute;right:16px;top:50%;transform:translateY(-50%);background:none;border:none;color:#fff;font-size:1rem;opacity:.7;padding:4px 6px;line-height:1}
+.ab-close:hover{opacity:1}
+
+/* NAVBAR */
+.navbar{position:sticky;top:0;z-index:9990;background:rgba(253,250,247,.82);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid var(--border);padding:12px 0;transition:box-shadow var(--tr),background var(--tr)}
+.navbar.scrolled{background:rgba(253,250,247,.96);box-shadow:var(--sh-sm)}
+.navbar .wrap{max-width:1160px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.nav-logo{display:flex;align-items:center;gap:9px;font-family:var(--fh);font-size:1.5rem;font-weight:700;color:var(--dark);letter-spacing:-.3px;flex-shrink:0}
+.logo-mark{width:34px;height:34px;background:linear-gradient(135deg,var(--rg),var(--rg-d));border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.9rem;flex-shrink:0}
+.logo-acc{color:var(--rg)}
+.logo-sub{display:block;font-family:var(--fb);font-size:.45rem;font-weight:500;letter-spacing:3px;color:var(--rg);text-transform:uppercase;margin-top:-3px}
+.nav-links{display:flex;align-items:center;gap:28px}
+.nav-links a{font-size:.78rem;font-weight:500;color:var(--text);letter-spacing:.6px;text-transform:uppercase;position:relative;transition:color var(--tr)}
+.nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:1.5px;background:var(--rg);transition:width var(--tr)}
+.nav-links a:hover,.nav-links a.active{color:var(--rg)}
+.nav-links a:hover::after,.nav-links a.active::after{width:100%}
+.nav-actions{display:flex;align-items:center;gap:10px}
+.cart-btn{background:none;border:1.5px solid var(--border);border-radius:var(--r-sm);padding:7px 12px;display:flex;align-items:center;gap:6px;font-size:.8rem;font-weight:500;color:var(--text);transition:all var(--tr)}
+.cart-btn:hover{border-color:var(--rg);color:var(--rg)}
+.cart-count{background:var(--rg);color:#fff;border-radius:50%;width:18px;height:18px;font-size:.6rem;font-weight:600;display:none;align-items:center;justify-content:center}
+.cart-count.on{display:flex}
+.btn-order{background:var(--rg);color:#fff;border:none;border-radius:50px;padding:8px 20px;font-size:.78rem;font-weight:600;letter-spacing:.3px;transition:all var(--tr);text-decoration:none;display:inline-flex;align-items:center;gap:7px}
+.btn-order:hover{background:var(--rg-d);transform:translateY(-1px);box-shadow:0 4px 16px rgba(196,137,111,.3)}
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;padding:4px}
+.hamburger span{width:24px;height:2px;background:var(--dark);border-radius:4px;transition:all .3s ease;display:block}
+.hamburger.active span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.hamburger.active span:nth-child(2){opacity:0}
+.hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+@media(max-width:960px){
+  .nav-links{display:none;position:fixed;top:0;right:-100%;width:80%;max-width:320px;height:100vh;background:var(--ivory);flex-direction:column;justify-content:center;padding:60px 40px;gap:24px;transition:right .4s cubic-bezier(.23,1,.32,1);box-shadow:-8px 0 40px rgba(0,0,0,.08);z-index:9991}
+  .nav-links.open{display:flex;right:0}
+  .nav-links a{font-size:1rem;text-transform:none;letter-spacing:0}
+  .hamburger{display:flex}
+  .btn-order{display:none}
+}
+@media(max-width:480px){.cart-btn .cb-label{display:none};.cart-btn{padding:8px 10px}}
+
+/* CONTAINER */
+.container{max-width:1160px;margin:0 auto;padding:0 24px}
+
+/* BUTTONS */
+.btn-primary{display:inline-flex;align-items:center;gap:8px;padding:13px 30px;background:var(--rg);color:#fff;border:none;border-radius:50px;font-size:.9rem;font-weight:600;transition:all var(--tr);box-shadow:0 4px 20px rgba(196,137,111,.25);cursor:pointer}
+.btn-primary:hover{background:var(--rg-d);transform:translateY(-2px);box-shadow:0 8px 28px rgba(196,137,111,.35)}
+.btn-secondary{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;background:transparent;color:var(--text);border:1.5px solid var(--border);border-radius:50px;font-size:.9rem;font-weight:500;transition:all var(--tr);cursor:pointer}
+.btn-secondary:hover{border-color:var(--rg);color:var(--rg);transform:translateY(-2px)}
+.btn-outline{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;background:transparent;color:var(--rg);border:1.5px solid var(--rg);border-radius:50px;font-size:.82rem;font-weight:600;transition:all var(--tr);cursor:pointer}
+.btn-outline:hover{background:var(--rg);color:#fff}
+
+/* SECTION HEADER */
+.sec-head{text-align:center;margin-bottom:48px}
+.overline{font-size:.68rem;font-weight:600;letter-spacing:4px;text-transform:uppercase;color:var(--rg);margin-bottom:8px;display:block}
+.sec-head h2{font-family:var(--fh);font-size:2.4rem;font-weight:700;color:var(--dark);line-height:1.2;letter-spacing:-.3px}
+.sec-head h2 span{color:var(--rg)}
+.sec-head p{max-width:500px;margin:10px auto 0;color:var(--muted);font-size:.95rem;font-weight:300}
+@media(max-width:768px){.sec-head h2{font-size:1.9rem}}
+@media(max-width:480px){.sec-head h2{font-size:1.6rem}}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+.reveal.on{opacity:1;transform:none}
+.reveal-l{opacity:0;transform:translateX(-28px);transition:opacity .7s ease,transform .7s ease}
+.reveal-l.on{opacity:1;transform:none}
+.reveal-r{opacity:0;transform:translateX(28px);transition:opacity .7s ease,transform .7s ease}
+.reveal-r.on{opacity:1;transform:none}
+
+/* HERO */
+.hero{padding:80px 0 72px;background:linear-gradient(140deg,#FDF6F0 0%,#F5EDE4 100%);overflow:hidden}
+.hero .container{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.hero-label{display:inline-flex;align-items:center;gap:8px;background:rgba(196,137,111,.1);color:var(--rg);border:1px solid rgba(196,137,111,.2);border-radius:50px;padding:5px 14px;font-size:.68rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:20px}
+.hero h1{font-family:var(--fh);font-size:3.6rem;font-weight:700;color:var(--dark);line-height:1.1;letter-spacing:-.5px;margin-bottom:18px}
+.hero h1 em{font-style:italic;color:var(--rg)}
+.hero-p{font-size:1rem;color:var(--muted);max-width:440px;font-weight:300;line-height:1.8;margin-bottom:30px}
+.hero-btns{display:flex;flex-wrap:wrap;gap:12px}
+.hero-img{position:relative;display:flex;justify-content:center}
+.img-frame{position:relative;width:100%;max-width:460px;aspect-ratio:4/5;border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--sh-lg)}
+.img-frame img{width:100%;height:100%;object-fit:cover}
+.ring1{position:absolute;width:220px;height:220px;border-radius:50%;border:40px solid rgba(196,137,111,.07);bottom:-40px;right:-50px;pointer-events:none}
+.ring2{position:absolute;width:120px;height:120px;border-radius:50%;border:24px solid rgba(196,137,111,.06);top:-30px;left:-30px;pointer-events:none}
+@media(max-width:960px){.hero .container{grid-template-columns:1fr;gap:40px}.hero h1{font-size:2.8rem}.img-frame{max-width:400px;margin:0 auto}}
+@media(max-width:600px){.hero{padding:60px 0 56px}.hero h1{font-size:2.2rem}.hero-btns{flex-direction:column}.hero-btns .btn-primary,.hero-btns .btn-secondary{width:100%;justify-content:center}}
+
+/* TRUST */
+.trust{padding:48px 0}
+.trust-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.trust-card{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:24px 18px;text-align:center;transition:transform var(--tr),box-shadow var(--tr)}
+.trust-card:hover{transform:translateY(-4px);box-shadow:var(--sh)}
+.tc-icon{width:44px;height:44px;background:rgba(196,137,111,.1);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;color:var(--rg);font-size:1.1rem}
+.trust-card h5{font-size:.85rem;font-weight:600;color:var(--dark);margin-bottom:3px}
+.trust-card p{font-size:.75rem;color:var(--muted);font-weight:300}
+@media(max-width:768px){.trust-grid{grid-template-columns:repeat(2,1fr)}}
+
+/* SHOP */
+.shop{padding:64px 0}
+.cat-filters{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:36px}
+.cat-btn{background:#fff;border:1.5px solid var(--border);border-radius:50px;padding:8px 20px;font-size:.8rem;font-weight:500;color:var(--muted);transition:all var(--tr);display:flex;align-items:center;gap:7px;cursor:pointer}
+.cat-btn:hover,.cat-btn.active{background:var(--rg);border-color:var(--rg);color:#fff}
+.search-wrap{max-width:380px;margin:0 auto 36px;position:relative}
+.search-wrap input{width:100%;padding:11px 16px 11px 40px;border:1.5px solid var(--border);border-radius:50px;background:#fff;font-family:var(--fb);font-size:.85rem;color:var(--text);outline:none;transition:border-color var(--tr)}
+.search-wrap input:focus{border-color:var(--rg)}
+.search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:.85rem;pointer-events:none}
+.price-note{text-align:center;font-size:.72rem;color:var(--muted);margin-bottom:28px;font-style:italic}
+.suppl-notice{background:rgba(196,137,111,.07);border:1px solid rgba(196,137,111,.2);border-radius:var(--r-sm);padding:10px 14px;font-size:.74rem;color:var(--muted);margin-bottom:20px;display:none;align-items:flex-start;gap:8px}
+.suppl-notice.on{display:flex}
+.suppl-notice i{color:var(--rg);margin-top:2px;flex-shrink:0}
+
+/* PRODUCTS */
+.product-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:24px}
+.product-card{background:#fff;border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;transition:transform var(--tr),box-shadow var(--tr)}
+.product-card:hover{transform:translateY(-6px);box-shadow:var(--sh)}
+.product-card.hidden{display:none}
+.pimg-wrap{position:relative;aspect-ratio:1/1;background:#f4ede9;overflow:hidden}
+.pimg-wrap img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+.product-card:hover .pimg-wrap img{transform:scale(1.04)}
+.pbadge{position:absolute;top:10px;left:10px;padding:3px 10px;border-radius:50px;font-size:.6rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.pbadge.featured{background:var(--rg);color:#fff}
+.pbadge.new{background:var(--dark);color:#fff}
+.pbadge.unavailable{background:#ccc;color:#fff}
+.pinfo{padding:16px 18px 20px}
+.pbrand{font-size:.65rem;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:var(--rg);margin-bottom:4px;display:block}
+.pname{font-size:.98rem;font-weight:600;color:var(--dark);margin-bottom:3px;line-height:1.3}
+.pdesc{font-size:.78rem;color:var(--muted);font-weight:300;margin-bottom:12px}
+.pfooter{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.pprice{font-family:var(--fh);font-size:1.1rem;font-weight:700;color:var(--rg)}
+.pcur{font-size:.65rem;font-weight:400;color:var(--muted);margin-left:3px}
+.pactions{display:flex;gap:6px}
+.btn-cart{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--border);background:none;color:var(--text);font-size:.85rem;display:flex;align-items:center;justify-content:center;transition:all var(--tr)}
+.btn-cart:hover{border-color:var(--rg);background:var(--rg);color:#fff}
+.btn-cart:disabled{opacity:.4;cursor:not-allowed}
+.btn-now{background:var(--rg);color:#fff;border:none;border-radius:50px;padding:7px 16px;font-size:.76rem;font-weight:600;transition:all var(--tr)}
+.btn-now:hover{background:var(--rg-d)}
+.btn-now:disabled{opacity:.4;cursor:not-allowed}
+.load-more-wrap{text-align:center;margin-top:36px}
+.pgrid-empty{text-align:center;padding:48px 24px;color:var(--muted);grid-column:1/-1}
+.pgrid-empty i{font-size:2.5rem;margin-bottom:12px;opacity:.3;display:block}
+@media(max-width:480px){.product-grid{grid-template-columns:repeat(2,1fr);gap:14px}.pinfo{padding:12px 12px 14px}.pname{font-size:.88rem}.pprice{font-size:1rem}}
+
+/* BRANDS */
+.brands{padding:64px 0;background:linear-gradient(140deg,#FDF6F0,#F5EDE4)}
+.brands-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.brand-card{background:#fff;border:1px solid var(--border);border-radius:var(--r-lg);padding:28px 24px;transition:transform var(--tr),box-shadow var(--tr)}
+.brand-card:hover{transform:translateY(-5px);box-shadow:var(--sh)}
+.brand-name{font-family:var(--fh);font-size:1.5rem;font-weight:700;color:var(--dark);margin-bottom:8px}
+.brand-cat{font-size:.65rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--rg);margin-bottom:10px;display:block}
+.brand-desc{font-size:.84rem;color:var(--muted);font-weight:300;line-height:1.7;margin-bottom:16px}
+@media(max-width:900px){.brands-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:580px){.brands-grid{grid-template-columns:1fr;gap:16px}}
+
+/* ABOUT */
+.about{padding:72px 0}
+.about .container{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.about-img{border-radius:var(--r-lg);overflow:hidden;aspect-ratio:4/3;box-shadow:var(--sh-lg)}
+.about-img img{width:100%;height:100%;object-fit:cover}
+.about-content h2{font-family:var(--fh);font-size:2.2rem;font-weight:700;color:var(--dark);line-height:1.2;margin-bottom:16px}
+.about-content h2 span{color:var(--rg)}
+.about-content p{color:var(--muted);font-weight:300;line-height:1.8;margin-bottom:14px}
+.about-vals{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+.aval{display:flex;align-items:center;gap:9px;font-size:.86rem;font-weight:500;color:var(--text)}
+.aval i{color:var(--rg)}
+@media(max-width:860px){.about .container{grid-template-columns:1fr;gap:36px}.about-content h2{font-size:1.9rem}.about-vals{grid-template-columns:1fr}}
+
+/* TIPS */
+.tips{padding:64px 0}
+.tips-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px}
+.tip-card{background:#fff;border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;transition:transform var(--tr),box-shadow var(--tr)}
+.tip-card:hover{transform:translateY(-5px);box-shadow:var(--sh)}
+.tip-img{aspect-ratio:16/9;overflow:hidden;background:#f4ede9}
+.tip-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+.tip-card:hover .tip-img img{transform:scale(1.04)}
+.tip-body{padding:20px 22px 24px}
+.tip-tag{font-size:.62rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--rg);margin-bottom:6px;display:block}
+.tip-body h4{font-size:1rem;font-weight:600;color:var(--dark);margin-bottom:6px}
+.tip-body p{font-size:.84rem;color:var(--muted);font-weight:300;line-height:1.7}
+
+/* GALLERY */
+.gallery{padding:64px 0;background:linear-gradient(140deg,#FDF6F0,#F5EDE4)}
+.gallery-masonry{column-count:3;column-gap:18px}
+.gallery-item{break-inside:avoid;margin-bottom:18px;border-radius:var(--r);overflow:hidden;position:relative;cursor:pointer}
+.gallery-item img{width:100%;display:block;transition:transform .5s ease}
+.gallery-item:hover img{transform:scale(1.04)}
+.g-overlay{position:absolute;inset:0;background:rgba(0,0,0,.22);opacity:0;transition:opacity var(--tr);display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.6rem}
+.gallery-item:hover .g-overlay{opacity:1}
+@media(max-width:860px){.gallery-masonry{column-count:2}}
+@media(max-width:560px){.gallery-masonry{column-count:1}}
+
+/* LIGHTBOX */
+#lb{position:fixed;inset:0;z-index:9995;background:rgba(0,0,0,.88);display:flex;align-items:center;justify-content:center;padding:32px;opacity:0;visibility:hidden;transition:opacity .35s ease,visibility .35s ease}
+#lb.open{opacity:1;visibility:visible}
+#lb img{max-width:90vw;max-height:88vh;border-radius:var(--r);box-shadow:0 40px 100px rgba(0,0,0,.5);transform:scale(.94);transition:transform .4s cubic-bezier(.23,1,.32,1)}
+#lb.open img{transform:scale(1)}
+.lb-close{position:absolute;top:24px;right:28px;background:none;border:none;color:#fff;font-size:2rem;opacity:.7;transition:opacity var(--tr)}
+.lb-close:hover{opacity:1}
+
+/* FAQ */
+.faq{padding:64px 0}
+.faq-list{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
+.faq-item{background:#fff;border:1px solid var(--border);border-radius:var(--r)}
+.faq-q{width:100%;padding:18px 20px;background:none;border:none;display:flex;justify-content:space-between;align-items:center;font-family:var(--fb);font-size:.95rem;font-weight:600;color:var(--dark);cursor:pointer;text-align:left;transition:color var(--tr)}
+.faq-q:hover{color:var(--rg)}
+.faq-ic{color:var(--rg);transition:transform .35s ease;font-size:1rem;flex-shrink:0}
+.faq-item.open .faq-ic{transform:rotate(180deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s ease,padding .3s ease;padding:0 20px}
+.faq-item.open .faq-a{max-height:300px;padding:0 20px 18px}
+.faq-a p{font-size:.88rem;color:var(--muted);font-weight:300;line-height:1.75}
+
+/* CONTACT */
+.contact{padding:64px 0;background:linear-gradient(140deg,#FDF6F0,#F5EDE4)}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px}
+.contact-l h2{font-family:var(--fh);font-size:2rem;font-weight:700;color:var(--dark);margin-bottom:12px}
+.contact-l h2 span{color:var(--rg)}
+.contact-l>p{color:var(--muted);font-weight:300;margin-bottom:24px;font-size:.9rem}
+.contact-items{display:flex;flex-direction:column;gap:12px}
+.ci{display:flex;align-items:center;gap:14px;padding:14px 16px;background:#fff;border:1px solid var(--border);border-radius:var(--r)}
+.ci-icon{width:40px;height:40px;border-radius:50%;background:rgba(196,137,111,.12);color:var(--rg);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ci-text{font-size:.86rem;font-weight:500;color:var(--dark)}
+.ci-text small{display:block;font-weight:300;color:var(--muted);font-size:.78rem}
+.ci-text a{color:var(--rg)}
+.contact-r{background:#fff;border:1px solid var(--border);border-radius:var(--r-lg);padding:32px}
+.contact-r h3{font-family:var(--fh);font-size:1.5rem;margin-bottom:6px}
+.contact-r>p{color:var(--muted);font-size:.84rem;font-weight:300;margin-bottom:22px}
+.contact-btns{display:flex;flex-direction:column;gap:10px}
+.btn-tg{background:#0088cc;color:#fff;border:none;border-radius:50px;padding:13px 24px;font-size:.88rem;font-weight:600;display:flex;align-items:center;gap:9px;justify-content:center;transition:all var(--tr);text-decoration:none}
+.btn-tg:hover{background:#0077bb;transform:translateY(-1px)}
+.btn-call{background:var(--rg);color:#fff;border:none;border-radius:50px;padding:13px 24px;font-size:.88rem;font-weight:600;display:flex;align-items:center;gap:9px;justify-content:center;transition:all var(--tr);text-decoration:none}
+.btn-call:hover{background:var(--rg-d);transform:translateY(-1px)}
+.btn-tiktok{background:var(--dark);color:#fff;border:none;border-radius:50px;padding:13px 24px;font-size:.88rem;font-weight:600;display:flex;align-items:center;gap:9px;justify-content:center;transition:all var(--tr);text-decoration:none}
+.btn-tiktok:hover{background:#222;transform:translateY(-1px)}
+@media(max-width:860px){.contact-grid{grid-template-columns:1fr;gap:36px}}
+
+/* FOOTER */
+.footer{background:var(--dark);color:rgba(255,255,255,.75);padding:56px 0 28px}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:36px;margin-bottom:40px}
+.f-logo{display:flex;align-items:center;gap:9px;font-family:var(--fh);font-size:1.5rem;font-weight:700;color:#fff;margin-bottom:12px}
+.f-logo .logo-mark{width:32px;height:32px;background:linear-gradient(135deg,var(--rg),var(--rg-d));border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.85rem}
+.f-logo .logo-acc{color:var(--rg)}
+.footer-brand p{font-size:.84rem;font-weight:300;line-height:1.7;max-width:280px}
+.footer-social{display:flex;gap:10px;margin-top:16px}
+.footer-social a{width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.6);display:flex;align-items:center;justify-content:center;transition:all var(--tr);font-size:.9rem}
+.footer-social a:hover{background:var(--rg);border-color:var(--rg);color:#fff}
+.footer h4{color:#fff;font-size:.9rem;font-weight:600;margin-bottom:14px}
+.footer ul{display:flex;flex-direction:column;gap:9px}
+.footer ul a,.footer ul button{font-size:.82rem;font-weight:300;transition:color var(--tr);background:none;border:none;color:rgba(255,255,255,.75);padding:0;cursor:pointer;font-family:var(--fb);text-align:left}
+.footer ul a:hover,.footer ul button:hover{color:var(--rg)}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.06);padding-top:22px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;font-size:.72rem;font-weight:300;color:rgba(255,255,255,.35)}
+.footer-bottom a{color:rgba(255,255,255,.45);transition:color var(--tr)}
+.footer-bottom a:hover{color:var(--rg)}
+.dev-credit a{color:var(--rg-l);transition:color var(--tr)}
+.dev-credit a:hover{color:var(--rg)}
+@media(max-width:900px){.footer-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:540px){.footer-grid{grid-template-columns:1fr;gap:28px}.footer-bottom{flex-direction:column;text-align:center}}
+
+/* FLOATING BUTTONS */
+.floating-btns{position:fixed;bottom:28px;right:28px;z-index:9980;display:flex;flex-direction:column;gap:10px;align-items:flex-end}
+.fbtn{width:52px;height:52px;border-radius:50%;border:none;color:#fff;font-size:1.25rem;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 24px rgba(0,0,0,.15);transition:transform var(--tr);position:relative;text-decoration:none}
+.fbtn:hover{transform:scale(1.08)}
+.fbtn.tg{background:#0088cc}
+.fbtn.cl{background:var(--rg)}
+.ftip{position:absolute;right:62px;background:rgba(0,0,0,.8);color:#fff;padding:5px 12px;border-radius:6px;font-size:.7rem;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity var(--tr)}
+.fbtn:hover .ftip{opacity:1}
+@media(max-width:600px){.floating-btns{bottom:20px;right:16px}.fbtn{width:46px;height:46px;font-size:1.1rem}}
+
+/* BACK TO TOP */
+.btt{position:fixed;bottom:28px;left:28px;z-index:9980;width:44px;height:44px;border-radius:50%;background:#fff;border:1px solid var(--border);color:var(--text);font-size:1rem;display:flex;align-items:center;justify-content:center;box-shadow:var(--sh-sm);transition:all var(--tr);opacity:0;visibility:hidden;transform:translateY(12px)}
+.btt.on{opacity:1;visibility:visible;transform:none}
+.btt:hover{background:var(--rg);color:#fff;border-color:var(--rg)}
+@media(max-width:600px){.btt{bottom:20px;left:16px;width:38px;height:38px}}
+
+/* CART DRAWER */
+#cart-ov{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:9985;opacity:0;visibility:hidden;transition:opacity .35s ease,visibility .35s ease}
+#cart-ov.open{opacity:1;visibility:visible}
+#cart-drawer{position:fixed;top:0;right:-420px;width:420px;max-width:96vw;height:100vh;background:var(--ivory);z-index:9986;transition:right .4s cubic-bezier(.23,1,.32,1);display:flex;flex-direction:column;box-shadow:-8px 0 40px rgba(0,0,0,.1)}
+#cart-drawer.open{right:0}
+.cart-hd{display:flex;align-items:center;justify-content:space-between;padding:20px 22px;border-bottom:1px solid var(--border)}
+.cart-hd h3{font-family:var(--fh);font-size:1.3rem;font-weight:700;color:var(--dark)}
+.cart-x{background:none;border:none;font-size:1.4rem;color:var(--muted);transition:color var(--tr);padding:4px}
+.cart-x:hover{color:var(--dark)}
+.cart-body{flex:1;overflow-y:auto;padding:16px 22px}
+.cart-empty-s{text-align:center;padding:60px 20px;color:var(--muted)}
+.cart-empty-s i{font-size:2.5rem;margin-bottom:14px;opacity:.3;display:block}
+.cart-empty-s p{font-size:.9rem;margin-bottom:18px}
+.cart-item{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid var(--border)}
+.ci-img{width:64px;height:64px;border-radius:var(--r-sm);object-fit:cover;flex-shrink:0}
+.ci-info{flex:1;min-width:0}
+.ci-brand{font-size:.62rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--rg);font-weight:600}
+.ci-name{font-size:.88rem;font-weight:600;color:var(--dark);margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ci-price{font-size:.82rem;color:var(--muted)}
+.ci-qty{display:flex;align-items:center;gap:10px;margin-top:6px}
+.qb{width:26px;height:26px;border-radius:50%;border:1px solid var(--border);background:none;font-size:.9rem;display:flex;align-items:center;justify-content:center;color:var(--text);transition:all var(--tr)}
+.qb:hover{border-color:var(--rg);color:var(--rg)}
+.qv{font-size:.88rem;font-weight:600;min-width:20px;text-align:center}
+.ci-rm{background:none;border:none;color:#ccc;font-size:1rem;padding:4px;transition:color var(--tr);align-self:flex-start}
+.ci-rm:hover{color:#e55}
+.cart-ft{padding:16px 22px;border-top:1px solid var(--border)}
+.cart-sub{display:flex;justify-content:space-between;font-size:.9rem;font-weight:600;color:var(--dark);margin-bottom:14px}
+.cart-sub span:last-child{font-family:var(--fh);font-size:1.1rem;color:var(--rg)}
+.btn-checkout{width:100%;padding:14px;background:var(--rg);color:#fff;border:none;border-radius:50px;font-size:.9rem;font-weight:600;transition:all var(--tr)}
+.btn-checkout:hover{background:var(--rg-d)}
+
+/* COOKIE BANNER */
+#cookie-banner{position:fixed;bottom:0;left:0;right:0;z-index:9992;background:var(--dark);color:rgba(255,255,255,.85);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:.8rem;line-height:1.6;transform:translateY(100%);transition:transform .4s cubic-bezier(.23,1,.32,1)}
+#cookie-banner.on{transform:none}
+#cookie-banner p{max-width:600px;font-weight:300}
+.ck-btns{display:flex;gap:10px;flex-shrink:0}
+.ck-accept{background:var(--rg);color:#fff;border:none;border-radius:50px;padding:8px 20px;font-size:.78rem;font-weight:600;cursor:pointer;transition:background var(--tr)}
+.ck-accept:hover{background:var(--rg-d)}
+.ck-manage{background:none;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.75);border-radius:50px;padding:8px 16px;font-size:.78rem;cursor:pointer;transition:all var(--tr)}
+.ck-manage:hover{border-color:rgba(255,255,255,.5);color:#fff}
+@media(max-width:600px){#cookie-banner{flex-direction:column}.ck-btns{width:100%}}
+
+/* PRIVACY MODAL */
+#priv-modal{position:fixed;inset:0;z-index:9993;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;visibility:hidden;transition:opacity .3s ease,visibility .3s ease}
+#priv-modal.open{opacity:1;visibility:visible}
+.priv-box{background:var(--ivory);border-radius:var(--r-lg);width:100%;max-width:620px;max-height:85vh;overflow-y:auto;padding:36px;position:relative}
+.priv-box h2{font-family:var(--fh);font-size:1.6rem;margin-bottom:6px}
+.priv-close{position:absolute;top:20px;right:24px;background:none;border:none;font-size:1.5rem;color:var(--muted);cursor:pointer}
+.priv-box h3{font-size:.88rem;font-weight:600;color:var(--dark);margin:18px 0 6px;text-transform:uppercase;letter-spacing:.5px}
+.priv-box p,.priv-box li{font-size:.84rem;color:var(--muted);font-weight:300;line-height:1.75}
+.priv-box ul{padding-left:18px;list-style:disc}
+.priv-box ul li{margin-bottom:4px}
+
+/* NAV OVERLAY */
+#nav-ov{position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:9989;opacity:0;visibility:hidden;transition:opacity .3s ease,visibility .3s ease}
+#nav-ov.open{opacity:1;visibility:visible}
+</style>
+</head>
+<body>
+
+<div id="sp" role="progressbar" aria-hidden="true"></div>
+
+<div id="loader" aria-hidden="true">
+  <div class="loader-ring"></div>
+  <div class="loader-txt">TSI</div>
+</div>
+
+<!-- ANNOUNCE BAR -->
+<div id="ab" role="banner">
+  Free delivery available across Addis Ababa &nbsp;·&nbsp;
+  Order via <a href="https://t.me/Tsi27278" target="_blank" rel="noopener">Telegram</a>
+  or call <a href="tel:+251911695289">+251 911 695 289</a>
+  <button class="ab-close" id="ab-close" aria-label="Close announcement">&times;</button>
+</div>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar" aria-label="Main navigation">
+  <div class="wrap">
+    <a href="index.html" class="nav-logo" aria-label="TSI Cosmetics home">
+      <span class="logo-mark"><i class="fas fa-leaf" aria-hidden="true"></i></span>
+      TSI<span class="logo-acc">.</span><small class="logo-sub">Cosmetics</small>
+    </a>
+    <ul class="nav-links" id="nav-links" role="menubar">
+      <li role="none"><a href="#hero"    role="menuitem">Home</a></li>
+      <li role="none"><a href="#shop"    role="menuitem">Shop</a></li>
+      <li role="none"><a href="#brands"  role="menuitem">Brands</a></li>
+      <li role="none"><a href="#about"   role="menuitem">About</a></li>
+      <li role="none"><a href="#contact" role="menuitem">Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="cart-btn" id="cart-btn" aria-label="View cart">
+        <i class="fas fa-shopping-bag" aria-hidden="true"></i>
+        <span class="cb-label">Cart</span>
+        <span class="cart-count" id="cart-count" aria-live="polite">0</span>
+      </button>
+      <a href="order.html" class="btn-order">
+        <i class="fas fa-bag-shopping" aria-hidden="true"></i> Order Now
+      </a>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+<div id="nav-ov" aria-hidden="true"></div>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="container">
+    <div class="reveal">
+      <div class="hero-label"><i class="fas fa-box-open" aria-hidden="true"></i>&nbsp; Imported Products &nbsp;·&nbsp; Ethiopia</div>
+      <h1>Premium Beauty,<br><em>Curated for You</em></h1>
+      <p class="hero-p">TSI Cosmetics brings original skincare, cosmetics, and wellness products to Ethiopia. Browse our collection and order with confidence.</p>
+      <div class="hero-btns">
+        <a href="#shop" class="btn-primary"><i class="fas fa-shopping-bag" aria-hidden="true"></i> Shop Now</a>
+        <a href="#contact" class="btn-secondary"><i class="fas fa-phone" aria-hidden="true"></i> Contact Us</a>
+      </div>
+    </div>
+    <div class="hero-img reveal-r">
+      <div class="img-frame">
+        <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=800&h=960&fit=crop"
+          alt="TSI Cosmetics premium beauty products display" width="800" height="960" fetchpriority="high"/>
+      </div>
+      <div class="ring1" aria-hidden="true"></div>
+      <div class="ring2" aria-hidden="true"></div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST STRIP -->
+<section class="trust" aria-label="Why choose TSI Cosmetics">
+  <div class="container">
+    <div class="trust-grid">
+      <div class="trust-card reveal">
+        <div class="tc-icon"><i class="fas fa-box-open" aria-hidden="true"></i></div>
+        <h5>Wide Product Range</h5><p>Cosmetics, skincare &amp; supplements</p>
+      </div>
+      <div class="trust-card reveal" style="transition-delay:.07s">
+        <div class="tc-icon"><i class="fas fa-phone" aria-hidden="true"></i></div>
+        <h5>Order by Phone or Telegram</h5><p>Fast, personal service</p>
+      </div>
+      <div class="trust-card reveal" style="transition-delay:.14s">
+        <div class="tc-icon"><i class="fas fa-certificate" aria-hidden="true"></i></div>
+        <h5>Verified Imports</h5><p>Carefully sourced products</p>
+      </div>
+      <div class="trust-card reveal" style="transition-delay:.21s">
+        <div class="tc-icon"><i class="fas fa-truck" aria-hidden="true"></i></div>
+        <h5>Delivery Available</h5><p>Across major Ethiopian cities</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SHOP -->
+<section class="shop" id="shop">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="overline">Browse</span>
+      <h2>Shop by <span>Category</span></h2>
+      <p>Discover our full range of beauty, skincare, and wellness products.</p>
+    </div>
+    <div class="cat-filters" role="group" aria-label="Filter by category">
+      <button class="cat-btn active" data-cat="all"><i class="fas fa-border-all" aria-hidden="true"></i> All</button>
+      <button class="cat-btn" data-cat="makeup"><i class="fas fa-paint-brush" aria-hidden="true"></i> Makeup</button>
+      <button class="cat-btn" data-cat="skincare"><i class="fas fa-spa" aria-hidden="true"></i> Skincare</button>
+      <button class="cat-btn" data-cat="supplements"><i class="fas fa-capsules" aria-hidden="true"></i> Supplements</button>
+      <button class="cat-btn" data-cat="haircare"><i class="fas fa-wind" aria-hidden="true"></i> Hair Care</button>
+    </div>
+    <div class="search-wrap">
+      <i class="fas fa-search search-icon" aria-hidden="true"></i>
+      <input type="search" id="prod-search" placeholder="Search products or brands…" aria-label="Search products"/>
+    </div>
+    <div class="suppl-notice" id="suppl-notice">
+      <i class="fas fa-info-circle" aria-hidden="true"></i>
+      <span>Supplements are not evaluated by any regulatory authority and are not intended to diagnose, treat, cure, or prevent any disease. Consult a healthcare professional before use.</span>
+    </div>
+    <p class="price-note">Prices shown are indicative. Please confirm current pricing when you place your order.</p>
+    <div class="product-grid" id="prod-grid" aria-live="polite" aria-label="Products"></div>
+    <div class="load-more-wrap">
+      <button class="btn-secondary" id="load-more" style="display:none">Load More Products</button>
+    </div>
+  </div>
+</section>
+
+<!-- BRANDS -->
+<section class="brands" id="brands">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="overline">We Carry</span>
+      <h2>Featured <span>Brands</span></h2>
+      <p>We carry a thoughtfully curated selection of quality brands.</p>
+    </div>
+    <div class="brands-grid" id="brands-grid"></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="container">
+    <div class="about-img reveal-l">
+      <img src="https://images.unsplash.com/photo-1556228720-195a672e8a03?w=700&h=520&fit=crop"
+        alt="TSI Cosmetics beauty products arrangement" loading="lazy" width="700" height="520"/>
+    </div>
+    <div class="about-content reveal-r">
+      <span class="overline">About TSI Cosmetics</span>
+      <h2>Your Source for <span>Original Beauty</span></h2>
+      <p>TSI Cosmetics brings a carefully selected range of beauty, skincare, and health products to customers in Ethiopia. We focus on sourcing quality products and making them accessible through straightforward, personal service.</p>
+      <p>Whether you are looking for daily skincare essentials, colour cosmetics, hair treatments, or wellness supplements, our goal is to offer products you can trust — with service that is fast, honest, and helpful.</p>
+      <div class="about-vals">
+        <div class="aval"><i class="fas fa-check-circle" aria-hidden="true"></i> Quality products</div>
+        <div class="aval"><i class="fas fa-check-circle" aria-hidden="true"></i> Personal service</div>
+        <div class="aval"><i class="fas fa-check-circle" aria-hidden="true"></i> Honest pricing</div>
+        <div class="aval"><i class="fas fa-check-circle" aria-hidden="true"></i> Fast response</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BEAUTY TIPS -->
+<section class="tips" id="tips">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="overline">Insights</span>
+      <h2>Beauty <span>Tips</span></h2>
+      <p>Practical advice to help you get the most from your beauty routine.</p>
+    </div>
+    <div class="tips-grid">
+      <div class="tip-card reveal">
+        <div class="tip-img"><img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=600&h=360&fit=crop" alt="Morning skincare routine" loading="lazy" width="600" height="360"/></div>
+        <div class="tip-body"><span class="tip-tag">Skincare</span><h4>Morning Glow Routine</h4><p>Start with a gentle cleanse, apply a vitamin C serum, and finish with SPF for bright, protected skin throughout the day.</p></div>
+      </div>
+      <div class="tip-card reveal" style="transition-delay:.08s">
+        <div class="tip-img"><img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=600&h=360&fit=crop" alt="Makeup foundation tips" loading="lazy" width="600" height="360"/></div>
+        <div class="tip-body"><span class="tip-tag">Makeup</span><h4>Flawless Foundation</h4><p>Prep with a hydrating primer and apply foundation with a damp sponge for a seamless, natural-looking finish.</p></div>
+      </div>
+      <div class="tip-card reveal" style="transition-delay:.16s">
+        <div class="tip-img"><img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&h=360&fit=crop" alt="Health and wellness tips" loading="lazy" width="600" height="360"/></div>
+        <div class="tip-body"><span class="tip-tag">Wellness</span><h4>Glow from Within</h4><p>Stay well hydrated, eat a varied diet with plenty of vegetables, and get adequate sleep — your skin will reflect it.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery" id="gallery">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="overline">Visuals</span>
+      <h2>Our <span>Gallery</span></h2>
+      <p>A look into our world of beauty and wellness.</p>
+    </div>
+    <div class="gallery-masonry">
+      <div class="gallery-item" role="button" tabindex="0" aria-label="View image: Luxury cosmetics" data-img="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=900&h=1100&fit=crop"><img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=450&h=560&fit=crop" alt="Luxury cosmetics collection" loading="lazy"/><div class="g-overlay" aria-hidden="true"><i class="fas fa-search-plus"></i></div></div>
+      <div class="gallery-item" role="button" tabindex="0" aria-label="View image: Lipstick collection" data-img="https://images.unsplash.com/photo-1631729371254-42c2892f0e6e?w=900&h=1100&fit=crop"><img src="https://images.unsplash.com/photo-1631729371254-42c2892f0e6e?w=450&h=560&fit=crop" alt="Lipstick collection" loading="lazy"/><div class="g-overlay" aria-hidden="true"><i class="fas fa-search-plus"></i></div></div>
+      <div class="gallery-item" role="button" tabindex="0" aria-label="View image: Skincare products" data-img="https://images.unsplash.com/photo-1612817288484-6f916006741a?w=900&h=1100&fit=crop"><img src="https://images.unsplash.com/photo-1612817288484-6f916006741a?w=450&h=560&fit=crop" alt="Skincare products" loading="lazy"/><div class="g-overlay" aria-hidden="true"><i class="fas fa-search-plus"></i></div></div>
+      <div class="gallery-item" role="button" tabindex="0" aria-label="View image: Beauty serum" data-img="https://images.unsplash.com/photo-1583241805055-1e1b5dd99d6d?w=900&h=1100&fit=crop"><img src="https://images.unsplash.com/photo-1583241805055-1e1b5dd99d6d?w=450&h=560&fit=crop" alt="Beauty serum" loading="lazy"/><div class="g-overlay" aria-hidden="true"><i class="fas fa-search-plus"></i></div></div>
+      <div class="gallery-item" role="button" tabindex="0" aria-label="View image: Beauty products" data-img="https://images.unsplash.com/photo-1556228720-195a672e8a03?w=900&h=1100&fit=crop"><img src="https://images.unsplash.com/photo-1556228720-195a672e8a03?w=450&h=560&fit=crop" alt="Beauty products display" loading="lazy"/><div class="g-overlay" aria-hidden="true"><i class="fas fa-search-plus"></i></div></div>
+      <div class="gallery-item" role="button" tabindex="0" aria-label="View image: Skincare routine" data-img="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=900&h=1100&fit=crop"><img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=450&h=560&fit=crop" alt="Skincare routine" loading="lazy"/><div class="g-overlay" aria-hidden="true"><i class="fas fa-search-plus"></i></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq" id="faq">
+  <div class="container">
+    <div class="sec-head reveal">
+      <span class="overline">Questions</span>
+      <h2>Frequently <span>Asked</span></h2>
+      <p>Everything you need to know about ordering from TSI Cosmetics.</p>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item open">
+        <button class="faq-q">Are your products original imports?<i class="fas fa-chevron-down faq-ic" aria-hidden="true"></i></button>
+        <div class="faq-a"><p>We source our products carefully and aim to carry genuine imported goods. If you have questions about a specific product, please contact us before ordering — we are happy to share what we know.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">How do I place an order?<i class="fas fa-chevron-down faq-ic" aria-hidden="true"></i></button>
+        <div class="faq-a"><p>Use the "Order Now" button on any product or in the navigation to open our dedicated order page. Fill in your details and submit — we will contact you to confirm. You can also reach us directly on <a href="https://t.me/Tsi27278" target="_blank" rel="noopener" style="color:var(--rg)">Telegram @Tsi27278</a> or call <a href="tel:+251911695289" style="color:var(--rg)">+251 911 695 289</a>.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Do you deliver across Ethiopia?<i class="fas fa-chevron-down faq-ic" aria-hidden="true"></i></button>
+        <div class="faq-a"><p>We deliver to major cities and areas across Ethiopia. Delivery times vary by location. Contact us to confirm availability and estimated delivery time for your area.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">What payment methods do you accept?<i class="fas fa-chevron-down faq-ic" aria-hidden="true"></i></button>
+        <div class="faq-a"><p>We accept Telebirr, bank transfer, and cash on delivery for eligible areas. The owner will confirm payment details when they contact you to verify your order.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Can I return or exchange a product?<i class="fas fa-chevron-down faq-ic" aria-hidden="true"></i></button>
+        <div class="faq-a"><p>If you receive an item that is damaged or not what you ordered, please contact us within 7 days of delivery and we will work with you to find a solution.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="container">
+    <div class="contact-grid">
+      <div class="contact-l reveal-l">
+        <span class="overline">Get in Touch</span>
+        <h2>Let's <span>Connect</span></h2>
+        <p>Reach out for orders, product questions, or anything else. We respond quickly on Telegram and by phone.</p>
+        <div class="contact-items">
+          <div class="ci"><div class="ci-icon"><i class="fab fa-telegram-plane" aria-hidden="true"></i></div><div class="ci-text">Telegram<small><a href="https://t.me/Tsi27278" target="_blank" rel="noopener">@Tsi27278</a></small></div></div>
+          <div class="ci"><div class="ci-icon"><i class="fas fa-phone" aria-hidden="true"></i></div><div class="ci-text">Phone<small><a href="tel:+251911695289">+251 911 695 289</a></small></div></div>
+          <div class="ci"><div class="ci-icon"><i class="fab fa-tiktok" aria-hidden="true"></i></div><div class="ci-text">TikTok<small><a href="https://www.tiktok.com/@tsi.cosmotics" target="_blank" rel="noopener">@tsi.cosmotics</a></small></div></div>
+          <div class="ci"><div class="ci-icon"><i class="fas fa-clock" aria-hidden="true"></i></div><div class="ci-text">Business Hours<small>Monday – Saturday, 9:00 AM – 8:00 PM</small></div></div>
+        </div>
+      </div>
+      <div class="contact-r reveal-r">
+        <h3>Quick Contact</h3>
+        <p>Send us a message or place an order through your preferred channel.</p>
+        <div class="contact-btns">
+          <a href="https://t.me/Tsi27278" target="_blank" rel="noopener" class="btn-tg"><i class="fab fa-telegram-plane" aria-hidden="true"></i> Message on Telegram</a>
+          <a href="tel:+251911695289" class="btn-call"><i class="fas fa-phone" aria-hidden="true"></i> Call +251 911 695 289</a>
+          <a href="https://www.tiktok.com/@tsi.cosmotics" target="_blank" rel="noopener" class="btn-tiktok"><i class="fab fa-tiktok" aria-hidden="true"></i> Follow on TikTok</a>
+        </div>
+        <p style="margin-top:18px;font-size:.78rem;color:var(--muted);font-weight:300"><i class="fas fa-info-circle" style="color:var(--rg)" aria-hidden="true"></i> We will contact you to confirm your order and arrange payment and delivery personally.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer" role="contentinfo">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="f-logo">
+          <span class="logo-mark"><i class="fas fa-leaf" aria-hidden="true"></i></span>
+          TSI<span class="logo-acc">.</span>
+        </div>
+        <p>Original imported cosmetics, skincare, and wellness products in Ethiopia. Order by phone or Telegram.</p>
+        <div class="footer-social">
+          <a href="https://t.me/Tsi27278" target="_blank" rel="noopener noreferrer" aria-label="Telegram"><i class="fab fa-telegram-plane" aria-hidden="true"></i></a>
+          <a href="https://www.tiktok.com/@tsi.cosmotics" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><i class="fab fa-tiktok" aria-hidden="true"></i></a>
+          <a href="tel:+251911695289" aria-label="Phone"><i class="fas fa-phone" aria-hidden="true"></i></a>
+        </div>
+      </div>
+      <div>
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#hero">Home</a></li>
+          <li><a href="#shop">Shop</a></li>
+          <li><a href="#brands">Brands</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Categories</h4>
+        <ul>
+          <li><a href="#shop">Makeup</a></li>
+          <li><a href="#shop">Skincare</a></li>
+          <li><a href="#shop">Supplements</a></li>
+          <li><a href="#shop">Hair Care</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="https://t.me/Tsi27278" target="_blank" rel="noopener">Telegram</a></li>
+          <li><a href="tel:+251911695289">+251 911 695 289</a></li>
+          <li><a href="https://www.tiktok.com/@tsi.cosmotics" target="_blank" rel="noopener">TikTok</a></li>
+          <li><button onclick="openPrivacy()">Privacy Policy</button></li>
+          <li><button onclick="reopenCookies()">Cookie Settings</button></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="yr"></span> TSI Cosmetics. All rights reserved.</span>
+      <span class="dev-credit">Website developed by <a href="https://m1616d.github.io/Triverse-Studio/" target="_blank" rel="noopener noreferrer">Triverse Studio</a></span>
+    </div>
+  </div>
+</footer>
+
+<!-- FLOATING BUTTONS -->
+<div class="floating-btns" aria-label="Quick contact">
+  <a href="https://t.me/Tsi27278" target="_blank" rel="noopener noreferrer" class="fbtn tg" aria-label="Order on Telegram"><i class="fab fa-telegram-plane" aria-hidden="true"></i><span class="ftip">Order on Telegram</span></a>
+  <a href="tel:+251911695289" class="fbtn cl" aria-label="Call now"><i class="fas fa-phone" aria-hidden="true"></i><span class="ftip">Call Now</span></a>
+</div>
+
+<!-- BACK TO TOP -->
+<button class="btt" id="btt" aria-label="Back to top"><i class="fas fa-arrow-up" aria-hidden="true"></i></button>
+
+<!-- LIGHTBOX -->
+<div id="lb" role="dialog" aria-modal="true" aria-label="Image preview">
+  <button class="lb-close" id="lb-close" aria-label="Close image"><i class="fas fa-times" aria-hidden="true"></i></button>
+  <img src="" alt="" id="lb-img"/>
+</div>
+
+<!-- CART DRAWER -->
+<div id="cart-ov" aria-hidden="true"></div>
+<div id="cart-drawer" role="dialog" aria-modal="true" aria-label="Shopping cart">
+  <div class="cart-hd">
+    <h3>Your Cart</h3>
+    <button class="cart-x" id="cart-close" aria-label="Close cart"><i class="fas fa-times" aria-hidden="true"></i></button>
+  </div>
+  <div class="cart-body" id="cart-body"></div>
+  <div class="cart-ft" id="cart-ft" style="display:none">
+    <div class="cart-sub"><span>Subtotal</span><span id="cart-subtotal">0 ETB</span></div>
+    <button class="btn-checkout" id="btn-checkout">Proceed to Order</button>
+  </div>
+</div>
+
+<!-- COOKIE BANNER -->
+<div id="cookie-banner" role="region" aria-label="Cookie consent">
+  <p>We use browser storage only for your cart and preferences. No tracking or advertising cookies are used. <button onclick="openPrivacy()" style="background:none;border:none;color:rgba(255,255,255,.75);text-decoration:underline;cursor:pointer;font-size:.8rem;padding:0;font-family:inherit">Learn more</button></p>
+  <div class="ck-btns">
+    <button class="ck-accept" id="ck-accept">Accept</button>
+    <button class="ck-manage" id="ck-manage">Manage Preferences</button>
+  </div>
+</div>
+
+<!-- PRIVACY MODAL -->
+<div id="priv-modal" role="dialog" aria-modal="true" aria-label="Privacy Policy">
+  <div class="priv-box">
+    <button class="priv-close" onclick="closePrivacy()" aria-label="Close privacy policy"><i class="fas fa-times" aria-hidden="true"></i></button>
+    <h2>Privacy Policy</h2>
+    <p style="font-size:.78rem;color:var(--muted);margin-bottom:4px">Last updated: 2026</p>
+    <h3>What information we collect</h3>
+    <p>When you place an order, we collect your name, phone number, city, delivery address, and any notes you provide through the order form on order.html.</p>
+    <h3>How we use your information</h3>
+    <p>Your order details are sent securely to the business owner via our order-processing endpoint and delivered to the owner's Telegram. The owner uses this information solely to contact you and process your order.</p>
+    <h3>Data storage</h3>
+    <p>This website does not maintain a permanent order database. Your cart is stored only in your browser's localStorage (key: <code>tsi_cart</code>) and is cleared after a successful order submission. We do not store your personal details after the order is sent.</p>
+    <h3>Cookies and local storage</h3>
+    <ul>
+      <li>Cart contents while you browse — <code>tsi_cart</code></li>
+      <li>Cookie consent preference — <code>tsi_consent</code></li>
+      <li>Announcement bar dismissal — session only</li>
+    </ul>
+    <p>No analytics, advertising, or tracking cookies are used.</p>
+    <h3>Third-party services</h3>
+    <p>Order notifications are delivered via the Telegram Bot API. Product images are loaded from Unsplash. Fonts from Google Fonts. Icons from Font Awesome (cdnjs). These services have their own privacy policies.</p>
+    <h3>Contact</h3>
+    <p>For privacy questions: <a href="tel:+251911695289" style="color:var(--rg)">+251 911 695 289</a> or <a href="https://t.me/Tsi27278" target="_blank" rel="noopener" style="color:var(--rg)">Telegram @Tsi27278</a>.</p>
+  </div>
+</div>
+
+<script src="products.js"></script>
+<script>
+/* ---- Loader ---- */
+window.addEventListener('load', () => setTimeout(() => document.getElementById('loader').classList.add('hidden'), 400));
+setTimeout(() => document.getElementById('loader').classList.add('hidden'), 1400);
+
+/* ---- Year ---- */
+document.getElementById('yr').textContent = new Date().getFullYear();
+
+/* ---- Scroll progress ---- */
+window.addEventListener('scroll', () => {
+  const d = document.documentElement;
+  document.getElementById('sp').style.width = Math.min((window.scrollY / (d.scrollHeight - window.innerHeight)) * 100, 100) + '%';
+}, {passive:true});
+
+/* ---- Announce bar ---- */
+(function(){
+  const bar = document.getElementById('ab');
+  if(sessionStorage.getItem('tsi_ab')) bar.classList.add('hidden');
+  document.getElementById('ab-close').addEventListener('click', () => {
+    bar.classList.add('hidden');
+    sessionStorage.setItem('tsi_ab', '1');
+  });
+})();
+
+/* ---- Navbar ---- */
+const navbar = document.getElementById('navbar');
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.getElementById('nav-links');
+const navOv = document.getElementById('nav-ov');
+window.addEventListener('scroll', () => navbar.classList.toggle('scrolled', window.scrollY > 50), {passive:true});
+
+function openNav(){hamburger.classList.add('active');navLinks.classList.add('open');navOv.classList.add('open');hamburger.setAttribute('aria-expanded','true');document.body.style.overflow='hidden'}
+function closeNav(){hamburger.classList.remove('active');navLinks.classList.remove('open');navOv.classList.remove('open');hamburger.setAttribute('aria-expanded','false');document.body.style.overflow=''}
+hamburger.addEventListener('click', () => hamburger.classList.contains('active') ? closeNav() : openNav());
+navOv.addEventListener('click', closeNav);
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', closeNav));
+
+/* Active nav link */
+const allSections = document.querySelectorAll('section[id]');
+window.addEventListener('scroll', () => {
+  let cur = '';
+  allSections.forEach(s => { if(window.scrollY >= s.offsetTop - 100) cur = s.id; });
+  navLinks.querySelectorAll('a').forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#'+cur));
+}, {passive:true});
+
+/* ---- Smooth scroll ---- */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', function(e){
+    const id = this.getAttribute('href');
+    if(id==='#') return;
+    const t = document.querySelector(id);
+    if(t){ e.preventDefault(); t.scrollIntoView({behavior:'smooth',block:'start'}); }
+  });
+});
+
+/* ---- Reveal on scroll ---- */
+const ro = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('on'); ro.unobserve(e.target); } });
+}, {threshold:.12, rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el => ro.observe(el));
+
+/* ---- Cart UI ---- */
+function updateCartBadge(){
+  const n = tsiGetCartCount();
+  const el = document.getElementById('cart-count');
+  el.textContent = n;
+  el.classList.toggle('on', n > 0);
+}
+
+function renderCartDrawer(){
+  const cart = tsiGetCart();
+  const body = document.getElementById('cart-body');
+  const ft = document.getElementById('cart-ft');
+  if(!cart.length){
+    body.innerHTML = '<div class="cart-empty-s"><i class="fas fa-shopping-bag"></i><p>Your cart is empty.</p><a href="#shop" class="btn-outline" onclick="closeCartDrawer()">Browse Products</a></div>';
+    ft.style.display = 'none';
+    return;
+  }
+  body.innerHTML = cart.map(item => {
+    const p = tsiGetProductById(item.id);
+    if(!p) return '';
+    return `<div class="cart-item"><img class="ci-img" src="${p.image}" alt="${p.name}" loading="lazy"/><div class="ci-info"><div class="ci-brand">${p.brand}</div><div class="ci-name">${p.name}</div><div class="ci-price">${p.price.toLocaleString()} ETB each</div><div class="ci-qty"><button class="qb" data-id="${p.id}" data-d="-1" aria-label="Decrease">&#8722;</button><span class="qv">${item.qty}</span><button class="qb" data-id="${p.id}" data-d="1" aria-label="Increase">+</button></div></div><button class="ci-rm" data-id="${p.id}" aria-label="Remove ${p.name}"><i class="fas fa-times"></i></button></div>`;
+  }).join('');
+  document.getElementById('cart-subtotal').textContent = tsiGetCartTotal().toLocaleString() + ' ETB';
+  ft.style.display = 'block';
+  body.querySelectorAll('.qb').forEach(b => b.addEventListener('click', () => { tsiUpdateQty(b.dataset.id, parseInt(b.dataset.d)); refreshCart(); }));
+  body.querySelectorAll('.ci-rm').forEach(b => b.addEventListener('click', () => { tsiRemoveFromCart(b.dataset.id); refreshCart(); }));
+}
+
+function refreshCart(){ updateCartBadge(); renderCartDrawer(); }
+
+function openCartDrawer(){ document.getElementById('cart-drawer').classList.add('open'); document.getElementById('cart-ov').classList.add('open'); document.body.style.overflow='hidden'; renderCartDrawer(); }
+function closeCartDrawer(){ document.getElementById('cart-drawer').classList.remove('open'); document.getElementById('cart-ov').classList.remove('open'); document.body.style.overflow=''; }
+
+document.getElementById('cart-btn').addEventListener('click', openCartDrawer);
+document.getElementById('cart-close').addEventListener('click', closeCartDrawer);
+document.getElementById('cart-ov').addEventListener('click', closeCartDrawer);
+document.getElementById('btn-checkout').addEventListener('click', () => { closeCartDrawer(); window.location.href='order.html'; });
+
+/* ---- Products ---- */
+const INITIAL = 8;
+let activeCat = 'all', activeSearch = '', showAll = false;
+
+function filteredProducts(){
+  const q = activeSearch.toLowerCase();
+  return PRODUCTS.filter(p => {
+    const catOk = activeCat==='all' || p.category===activeCat;
+    const srchOk = !q || p.name.toLowerCase().includes(q) || p.brand.toLowerCase().includes(q) || p.shortDesc.toLowerCase().includes(q);
+    return catOk && srchOk;
+  });
+}
+
+function renderProducts(){
+  const grid = document.getElementById('prod-grid');
+  const btn = document.getElementById('load-more');
+  const list = filteredProducts();
+  const show = showAll ? list : list.slice(0, INITIAL);
+  if(!list.length){
+    grid.innerHTML = '<div class="pgrid-empty"><i class="fas fa-search"></i><p>No products match your search.</p></div>';
+    btn.style.display='none'; return;
+  }
+  grid.innerHTML = show.map(p => `<article class="product-card" data-id="${p.id}">
+    <div class="pimg-wrap"><img src="${p.image}" alt="${p.name}" loading="lazy" width="300" height="300"/>
+    ${p.badge ? `<span class="pbadge ${p.badge.toLowerCase()}">${p.badge}</span>` : ''}
+    ${!p.available ? '<span class="pbadge unavailable">Out of Stock</span>' : ''}</div>
+    <div class="pinfo"><span class="pbrand">${p.brand}</span><h3 class="pname">${p.name}</h3>
+    <p class="pdesc">${p.shortDesc}</p>
+    <div class="pfooter"><span class="pprice">${p.price.toLocaleString()}<span class="pcur">ETB</span></span>
+    <div class="pactions">
+      <button class="btn-cart" data-id="${p.id}" ${!p.available?'disabled':''} aria-label="Add ${p.name} to cart"><i class="fas fa-shopping-bag" aria-hidden="true"></i></button>
+      <button class="btn-now" data-id="${p.id}" ${!p.available?'disabled':''}>Order Now</button>
+    </div></div></div></article>`).join('');
+  grid.querySelectorAll('.btn-cart').forEach(b => b.addEventListener('click', () => { tsiAddToCart(b.dataset.id); refreshCart(); openCartDrawer(); }));
+  grid.querySelectorAll('.btn-now').forEach(b => b.addEventListener('click', () => { tsiAddToCart(b.dataset.id); refreshCart(); window.location.href='order.html'; }));
+  btn.style.display = (!showAll && list.length > INITIAL) ? 'inline-flex' : 'none';
+}
+
+document.getElementById('load-more').addEventListener('click', () => { showAll=true; renderProducts(); });
+
+document.querySelectorAll('.cat-btn').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('.cat-btn').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    activeCat = b.dataset.cat; showAll = false; renderProducts();
+    document.getElementById('suppl-notice').classList.toggle('on', activeCat==='supplements');
+  });
+});
+
+let searchTimer;
+document.getElementById('prod-search').addEventListener('input', function(){
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => { activeSearch=this.value; showAll=false; renderProducts(); }, 280);
+});
+
+/* ---- Brands ---- */
+function renderBrands(){
+  const grid = document.getElementById('brands-grid');
+  grid.innerHTML = BRANDS.map(b => `<div class="brand-card reveal">
+    <div class="brand-name">${b.name}</div><span class="brand-cat">${b.cat}</span>
+    <p class="brand-desc">${b.desc}</p>
+    <button class="btn-outline" onclick="filterBrand('${b.name}')"><i class="fas fa-shopping-bag" aria-hidden="true"></i> View Products</button>
+  </div>`).join('');
+  grid.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+}
+function filterBrand(name){
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('.cat-btn[data-cat="all"]').classList.add('active');
+  activeCat='all'; activeSearch=name; showAll=true;
+  document.getElementById('prod-search').value = name;
+  renderProducts();
+  document.getElementById('shop').scrollIntoView({behavior:'smooth'});
+}
+
+/* ---- Gallery lightbox ---- */
+const lb = document.getElementById('lb');
+const lbImg = document.getElementById('lb-img');
+function openLB(src, alt){ lbImg.src=src; lbImg.alt=alt||''; lb.classList.add('open'); document.body.style.overflow='hidden'; }
+function closeLB(){ lb.classList.remove('open'); document.body.style.overflow=''; lbImg.src=''; }
+document.querySelectorAll('.gallery-item').forEach(el => {
+  const fn = () => openLB(el.dataset.img, el.querySelector('img')?.alt);
+  el.addEventListener('click', fn);
+  el.addEventListener('keydown', e => (e.key==='Enter'||e.key===' ') && (e.preventDefault(), fn()));
+});
+document.getElementById('lb-close').addEventListener('click', closeLB);
+lb.addEventListener('click', e => e.target===lb && closeLB());
+lb.addEventListener('touchstart', e => e.target===lb && closeLB(), {passive:true});
+
+/* ---- FAQ ---- */
+document.querySelectorAll('.faq-q').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.closest('.faq-item'), isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+    if(!isOpen) item.classList.add('open');
+  });
+});
+
+/* ---- Back to top ---- */
+const btt = document.getElementById('btt');
+window.addEventListener('scroll', () => btt.classList.toggle('on', window.scrollY > 500), {passive:true});
+btt.addEventListener('click', () => window.scrollTo({top:0,behavior:'smooth'}));
+
+/* ---- Keyboard ---- */
+document.addEventListener('keydown', e => {
+  if(e.key!=='Escape') return;
+  if(lb.classList.contains('open')) closeLB();
+  else if(document.getElementById('cart-drawer').classList.contains('open')) closeCartDrawer();
+  else if(navLinks.classList.contains('open')) closeNav();
+  else if(document.getElementById('priv-modal').classList.contains('open')) closePrivacy();
+});
+
+/* ---- Cookie consent ---- */
+function initCookies(){
+  const banner = document.getElementById('cookie-banner');
+  if(!localStorage.getItem('tsi_consent')) setTimeout(() => banner.classList.add('on'), 1200);
+  document.getElementById('ck-accept').addEventListener('click', () => { localStorage.setItem('tsi_consent','accepted'); banner.classList.remove('on'); });
+  document.getElementById('ck-manage').addEventListener('click', () => { openPrivacy(); banner.classList.remove('on'); localStorage.setItem('tsi_consent','necessary'); });
+}
+window.reopenCookies = function(){ document.getElementById('cookie-banner').classList.add('on'); };
+initCookies();
+
+/* ---- Privacy modal ---- */
+window.openPrivacy = function(){ document.getElementById('priv-modal').classList.add('open'); document.body.style.overflow='hidden'; };
+window.closePrivacy = function(){ document.getElementById('priv-modal').classList.remove('open'); document.body.style.overflow=''; };
+document.getElementById('priv-modal').addEventListener('click', e => e.target===document.getElementById('priv-modal') && closePrivacy());
+
+/* ---- Init ---- */
+renderProducts();
+renderBrands();
+updateCartBadge();
+</script>
+</body>
+</html>
