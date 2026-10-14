@@ -552,7 +552,7 @@ function setStatus(state, msg) {
 function showPublish(commitUrl, message) {
   const bar = document.getElementById('publish-bar');
   bar.innerHTML = `<i class="fas fa-code-branch" aria-hidden="true" style="color:var(--rg)"></i>
-    <span>${message || 'Committed to GitHub. Cloudflare Workers Builds will deploy it automatically.'}
+    <span>${message || 'Committed to GitHub. The live site updates only if Cloudflare Workers Builds is connected to this repository (see System status).'}
     ${commitUrl ? `<a href="${commitUrl}" target="_blank" rel="noopener">View commit</a>` : ''}</span>
     <button class="btn-ghost" id="bar-verify" style="margin-left:auto;padding:5px 14px;font-size:.72rem"><i class="fas fa-signal" aria-hidden="true"></i> Check live site</button>`;
   bar.classList.add('on');
@@ -716,7 +716,7 @@ async function saveCatalog(successMsg) {
   const data = await api('/api/admin/catalog', 'PUT', { products, brands });
   if (data && data.ok) {
     setStatus('saved', 'Committed');
-    toast(successMsg || 'Saved to GitHub. Cloudflare is deploying.', 'ok');
+    toast(successMsg || 'Saved to GitHub.', 'ok');
     showPublish(data.commitUrl, 'Saved to GitHub. Cloudflare Workers Builds is deploying your change.');
     setTimeout(() => setStatus('idle', 'Ready'), 8000);
     return true;
@@ -1117,7 +1117,7 @@ async function saveContent() {
   const data = await api('/api/admin/content', 'PUT', { content: collectContent() });
   if (data && data.ok) {
     setStatus('saved', 'Committed');
-    toast('Saved to GitHub. Cloudflare is deploying.', 'ok');
+    toast('Saved to GitHub. Run the deploy (or let Workers Builds do it) to put it live.', 'ok');
     showPublish(data.commitUrl, 'Content and settings saved to GitHub. Cloudflare Workers Builds is deploying them.');
     setTimeout(() => setStatus('idle', 'Ready'), 8000);
   } else {
@@ -1150,7 +1150,7 @@ async function loadStatus() {
   if (!s || !s.ok) { list.innerHTML = statRow('bad', 'Could not read status', 'The admin API did not respond.'); return; }
   const pub = s.publishing || (s.canPublish ? 'ok' : 'missing');
   const pubMap = {
-    ok: ['ok', 'Publishing connected', `Saving writes to ${s.repo} and Cloudflare redeploys automatically.`],
+    ok: ['ok', 'Publishing connected', `Saving writes to ${s.repo}. The live site changes once Cloudflare deploys that commit — connect Workers Builds (Cloudflare → Worker → Settings → Builds → Connect to Git) or run \`npx wrangler deploy\` yourself.`],
     missing: ['bad', 'Publishing NOT configured', 'The GITHUB_TOKEN secret is missing, so products, images and content cannot be saved yet.'],
     'invalid-token': ['bad', 'GitHub token rejected', 'GitHub refused the GITHUB_TOKEN (expired, revoked, or missing Contents: Read and write). Create a new fine-grained token and set it in Cloudflare.'],
     'repo-not-found': ['bad', 'Repository not found', 'Check the GITHUB_OWNER and GITHUB_REPO variables in wrangler.toml, then redeploy.'],

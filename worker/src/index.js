@@ -630,7 +630,7 @@ async function handleCatalog(req, env, pathname) {
         commit: result.commit?.sha ?? null,
         commitUrl: result.commit?.html_url ?? null,
         published: false,
-        message: 'Committed to GitHub. Cloudflare Workers Builds will deploy automatically.',
+        message: 'Committed to GitHub. The live site changes once Cloudflare deploys this commit — via Workers Builds, or a manual `npx wrangler deploy`.',
       });
     } catch (e) {
       return j({ ok: false, error: 'Save failed: ' + e.message }, 502);
