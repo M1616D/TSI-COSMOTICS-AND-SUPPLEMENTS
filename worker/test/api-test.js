@@ -80,7 +80,10 @@ const J = { 'Content-Type': 'application/json' };
   r = await req('/api/admin/status', { headers: { Cookie: cookie } });
   check('status with session → 200', r.status === 200 && r.json && r.json.ok === true, r.status);
   check('status reports KV password store bound', r.json && r.json.canChangePassword === true);
-  check('status reports the correct repo', r.json && r.json.repo === (vars.GITHUB_OWNER + '/' + vars.GITHUB_REPO + '@' + vars.GITHUB_BRANCH), r.json && r.json.repo);
+  const expectedRepoLabel = vars.GITHUB_OWNER + '/' + vars.GITHUB_REPO
+    + (vars.GITHUB_REPO_ID ? ` (id ${vars.GITHUB_REPO_ID})` : '') + '@' + vars.GITHUB_BRANCH;
+  check('status reports the correct repo', r.json && r.json.repo === expectedRepoLabel, r.json && r.json.repo);
+  check('status reports the repo id when one is configured', !!vars.GITHUB_REPO_ID === (r.json && r.json.repoId === vars.GITHUB_REPO_ID), r.json && r.json.repoId);
   check('status flags the deliberately-bad GitHub token', r.json && r.json.publishing === 'invalid-token' && r.json.canPublish === false, r.json && r.json.publishing);
 
   /* ── admin write paths (dummy GitHub token on purpose) ── */

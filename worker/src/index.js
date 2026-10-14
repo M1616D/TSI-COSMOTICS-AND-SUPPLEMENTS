@@ -253,11 +253,25 @@ function ghHeaders(env) {
     'User-Agent': 'TSI-Cosmetics-Worker/1.2',
   };
 }
+/* Base URL for the repository.
+
+   /repositories/{id} is GitHub's documented alias for /repos/{owner}/{repo}:
+   it accepts the same sub-paths (contents, git/refs, …) and the same methods.
+   We prefer it when GITHUB_REPO_ID is set because it keeps working across
+   renames — and because a repository can be reachable by id while its
+   owner/name path resolves to 404. */
 function ghRepo(env) {
+  if (env.GITHUB_REPO_ID) return `https://api.github.com/repositories/${encodeURIComponent(env.GITHUB_REPO_ID)}`;
   return `https://api.github.com/repos/${encodeURIComponent(env.GITHUB_OWNER)}/${encodeURIComponent(env.GITHUB_REPO)}`;
 }
 function ghConfigured(env) {
-  return !!(env.GITHUB_TOKEN && env.GITHUB_OWNER && env.GITHUB_REPO && env.GITHUB_BRANCH);
+  const target = env.GITHUB_REPO_ID || (env.GITHUB_OWNER && env.GITHUB_REPO);
+  return !!(env.GITHUB_TOKEN && target && env.GITHUB_BRANCH);
+}
+/* Human-readable target for messages (owner/name, plus the id we actually use). */
+function ghTargetLabel(env) {
+  const name = (env.GITHUB_OWNER && env.GITHUB_REPO) ? `${env.GITHUB_OWNER}/${env.GITHUB_REPO}` : 'repository';
+  return env.GITHUB_REPO_ID ? `${name} (id ${env.GITHUB_REPO_ID})` : name;
 }
 const GH_MISSING = 'Publishing is not configured yet: the GITHUB_TOKEN secret is missing on this Worker. Add it in Cloudflare → Worker → Settings → Variables and Secrets, then reload this page.';
 async function ghGuard(env) {
@@ -265,7 +279,7 @@ async function ghGuard(env) {
   if (state === 'ok') return null;
   const msg = state === 'missing' ? GH_MISSING
     : state === 'invalid-token' ? 'GitHub rejected the GITHUB_TOKEN secret (401/403). Create a fine-grained token with Contents: Read and write on this repo, or renew the expired one, then set it again in Cloudflare.'
-    : state === 'repo-not-found' ? 'GitHub could not find the repository. Check the GITHUB_OWNER / GITHUB_REPO variables in wrangler.toml.'
+    : state === 'repo-not-found' ? `GitHub could not find ${ghTargetLabel(env)}. Check the GITHUB_OWNER / GITHUB_REPO (or GITHUB_REPO_ID) values in wrangler.toml, and that the token is scoped to this repository.`
     : 'Could not reach the GitHub API (' + state + '). Try again in a moment.';
   return j({ ok: false, error: msg, publishing: state }, 503);
 }
@@ -932,7 +946,8 @@ async function handleAdmin(req, env, pathname, url) {
       canChangePassword: !!env.ADMIN_KV,
       passwordFromKv: !!(env.ADMIN_KV && (await getStoredHash(env))),
       usingSecretPassword: !!(await passwordConfigured(env)),
-      repo: `${env.GITHUB_OWNER || '?'}/${env.GITHUB_REPO || '?'}@${env.GITHUB_BRANCH || '?'}`,
+      repo: `${ghTargetLabel(env)}@${env.GITHUB_BRANCH || '?'}`,
+      repoId: env.GITHUB_REPO_ID || null,
       ordersConfigured: !!(env.TELEGRAM_BOT_TOKEN && env.TELEGRAM_OWNER_CHAT_ID),
     });
   }

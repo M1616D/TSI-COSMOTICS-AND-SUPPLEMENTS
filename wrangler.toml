@@ -32,6 +32,14 @@ id = "f58ecd40eb2940f3b5798f9f141dcc74"
 GITHUB_OWNER  = "M1616D"
 GITHUB_REPO   = "TSI-COSMETICS-AND-SUPPLEMENTS"
 GITHUB_BRANCH = "main"
+# Numeric repository id. When set, the Worker talks to
+# https://api.github.com/repositories/<id> instead of /repos/{owner}/{repo}.
+# GitHub documents this as an alias that accepts the same contents/refs paths,
+# and it keeps working if the repo is renamed. It is also the only route that
+# resolves for this repository — the owner/name path currently returns 404
+# from the API, git and raw.githubusercontent.com. Remove it to force
+# name-based addressing again.
+GITHUB_REPO_ID = "1298297633"
 
 # Origins allowed to POST orders cross-origin (comma separated). This is what lets
 # the GitHub Pages copy of the storefront submit orders to this Worker.
