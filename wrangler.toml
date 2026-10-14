@@ -1,0 +1,29 @@
+# TSI Cosmetics — single integrated Worker
+# Serves the storefront (site/) as static assets AND the API + admin panel.
+#
+# Deploy from the project root (the folder containing this file):
+#   npx wrangler deploy
+
+name = "tsicosmeticsandsupplements"
+main = "worker/src/index.js"
+compatibility_date = "2024-09-23"
+
+[assets]
+directory = "./site"
+binding = "ASSETS"
+# Let real API requests reach the Worker; everything else is served straight
+# from Cloudflare's static asset layer (fast, cached, no Worker invocation).
+run_worker_first = ["/api/*"]
+
+[vars]
+GITHUB_OWNER  = "M1616D"
+GITHUB_REPO   = "TSI-COSMOTICS-AND-SUPPLEMENTS"
+GITHUB_BRANCH = "main"
+
+# ── Secrets: never put real values here ──────────────────────────────────────
+# Set each one interactively (it is stored encrypted, not in this file):
+#   npx wrangler secret put TELEGRAM_BOT_TOKEN
+#   npx wrangler secret put TELEGRAM_OWNER_CHAT_ID
+#   npx wrangler secret put GITHUB_TOKEN
+#   npx wrangler secret put ADMIN_PASSWORD
+#   npx wrangler secret put SESSION_SECRET

@@ -1,0 +1,23 @@
+# Secrets — never commit
+.dev.vars
+.dev.vars.*
+worker/.dev.vars
+.env
+
+# Wrangler local state / auth cache (contains account ids, not publishable)
+.wrangler/
+worker/.wrangler/
+
+# Dependencies
+node_modules/
+worker/node_modules/
+
+# Build artefacts / packages
+worker/dist/
+*.zip
+
+# OS / editor
+.vscode/settings.json
+.DS_Store
+Thumbs.db
+desktop.ini
