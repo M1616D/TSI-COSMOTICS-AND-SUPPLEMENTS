@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const B = process.env.TSI_BASE || 'http://127.0.0.1:8788';
-const root = path.resolve(__dirname, '..');
+const root = path.resolve(__dirname, '..', '..');
 const vars = Object.fromEntries(
   fs.readFileSync(path.join(root, '.dev.vars'), 'utf8')
     .split(/\r?\n/).filter(l => l.includes('=') && !l.trim().startsWith('#'))
