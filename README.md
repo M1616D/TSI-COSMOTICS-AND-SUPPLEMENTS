@@ -110,7 +110,16 @@ Set these as **secrets** (Cloudflare → Worker → Settings → Variables and S
 | `SESSION_SECRET` | signs the admin session cookie |
 
 Non-secret variables, already in `wrangler.toml`: `GITHUB_OWNER`, `GITHUB_REPO`,
-`GITHUB_BRANCH`, `ALLOWED_ORIGINS`.
+`GITHUB_BRANCH`, `GITHUB_REPO_ID`, `ALLOWED_ORIGINS`.
+
+`GITHUB_REPO_ID` (`1298297633`) makes the Worker address the repository as
+`api.github.com/repositories/<id>` instead of `/repos/{owner}/{repo}`. GitHub documents
+these as equivalent — the id form accepts the same contents/refs paths and methods —
+and it keeps working when the name is renamed. It matters right now because the
+owner/name path for this repository currently 404s on every public route (API, `git`,
+`raw.githubusercontent.com`, GitHub Pages) while the id form works; see the incident
+note at the top of [`DEPLOYMENT.md`](DEPLOYMENT.md). Remove the variable to go back to
+name-based addressing.
 
 Bindings in `wrangler.toml`: `ASSETS` (static files) and `ADMIN_KV`
 (the password hash + session epoch).

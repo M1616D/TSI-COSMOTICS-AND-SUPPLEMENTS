@@ -7,14 +7,31 @@ covers **deploying, rolling back, automatic deploys and rotating secrets**.
 
 ## Current state (be precise about this)
 
-- The Worker was **deployed to production on 2026-10-14** by this work, version
-  `47e745f5-eb59-4930-b8a9-7c4c1a9d308e`, using the repo-root layout
+- The Worker was **deployed to production on 2026-10-14** by this work, latest
+  version `9754e88e-cccd-4f11-b024-adca5be0395a`, using the repo-root layout
   (`worker/src/index.js` + the repository root as static assets).
 - Live URL: <https://tsicosmeticsandsupplements.bereket1515mamuye.workers.dev>
   — admin panel at `/admin/`. The URL did not change.
 - Secrets present on the Worker: `TELEGRAM_BOT_TOKEN`, `TELEGRAM_OWNER_CHAT_ID`,
-  `ADMIN_PASSWORD`, `SESSION_SECRET`. **`GITHUB_TOKEN` is still missing**, so the
-  admin panel cannot save anything until it is added (README §1).
+  `ADMIN_PASSWORD`, `SESSION_SECRET`, `GITHUB_TOKEN` (set 2026-10-14). The admin
+  panel can therefore read and write the repository.
+- **Open GitHub incident (2026-10-14).** The repository is reachable and writable
+  through `https://api.github.com/repositories/1298297633`, but every path that uses
+  the `M1616D/TSI-COSMETICS-AND-SUPPLEMENTS` **name** returns 404 — the REST API,
+  `git` over HTTPS, `raw.githubusercontent.com` and GitHub Pages all fail, from more
+  than one network. GitHub's own metadata (REST by id, GraphQL) still reports the
+  repo as public, enabled and correctly named.
+
+  Consequences while it lasts:
+
+  1. `git push` / `git fetch` cannot reach the remote. To publish a change, use the
+     admin panel (which addresses the repo by id) or the GitHub contents API with
+     `GITHUB_REPO_ID`. `GITHUB_REPO_ID = "1298297633"` in `wrangler.toml` is what keeps
+     the admin panel working; without it the panel reports *repo-not-found*.
+  2. The GitHub Pages mirror at `https://M1616D.github.io/TSI-COSMETICS-AND-SUPPLEMENTS/`
+     is down. The Cloudflare Worker is unaffected — it serves the storefront itself.
+
+  This needs GitHub support to resolve; nothing in this repository can fix it.
 - The `ADMIN_KV` KV namespace is created and bound
   (`f58ecd40eb2940f3b5798f9f141dcc74`); it stores the admin password hash and the
   session epoch.
