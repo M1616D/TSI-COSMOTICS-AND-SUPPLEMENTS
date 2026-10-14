@@ -12,6 +12,14 @@ const vars = Object.fromEntries(
 const PW = vars.ADMIN_PASSWORD;
 const NEW_PW = 'tsi-local-test-' + Math.random().toString(36).slice(2, 8);
 
+/* Which GitHub token is the target server holding?
+
+   By default we assume a VALID token and never send a write with a real payload
+   — against a valid token that would overwrite the live catalog in the repo.
+   Start the server under test with `--var GITHUB_TOKEN:<invalid>` and set
+   TSI_EXPECT_BAD_TOKEN=1 to exercise the failure paths. */
+const EXPECT_BAD_TOKEN = process.env.TSI_EXPECT_BAD_TOKEN === '1';
+
 let pass = 0, fail = 0;
 const results = [];
 function check(name, ok, detail) {
@@ -84,7 +92,11 @@ const J = { 'Content-Type': 'application/json' };
     + (vars.GITHUB_REPO_ID ? ` (id ${vars.GITHUB_REPO_ID})` : '') + '@' + vars.GITHUB_BRANCH;
   check('status reports the correct repo', r.json && r.json.repo === expectedRepoLabel, r.json && r.json.repo);
   check('status reports the repo id when one is configured', !!vars.GITHUB_REPO_ID === (r.json && r.json.repoId === vars.GITHUB_REPO_ID), r.json && r.json.repoId);
-  check('status flags the deliberately-bad GitHub token', r.json && r.json.publishing === 'invalid-token' && r.json.canPublish === false, r.json && r.json.publishing);
+  check(EXPECT_BAD_TOKEN ? 'status flags the deliberately-bad GitHub token' : 'status confirms the token really works against GitHub',
+    EXPECT_BAD_TOKEN
+      ? (r.json && r.json.publishing === 'invalid-token' && r.json.canPublish === false)
+      : (r.json && r.json.publishing === 'ok' && r.json.canPublish === true),
+    r.json && r.json.publishing);
 
   /* ── admin write paths (dummy GitHub token on purpose) ── */
   r = await req('/api/admin/catalog', { method: 'PUT', headers: J, body: JSON.stringify({ products: [] }) });
@@ -93,20 +105,36 @@ const J = { 'Content-Type': 'application/json' };
   r = await req('/api/admin/catalog', { method: 'PUT', headers: { ...J, Cookie: cookie }, body: JSON.stringify({ products: [{ id: 'x', name: 'no price' }] }) });
   check('invalid product is rejected with 400 before any GitHub call', r.status === 400, r.status + ' ' + (r.json && r.json.error));
 
-  r = await req('/api/admin/catalog', { method: 'PUT', headers: { ...J, Cookie: cookie }, body: JSON.stringify({ products: [{ id: 'p1', name: 'A', brand: 'B', category: 'makeup', price: 10, image: 'https://x/y.jpg' }] }) });
-  check('valid product with a bad token surfaces a clear GitHub error (503)', r.status === 503 && /GITHUB_TOKEN/.test(r.json.error || ''), r.status + ' ' + (r.json && r.json.error));
+  /* These write checks exist to prove the failure path. Against a server whose
+     token is VALID the same request would really overwrite the live catalog in
+     the repository, so refuse to send it and say why. */
+  if (!EXPECT_BAD_TOKEN) {
+    console.log('  SKIP  valid-product write check — this server has a VALID GitHub token, so the request');
+    console.log('        would replace the real catalog in the repository. Start a server with');
+    console.log('        --var GITHUB_TOKEN:<invalid> to exercise the failure path.');
+  } else {
+    r = await req('/api/admin/catalog', { method: 'PUT', headers: { ...J, Cookie: cookie }, body: JSON.stringify({ products: [{ id: 'p1', name: 'A', brand: 'B', category: 'makeup', price: 10, image: 'https://x/y.jpg' }] }) });
+    check('valid product with a bad token surfaces a clear GitHub error (503)', r.status === 503 && /GITHUB_TOKEN/.test(r.json.error || ''), r.status + ' ' + (r.json && r.json.error));
+  }
 
   r = await req('/api/admin/catalog', { method: 'PUT', headers: { ...J, Cookie: cookie, Origin: 'https://evil.example' }, body: JSON.stringify({ products: [] }) });
   check('catalog write from a foreign origin → 403', r.status === 403, r.status);
 
-  r = await req('/api/admin/content', { headers: { Cookie: cookie } });
-  check('content read reports the token problem honestly (503)', r.status === 503 && /GITHUB_TOKEN/.test(r.json.error || ''), r.status + ' ' + (r.json && r.json.error));
+  if (EXPECT_BAD_TOKEN) {
+    r = await req('/api/admin/content', { headers: { Cookie: cookie } });
+    check('content read reports the token problem honestly (503)', r.status === 503 && /GITHUB_TOKEN/.test(r.json.error || ''), r.status + ' ' + (r.json && r.json.error));
 
-  r = await req('/api/admin/files', { headers: { Cookie: cookie } });
-  check('media list reports the token problem honestly (503)', r.status === 503, r.status);
+    r = await req('/api/admin/files', { headers: { Cookie: cookie } });
+    check('media list reports the token problem honestly (503)', r.status === 503, r.status);
+  } else {
+    r = await req('/api/admin/content', { headers: { Cookie: cookie } });
+    check('content reads from GitHub when the token is valid', r.status === 200 && r.json && r.json.ok === true && !!r.json.content, r.status);
+    r = await req('/api/admin/files', { headers: { Cookie: cookie } });
+    check('media list reads from GitHub when the token is valid', r.status === 200 && Array.isArray(r.json.files), r.status);
+  }
 
   r = await req('/api/admin/verify', { headers: { Cookie: cookie } });
-  check('verify endpoint answers with an honest live=false', r.status === 200 && r.json && r.json.ok === true && r.json.live === false, JSON.stringify(r.json));
+  check('verify endpoint answers honestly about the live catalog', r.status === 200 && r.json && r.json.ok === true && (EXPECT_BAD_TOKEN ? r.json.live === false : r.json.live === true), JSON.stringify(r.json));
 
   r = await req('/api/admin/upload', { method: 'POST', headers: { ...J, Cookie: cookie }, body: JSON.stringify({ dir: 'products', name: 'x.txt', dataUrl: 'data:text/plain;base64,aGk=' }) });
   check('upload rejects a non-image payload → 400', r.status === 400, r.status);
@@ -168,6 +196,14 @@ const J = { 'Content-Type': 'application/json' };
   check('CORS preflight from a foreign origin gets no allow-origin', r.status === 204 && !r.headers.get('access-control-allow-origin'), r.status + ' ' + r.headers.get('access-control-allow-origin'));
   r = await req('/api/order', { method: 'POST', headers: { ...J, Origin: 'https://m1616d.github.io' }, body: JSON.stringify({ ...goodOrder, phone: 'x' }) });
   check('mirror order gets CORS headers on the error response', r.headers.get('access-control-allow-origin') === 'https://m1616d.github.io', r.headers.get('access-control-allow-origin'));
+
+  /* Put the original password back so the server stays usable for another run. */
+  r = await req('/api/admin/login', { method: 'POST', headers: J, body: JSON.stringify({ password: NEW_PW }) });
+  const cookie3 = cookieFrom(r.res);
+  r = await req('/api/admin/password', { method: 'POST', headers: { ...J, Cookie: cookie3 }, body: JSON.stringify({ current: NEW_PW, next: PW }) });
+  check('password restored so the server stays usable', r.status === 200 && r.json.ok === true, r.status + ' ' + (r.json && r.json.error));
+  r = await req('/api/admin/login', { method: 'POST', headers: J, body: JSON.stringify({ password: PW }) });
+  check('original password works again after the restore', r.status === 200, r.status);
 
   console.log(results.join('\n'));
   console.log('\n' + pass + ' passed, ' + fail + ' failed  (' + (pass + fail) + ' assertions)');
