@@ -11,7 +11,7 @@
 <meta property="og:type" content="website"/>
 <meta property="og:image" content="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=1200&h=630&fit=crop"/>
 <meta name="twitter:card" content="summary_large_image"/>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"TSI Cosmetics","telephone":"+251911695289","url":"https://tsicosmeticsandsupplements.bereket1515mamuye.workers.dev","address":{"@type":"PostalAddress","addressCountry":"ET"},"sameAs":["https://t.me/Tsi27278","https://www.tiktok.com/@tsi.cosmotics"]}</script>
+<script type="application/ld+json" id="tsi-ld">{"@context":"https://schema.org","@type":"Organization","name":"TSI Cosmetics","telephone":"+251911695289","url":"https://tsicosmeticsandsupplements.bereket1515mamuye.workers.dev","address":{"@type":"PostalAddress","addressCountry":"ET"},"sameAs":["https://t.me/Tsi27278","https://www.tiktok.com/@tsi.cosmotics"]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet"/>
@@ -262,9 +262,9 @@ ul{list-style:none}
 .back-top.on{opacity:1;visibility:visible;transform:none}
 .back-top:hover{background:var(--rg);color:#fff;border-color:var(--rg)}
 /* CART DRAWER */
-#co{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:9985;opacity:0;visibility:hidden;transition:opacity .35s ease,visibility .35s ease}
+#co{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:9993;opacity:0;visibility:hidden;transition:opacity .35s ease,visibility .35s ease}
 #co.open{opacity:1;visibility:visible}
-#cd{position:fixed;top:0;right:-420px;width:420px;max-width:96vw;height:100vh;background:var(--ivory);z-index:9986;transition:right .4s cubic-bezier(.23,1,.32,1);display:flex;flex-direction:column;box-shadow:-8px 0 40px rgba(0,0,0,.1)}
+#cd{position:fixed;top:0;right:-420px;width:420px;max-width:96vw;height:100vh;background:var(--ivory);z-index:9994;transition:right .4s cubic-bezier(.23,1,.32,1);display:flex;flex-direction:column;box-shadow:-8px 0 40px rgba(0,0,0,.1)}
 #cd.open{right:0}
 .cdh{display:flex;align-items:center;justify-content:space-between;padding:20px 22px;border-bottom:1px solid var(--border)}
 .cdh h3{font-family:var(--fh);font-size:1.3rem;font-weight:700;color:var(--dark)}
@@ -294,7 +294,32 @@ ul{list-style:none}
 </style>
 <style>
 /* CHECKOUT OVERLAY */
-#chk-ov{position:fixed;inset:0;z-index:9988;background:rgba(0,0,0,.55);opacity:0;visibility:hidden;transition:opacity .35s ease,visibility .35s ease;overflow-y:auto;display:flex;align-items:flex-start;justify-content:center;padding:20px}
+#chk-ov{position:fixed;inset:0;z-index:9996;background:rgba(0,0,0,.55);opacity:0;visibility:hidden;transition:opacity .35s ease,visibility .35s ease;overflow-y:auto;display:flex;align-items:flex-start;justify-content:center;padding:20px}
+/* Product picker inside the order panel */
+.pkbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.pkbar h4{font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:2px;color:var(--rg);margin:0}
+.pkbtn{background:none;border:1.5px solid var(--border);color:var(--text);border-radius:50px;padding:6px 14px;font-size:.72rem;font-weight:600;transition:all var(--tr);cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.pkbtn:hover{border-color:var(--rg);color:var(--rg)}
+.pksw{position:relative;margin-bottom:10px}
+.pksw input{width:100%;padding:9px 14px 9px 34px;border:1.5px solid var(--border);border-radius:50px;background:#fff;font-family:var(--fb);font-size:.8rem;color:var(--text);outline:none}
+.pksw input:focus{border-color:var(--rg)}
+.pksw i{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:.78rem}
+.pklist{max-height:280px;overflow-y:auto;border:1px solid var(--border);border-radius:var(--r-sm);background:#fff}
+.pkrow{display:flex;gap:10px;align-items:center;padding:9px 10px;border-bottom:1px solid var(--border)}
+.pkrow:last-child{border-bottom:none}
+.pkrow img{width:42px;height:42px;border-radius:6px;object-fit:cover;flex-shrink:0;background:#f4ede9}
+.pkrow .pki{flex:1;min-width:0}
+.pkrow .pkn{font-size:.8rem;font-weight:600;color:var(--dark);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pkrow .pkb{font-size:.6rem;text-transform:uppercase;letter-spacing:1.2px;color:var(--rg);font-weight:600}
+.pkrow .pkp{font-size:.74rem;color:var(--muted);white-space:nowrap}
+.pkadd{background:var(--rg);color:#fff;border:none;border-radius:50px;padding:5px 14px;font-size:.72rem;font-weight:600;cursor:pointer;flex-shrink:0;font-family:var(--fb)}
+.pkadd:hover{background:var(--rg-d)}
+.pkadd:disabled{opacity:.45;cursor:not-allowed}
+.pkempty{padding:16px;text-align:center;font-size:.78rem;color:var(--muted);font-style:italic}
+.cptote{display:flex;justify-content:space-between;align-items:center;margin-top:8px;padding:10px 12px;background:rgba(196,137,111,.08);border-radius:var(--r-sm)}
+.cptote span:first-child{font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:var(--text)}
+.cptote span:last-child{font-family:var(--fh);font-size:1.25rem;font-weight:700;color:var(--rg)}
+.cpcnt{font-size:.7rem;color:var(--muted);margin-top:6px;font-weight:300}
 #chk-ov.open{opacity:1;visibility:visible}
 #chk-panel{background:var(--ivory);border-radius:var(--r-lg);width:100%;max-width:920px;margin:auto;box-shadow:0 40px 100px rgba(0,0,0,.2);overflow:hidden;position:relative}
 .cph{display:flex;align-items:center;justify-content:space-between;padding:20px 28px;border-bottom:1px solid var(--border)}
@@ -631,7 +656,12 @@ ul{list-style:none}
 
 <script>
 /* ── Config ─────────────────────────────────────────────────── */
-const ORDER_URL = window.location.origin + '/api/order';
+let ORDER_URL = window.location.origin + '/api/order';
+/* Currency symbol used in every price we print (editable in the admin panel). */
+let CUR = 'ETB';
+/* True when this copy of the site is being served by GitHub Pages, which cannot
+   run the order API — in that case we send orders to the site URL in content.json. */
+const IS_MIRROR = /(^|\.)github\.io$/i.test(window.location.hostname);
 
 /* ── Fallback catalog (used if /data/products.json fails) ───── */
 const FALLBACK = {products:[
@@ -661,7 +691,7 @@ let PRODUCTS = [], BRANDS = [];
 /* ── Load catalog ───────────────────────────────────────────── */
 async function loadCatalog() {
   try {
-    const r = await fetch('/data/products.json', {cache:'no-cache'});
+    const r = await fetch('data/products.json', {cache:'no-cache'});
     if (!r.ok) throw new Error('HTTP ' + r.status);
     const d = await r.json();
     PRODUCTS = d.products || [];
@@ -712,12 +742,12 @@ function refreshDrawer() {
   b.innerHTML=c.map(i=>{const p=getById(i.id);if(!p)return'';
     return`<div class="cdi"><img class="cdii" src="${p.image}" alt="${p.name}" loading="lazy"/>
     <div class="cdio"><div class="cdbr">${p.brand}</div><div class="cdnm">${p.name}</div>
-    <div class="cdpr">${p.price.toLocaleString()} ETB each</div>
+    <div class="cdpr">${p.price.toLocaleString()} ${CUR} each</div>
     <div class="cdqw"><button class="qb" data-id="${p.id}" data-d="-1" aria-label="Decrease">&#8722;</button>
     <span class="qv">${i.qty}</span><button class="qb" data-id="${p.id}" data-d="1" aria-label="Increase">+</button></div></div>
     <button class="cdrm" data-id="${p.id}" aria-label="Remove"><i class="fas fa-times"></i></button></div>`;
   }).join('');
-  document.getElementById('cds-v').textContent=cartTotal().toLocaleString()+' ETB';
+  document.getElementById('cds-v').textContent=cartTotal().toLocaleString()+' '+CUR;
   ft.style.display='block';
   b.querySelectorAll('.qb').forEach(btn=>btn.addEventListener('click',()=>setQty(btn.dataset.id,parseInt(btn.dataset.d))));
   b.querySelectorAll('.cdrm').forEach(btn=>btn.addEventListener('click',()=>removeItem(btn.dataset.id)));
@@ -737,7 +767,7 @@ function filtered() {
   const q=activeSearch.toLowerCase();
   return PRODUCTS.filter(p=>{
     const ok=(activeCat==='all'||p.category===activeCat);
-    const sq=!q||p.name.toLowerCase().includes(q)||p.brand.toLowerCase().includes(q)||p.shortDesc.toLowerCase().includes(q);
+    const sq=!q||(p.name||'').toLowerCase().includes(q)||(p.brand||'').toLowerCase().includes(q)||(p.shortDesc||'').toLowerCase().includes(q);
     return ok&&sq;
   });
 }
@@ -751,8 +781,8 @@ function renderProducts() {
     ${p.badge?`<span class="pb ${p.badge.toLowerCase()}">${p.badge}</span>`:''}
     ${!p.available?'<span class="pb unavailable">Out of Stock</span>':''}</div>
     <div class="pi"><span class="pibr">${p.brand}</span><h3 class="pinm">${p.name}</h3>
-    <p class="pidc">${p.shortDesc}</p>
-    <div class="pift"><span class="pipr">${p.price.toLocaleString()}<span class="picr">ETB</span></span>
+    <p class="pidc">${p.shortDesc||''}</p>
+    <div class="pift"><span class="pipr">${p.price.toLocaleString()}<span class="picr">${CUR}</span></span>
     <div class="piac">
       <button class="bca" data-id="${p.id}" ${!p.available?'disabled':''} aria-label="Add ${p.name} to cart"><i class="fas fa-shopping-bag" aria-hidden="true"></i></button>
       <button class="bno" data-id="${p.id}" ${!p.available?'disabled':''}>Order Now</button>
@@ -812,28 +842,68 @@ function showChkState(state) {
   document.getElementById('st-err').classList.toggle('on', state==='err');
 }
 
+/* ── Product picker (choose products without leaving the order panel) ── */
+let pkOpen=true, pkQuery='';
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function pickerRows(){
+  const q=pkQuery.toLowerCase();
+  return PRODUCTS.filter(p=>p.available!==false).filter(p=>!q||esc(p.name).toLowerCase().includes(q)||esc(p.brand).toLowerCase().includes(q));
+}
+function pickerHtml(title,hint){return `
+  <div class="pkbar"><h4>${esc(title)}</h4>
+    <button type="button" class="pkbtn" id="pk-toggle"><i class="fas fa-${pkOpen?'chevron-up':'list'}" aria-hidden="true"></i> ${pkOpen?'Hide product list':'Browse all products'}</button></div>
+  ${hint?`<div class="cpnte" style="margin-bottom:10px">${esc(hint)}</div>`:''}
+  ${pkOpen?`<div class="pksw"><i class="fas fa-search" aria-hidden="true"></i><input type="search" id="pk-search" placeholder="Search all products…" value="${esc(pkQuery)}" aria-label="Search products to order"/></div>
+  <div class="pklist">${(()=>{const rows=pickerRows();return rows.length?rows.map(p=>`<div class="pkrow">
+      <img src="${esc(p.image)}" alt="" loading="lazy"/>
+      <div class="pki"><div class="pkb">${esc(p.brand)}</div><div class="pkn">${esc(p.name)}</div><div class="pkp">${(p.price||0).toLocaleString()} ${CUR}</div></div>
+      <button type="button" class="pkadd" data-add="${esc(p.id)}">Add</button>
+    </div>`).join(''):'<div class="pkempty">No products match that search.</div>';})()}</div>`:''}`;}
+function wirePicker(b){
+  const t=b.querySelector('#pk-toggle');
+  if(t) t.addEventListener('click',()=>{pkOpen=!pkOpen;refreshSummary();});
+  const s=b.querySelector('#pk-search');
+  if(s) s.addEventListener('input',()=>{
+    pkQuery=s.value;
+    refreshSummary();
+    const n=document.getElementById('pk-search');
+    if(n){n.focus();try{n.setSelectionRange(n.value.length,n.value.length);}catch(e){}}
+  });
+  b.querySelectorAll('[data-add]').forEach(btn=>btn.addEventListener('click',()=>{
+    addItem(btn.dataset.add,true);
+    refreshDrawer(); refreshSummary();
+  }));
+}
+
 function refreshSummary() {
   const c=getCart(), b=document.getElementById('sum-body');
+  const count=c.reduce((s,i)=>s+i.qty,0);
+  let html='';
   if(!c.length){
-    b.innerHTML='<div class="cpe"><i class="fas fa-shopping-bag"></i><h3>Cart is empty</h3><p>Add products before ordering.</p><a href="#shop" class="btn-p" onclick="closeCheckout()" style="margin-top:10px;text-decoration:none"><i class="fas fa-arrow-left"></i> Browse</a></div>';
-    document.getElementById('bsub').disabled=true; return;
+    html+='<div class="cpe" style="padding:16px 10px 4px"><i class="fas fa-shopping-bag"></i><h3 style="font-size:1rem">No products chosen yet</h3><p>Use the list below to pick what you want — add as many products as you like.</p></div>';
+  } else {
+    html+='<div class="silist">';
+    c.forEach(i=>{const p=getById(i.id);if(!p)return;
+      html+=`<div class="siit"><img class="siimg" src="${p.image}" alt="${esc(p.name)}" loading="lazy"/>
+      <div class="siinfo"><div class="sibr">${esc(p.brand)}</div><div class="sinm">${esc(p.name)}</div>
+      <div class="siln">${i.qty} &times; ${(p.price||0).toLocaleString()} ${CUR} = <strong>${((p.price||0)*i.qty).toLocaleString()} ${CUR}</strong></div>
+      <div class="siqw"><button type="button" class="siqb" data-id="${esc(p.id)}" data-d="-1" aria-label="Decrease">&#8722;</button>
+      <span class="siqv">${i.qty}</span><button type="button" class="siqb" data-id="${esc(p.id)}" data-d="1" aria-label="Increase">+</button>
+      <button type="button" class="sirm" data-id="${esc(p.id)}" aria-label="Remove"><i class="fas fa-times"></i></button></div></div></div>`;
+    });
+    html+='</div><hr class="cpd"/>';
+    html+=`<div class="cptot"><span>${esc(SUM_LABEL)}</span><span>${cartTotal().toLocaleString()} ${CUR}</span></div>`;
+    html+=`<div class="cptote"><span>Total</span><span>${cartTotal().toLocaleString()} ${CUR}</span></div>`;
+    html+=`<div class="cpcnt">${c.length} product${c.length===1?'':'s'} · ${count} item${count===1?'':'s'} in this order</div>`;
+    html+=`<div class="cpnte">${esc(TAX_NOTE)}</div>`;
   }
-  document.getElementById('bsub').disabled=false;
-  let html='<div class="silist">';
-  c.forEach(i=>{const p=getById(i.id);if(!p)return;
-    html+=`<div class="siit"><img class="siimg" src="${p.image}" alt="${p.name}" loading="lazy"/>
-    <div class="siinfo"><div class="sibr">${p.brand}</div><div class="sinm">${p.name}</div>
-    <div class="siln">${p.price.toLocaleString()} ETB &times; ${i.qty} = ${(p.price*i.qty).toLocaleString()} ETB</div>
-    <div class="siqw"><button class="siqb" data-id="${p.id}" data-d="-1" aria-label="Decrease">&#8722;</button>
-    <span class="siqv">${i.qty}</span><button class="siqb" data-id="${p.id}" data-d="1" aria-label="Increase">+</button>
-    <button class="sirm" data-id="${p.id}" aria-label="Remove"><i class="fas fa-times"></i></button></div></div></div>`;
-  });
-  html+='</div><hr class="cpd"/>';
-  html+=`<div class="cptot"><span>Estimated Subtotal</span><span>${cartTotal().toLocaleString()} ETB</span></div>`;
-  html+='<div class="cpnte">Final pricing, availability, delivery costs, and payment will be confirmed by the owner when they contact you.</div>';
+  html+=pickerHtml(c.length?'Add more products':'Choose products to order', c.length?null:'Your order is empty — pick a product here and it will appear above with its price.');
   b.innerHTML=html;
   b.querySelectorAll('.siqb').forEach(btn=>btn.addEventListener('click',()=>setQty(btn.dataset.id,parseInt(btn.dataset.d))));
   b.querySelectorAll('.sirm').forEach(btn=>btn.addEventListener('click',()=>removeItem(btn.dataset.id)));
+  wirePicker(b);
+  const sub=document.getElementById('bsub');
+  sub.disabled=!c.length;
 }
 
 /* ── Form validation & submission ───────────────────────────── */
@@ -1012,31 +1082,176 @@ window.openPrivacy=function(){document.getElementById('prv').classList.add('open
 window.closePrivacy=function(){document.getElementById('prv').classList.remove('open');document.body.style.overflow='';};
 document.getElementById('prv').addEventListener('click',e=>e.target===document.getElementById('prv')&&closePrivacy());
 
-/* ── Editable site content (content.json) ────────────────────── */
+/* ── Editable site content + settings (content.json) ─────────── */
+let SUM_LABEL = 'Estimated Subtotal', TAX_NOTE = '', CONSENT_TEXT = '', DELIVERY_NOTE = '', PAYMENT_NOTE = '';
+
+function shade(hex, amt) {
+  const n = parseInt(hex.slice(1), 16);
+  let r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255;
+  const t = amt < 0 ? 0 : 255, p = Math.abs(amt);
+  r = Math.round((t - r) * p + r); g = Math.round((t - g) * p + g); b = Math.round((t - b) * p + b);
+  return '#' + [r, g, b].map(v => v.toString(16).padStart(2, '0')).join('');
+}
+function applyTheme(primary) {
+  if (!/^#[0-9a-f]{6}$/i.test(primary || '')) return;
+  const root = document.documentElement.style;
+  root.setProperty('--rg', primary);
+  root.setProperty('--rg-d', shade(primary, -0.18));
+  root.setProperty('--rg-l', shade(primary, 0.24));
+}
+/* Replace only the phone number inside a link, keeping any icon or words around it. */
+function swapNumber(el, display) {
+  const walk = (node) => {
+    for (const n of node.childNodes) {
+      if (n.nodeType === 3) {
+        if (/[\d+][\d\s()+.-]{6,}/.test(n.textContent)) n.textContent = n.textContent.replace(/\+?\d[\d\s()+.-]{6,}/, display);
+      } else if (n.nodeName !== 'I') walk(n);
+    }
+  };
+  walk(el);
+}
+function logoHtml(name, tagline) {
+  const parts = String(name || 'TSI Cosmetics').trim().split(/\s+/);
+  const short = parts[0] || 'TSI';
+  const rest = parts.slice(1).join(' ') || tagline || '';
+  return `<span class="lm"><i class="fas fa-leaf" aria-hidden="true"></i></span>${short}<span class="la">.</span>${rest ? `<small class="ls">${rest}</small>` : ''}`;
+}
+function setText(sel, val) { const el = document.querySelector(sel); if (el && val) el.textContent = val; }
+function faqHtml(items) {
+  return items.map((it, i) => `<div class="fqi${i === 0 ? ' open' : ''}"><button class="fqq">${it.q || ''}<i class="fas fa-chevron-down fqic" aria-hidden="true"></i></button><div class="fqa"><p>${linkify(it.a || '')}</p></div></div>`).join('');
+}
+/* Turn @handles / URLs in editable text into links, and escape the rest. */
+function linkify(text) {
+  const escaped = String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  return escaped.replace(/(https?:\/\/\S+)/g, '<a href="$1" target="_blank" rel="noopener" style="color:var(--rg)">$1</a>');
+}
+
+function applyContent(c) {
+  const store = c.store || {}, theme = c.theme || {}, a = c.announcement || {}, h = c.hero || {};
+  const shop = c.shop || {}, about = c.about || {}, ord = c.ordering || {}, foot = c.footer || {}, faq = c.faq || {};
+
+  if (store.currency) CUR = store.currency;
+  applyTheme(theme.primary);
+
+  /* Store identity */
+  if (store.name) document.title = store.name + ' — Beauty, Skincare & Wellness | Ethiopia';
+  const nl = document.querySelector('.nl'); if (nl) nl.innerHTML = logoHtml(store.name, store.tagline);
+  const flo = document.querySelector('.flo'); if (flo) flo.innerHTML = logoHtml(store.name, '');
+  if (store.siteUrl) {
+    const can = document.querySelector('link[rel=canonical]'); if (can) can.href = store.siteUrl;
+    const ld = document.getElementById('tsi-ld');
+    if (ld) ld.textContent = JSON.stringify({ '@context': 'https://schema.org', '@type': 'Organization', name: store.name || 'TSI Cosmetics', telephone: store.phone || '', url: store.siteUrl, address: { '@type': 'PostalAddress', addressCountry: 'ET', streetAddress: store.addressLine || '' }, sameAs: [store.telegram, store.tiktok].filter(Boolean) });
+  }
+
+  /* Contact details everywhere on the page */
+  document.querySelectorAll('a[href^="tel:"]').forEach(el => {
+    if (store.phone) el.href = 'tel:' + store.phone;
+    if (store.phoneDisplay) swapNumber(el, store.phoneDisplay);
+  });
+  document.querySelectorAll('a[href*="t.me/"]').forEach(el => {
+    if (store.telegram) el.href = store.telegram;
+    if (store.telegramHandle && el.textContent.trim().startsWith('@')) el.textContent = store.telegramHandle;
+  });
+  document.querySelectorAll('a[href*="tiktok.com"]').forEach(el => {
+    if (store.tiktok) el.href = store.tiktok;
+    if (store.tiktokHandle && el.textContent.trim().startsWith('@')) el.textContent = store.tiktokHandle;
+  });
+  if (store.hours) document.querySelectorAll('.citx').forEach(el => {
+    if (/business hours/i.test(el.textContent)) { const s = el.querySelector('small'); if (s) s.textContent = store.hours; }
+  });
+  /* Delivery / payment / address notes are rendered once, in the footer. */
+  const notes = [store.addressLine, DELIVERY_NOTE, PAYMENT_NOTE].filter(Boolean);
+  const fbd = document.querySelector('.fbd');
+  if (fbd) {
+    let box = document.getElementById('tsi-notes');
+    if (notes.length) {
+      if (!box) { box = document.createElement('p'); box.id = 'tsi-notes'; box.style.marginTop = '10px'; fbd.appendChild(box); }
+      box.textContent = notes.join(' · ');
+    } else if (box) box.remove();
+  }
+
+  /* Announcement bar */
+  const abTxt = document.getElementById('ab-txt'), abLink = document.getElementById('ab-link');
+  if (a.text && abTxt) abTxt.textContent = a.text;
+  if (a.link && abLink) abLink.href = a.link;
+  if (a.linkText && abLink) abLink.textContent = a.linkText;
+  document.getElementById('ab').classList.toggle('hidden', a.enabled === false);
+
+  /* Hero */
+  if (h.eyebrow) { const el = document.getElementById('hero-eyebrow'); if (el) el.innerHTML = h.eyebrow; }
+  if (h.title) { const el = document.getElementById('hero-title'); if (el) el.textContent = h.title; }
+  if (h.titleEm) { const el = document.getElementById('hero-title-em'); if (el) el.textContent = h.titleEm; }
+  if (h.text) { const el = document.getElementById('hero-text'); if (el) el.textContent = h.text; }
+
+  /* Shop section */
+  const sh = document.querySelector('.shop .sh');
+  if (sh && (shop.title || shop.titleEm)) sh.querySelector('h2').innerHTML = `${shop.title || ''} <span>${shop.titleEm || ''}</span>`;
+  if (sh && shop.subtitle) sh.querySelector('p').textContent = shop.subtitle;
+  setText('.shop .pn', shop.priceNote);
+  if (shop.supplementsNote) { const s = document.querySelector('#sn span'); if (s) s.textContent = shop.supplementsNote; }
+
+  /* About section */
+  if (about.eyebrow) setText('.about .ov', about.eyebrow);
+  const ac = document.querySelector('.about .ac');
+  if (ac && (about.title || about.titleEm)) ac.querySelector('h2').innerHTML = `${about.title || ''} <span>${about.titleEm || ''}</span>`;
+  if (ac) {
+    const ps = ac.querySelectorAll(':scope > p');
+    if (ps[0] && about.p1) ps[0].textContent = about.p1;
+    if (ps[1] && about.p2) ps[1].textContent = about.p2;
+  }
+  if (Array.isArray(about.points) && about.points.length) {
+    const avs = document.querySelector('.avs');
+    if (avs) avs.innerHTML = about.points.map(p => `<div class="av"><i class="fas fa-check-circle" aria-hidden="true"></i> ${String(p).replace(/</g, '&lt;')}</div>`).join('');
+  }
+
+  /* FAQ */
+  if (faq.intro) setText('.faq .sh p', faq.intro);
+  if (Array.isArray(faq.items) && faq.items.length) {
+    const fql = document.querySelector('.fql');
+    if (fql) {
+      fql.innerHTML = faqHtml(faq.items);
+      fql.querySelectorAll('.fqq').forEach(btn => btn.addEventListener('click', () => {
+        const item = btn.closest('.fqi'), isOpen = item.classList.contains('open');
+        fql.querySelectorAll('.fqi.open').forEach(i => i.classList.remove('open'));
+        if (!isOpen) item.classList.add('open');
+      }));
+    }
+  }
+
+  /* Checkout wording */
+  if (ord.subtotalLabel) SUM_LABEL = ord.subtotalLabel;
+  if (ord.taxNote) TAX_NOTE = ord.taxNote;
+  if (ord.deliveryNote) DELIVERY_NOTE = ord.deliveryNote;
+  if (ord.paymentNote) PAYMENT_NOTE = ord.paymentNote;
+  if (ord.consentText) { const l = document.querySelector('label[for="fcon"]'); if (l) l.textContent = ord.consentText; }
+  if (ord.successNote) { const p = document.querySelector('#st-ok p'); if (p) p.textContent = ord.successNote; }
+
+  /* Footer */
+  setText('.fbd > p', foot.blurb);
+  if (foot.creditName || foot.creditUrl) {
+    const cr = document.querySelector('.dev-credit a');
+    if (cr) { if (foot.creditName) cr.textContent = foot.creditName; if (foot.creditUrl) cr.href = foot.creditUrl; }
+  }
+  const cp = document.querySelector('.fbot span:first-child');
+  if (cp) cp.textContent = `\u00a9 ${new Date().getFullYear()} ${store.name || 'TSI Cosmetics'}. ${foot.copyright || ''}`.trim();
+
+  /* GitHub Pages mirror: orders must go to the real Worker origin. */
+  if (IS_MIRROR && store.siteUrl) {
+    try { const u = new URL(store.siteUrl); if (u.protocol === 'https:') ORDER_URL = u.origin + '/api/order'; } catch { /* keep default */ }
+  }
+}
+
 async function loadContent() {
   try {
-    const r = await fetch('/content.json', {cache:'no-cache'});
+    const r = await fetch('content.json', { cache: 'no-cache' });
     if (!r.ok) return;
-    const c = await r.json();
-    const a = c.announcement || {};
-    const abTxt = document.getElementById('ab-txt');
-    const abLink = document.getElementById('ab-link');
-    if (a.text && abTxt) abTxt.textContent = a.text;
-    if (a.link && abLink) abLink.href = a.link;
-    if (a.linkText && abLink) abLink.textContent = a.linkText;
-    if (a.enabled === false) document.getElementById('ab').classList.add('hidden');
-    const h = c.hero || {};
-    if (h.eyebrow) { const el=document.getElementById('hero-eyebrow'); if(el) el.innerHTML = h.eyebrow; }
-    if (h.title)  { const el=document.getElementById('hero-title'); if(el) el.textContent = h.title; }
-    if (h.titleEm){ const el=document.getElementById('hero-title-em'); if(el) el.textContent = h.titleEm; }
-    if (h.text)   { const el=document.getElementById('hero-text'); if(el) el.textContent = h.text; }
+    applyContent(await r.json());
   } catch { /* keep the built-in defaults */ }
 }
 
 /* ── Init ────────────────────────────────────────────────────── */
 updateBadge();
-loadCatalog();
-loadContent();
+loadContent().then(loadCatalog);
 </script>
 </body>
 </html>

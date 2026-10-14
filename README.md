@@ -1,223 +1,228 @@
-# TSI Cosmetics — one Worker, storefront + secure admin + Telegram ordering
+# TSI Cosmetics — storefront + secure admin + Telegram ordering
 
-A single Cloudflare Worker (`tsicosmeticsandsupplements`) serves the public
-storefront, the private admin panel, the Telegram order endpoint, and the
-authenticated admin API. The catalog and **all content live in this GitHub repo** —
-there is no database. The admin panel edits them and commits the change to GitHub;
-Cloudflare Workers Builds then deploys automatically.
+One Cloudflare Worker serves everything: the public storefront, the private admin
+panel, the Telegram order endpoint and the authenticated admin API. The catalog and
+**all site text/settings live in this GitHub repo** — there is no database. The admin
+panel edits them and commits the change to GitHub; Cloudflare Workers Builds then
+redeploys automatically.
 
-Live site: <https://tsicosmeticsandsupplements.bereket1515mamuye.workers.dev>
-Repo: <https://github.com/M1616D/TSI-COSMOTICS-AND-SUPPLEMENTS>
+| | |
+|---|---|
+| **Live site** | <https://tsicosmeticsandsupplements.bereket1515mamuye.workers.dev> |
+| **Admin panel** | <https://tsicosmeticsandsupplements.bereket1515mamuye.workers.dev/admin/> |
+| **Repository** | <https://github.com/M1616D/TSI-COSMOTICS-AND-SUPPLEMENTS> |
+| **GitHub Pages mirror** | <https://m1616d.github.io/TSI-COSMOTICS-AND-SUPPLEMENTS/> |
+
+> **Read §1 first.** The admin panel cannot save anything until the `GITHUB_TOKEN`
+> secret exists on the Worker — the Security tab says so explicitly.
 
 ---
 
-## 1. Final project structure
+## 1. Before you can edit your site: add `GITHUB_TOKEN`
+
+The admin panel publishes by committing to GitHub, so it needs a token with write
+access to this repository.
+
+1. GitHub → **Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token**.
+2. Repository access: **Only select repositories** → `M1616D/TSI-COSMOTICS-AND-SUPPLEMENTS`.
+3. Repository permissions → **Contents: Read and write**. Nothing else. (Metadata: Read is added automatically.)
+4. Copy the token (it looks like `github_pat_…`).
+5. Cloudflare dashboard → **Workers & Pages → tsicosmeticsandsupplements → Settings → Variables and Secrets → Add → Secret**, name `GITHUB_TOKEN`, paste the value, save.
+6. Open the admin panel → **Security** tab → **Refresh**. "Publishing connected" should now be green. No redeploy is needed.
+
+If the Security tab says **GitHub token rejected**, the token has expired, was
+revoked, or lacks *Contents: Read and write* — create a new one and repeat step 5.
+
+---
+
+## 2. Admin login and password
+
+- **Sign in at** <https://tsicosmeticsandsupplements.bereket1515mamuye.workers.dev/admin/>
+- **The password is the `ADMIN_PASSWORD` secret** you set in Cloudflare
+  (Worker → Settings → Variables and Secrets). It is not stored in this repo and
+  cannot be read back out of Cloudflare — if you have forgotten it, set a new one
+  with `npx wrangler secret put ADMIN_PASSWORD` and use that.
+- **Change it without touching Cloudflare:** admin panel → **Security → Change Admin Password**.
+  The new password is stored as a salted PBKDF2 hash (150,000 iterations) in the
+  `ADMIN_KV` KV namespace and takes priority over the secret from then on.
+  You are signed out immediately and must sign in again with the new one.
+
+Password storage precedence: **KV hash → `ADMIN_PASSWORD` secret**. So you can start
+with the secret and move to the KV hash the first time you change the password in the panel.
+
+> Local development uses `.dev.vars` (git-ignored). Its password is **`localtest1234`**
+> and only affects `http://127.0.0.1:8788` — never the live site.
+
+---
+
+## 3. Project structure
+
+The public site lives at the **repository root** so that the same repo also works as
+a static GitHub Pages mirror. `wrangler.toml` serves that whole directory as static
+assets, minus everything listed in `.assetsignore`.
 
 ```
-TSI COSMETICS/
-├── wrangler.toml               ← the ONE Worker config (deploy from here)
-├── .dev.vars                   ← local secrets only (git-ignored)
-├── .gitignore
-├── README.md                   ← this file
-├── DEPLOYMENT.md               ← deploy / rollback / retire-old-worker runbook
-├── site/                       ← everything in here is PUBLIC static assets
-│   ├── index.html              ← storefront + checkout (single page, no order.html)
-│   ├── content.json            ← editable announcement + hero text
-│   ├── admin/
-│   │   └── index.html          ← private admin panel UI
-│   ├── data/
-│   │   └── products.json       ← product catalog + brands (the "database")
-│   └── file/
-│       ├── products/           ← uploaded product photos
-│       ├── brands/
-│       └── gallery/
-└── worker/                     ← server-side code (never served as assets)
-    ├── src/index.js            ← the combined Worker
-    ├── README.md
-    ├── .dev.vars.example
-    └── wrangler.toml.legacy    ← old separate order-worker config (reference only)
+TSI COSMETICS/                    ← deployed root; the public site
+├── wrangler.toml                 ← the ONE Worker config (deploy from here)
+├── .assetsignore                 ← keeps source + secrets OUT of the public upload
+├── .gitignore                    ← keeps local secrets out of git
+├── .dev.vars                     ← local secrets only (never in git, never served)
+├── index.html                    ← storefront + merged checkout (no order.html)
+├── content.json                  ← ALL editable text + settings
+├── admin/index.html              ← private admin panel
+├── data/products.json            ← product catalog + brands (the "database")
+├── file/{products,brands,gallery}/  ← uploaded images
+├── worker/src/index.js           ← the Worker (API, admin API, Telegram, publishing)
+└── README.md, DEPLOYMENT.md      ← docs (not served — see .assetsignore)
 ```
 
-There are exactly **two HTML files**: `site/index.html` (storefront) and
-`site/admin/index.html` (admin). The old `order.html` is gone — checkout is now a
-section inside `index.html`, so the customer never leaves the main site.
+There are exactly **two HTML files**: `index.html` and `admin/index.html`.
 
-## 2. Routing
+`.assetsignore` is important: it prevents `worker/`, `wrangler.toml`, `README.md`,
+`DEPLOYMENT.md`, `.dev.vars`, `.wrangler/` and `.git/` from being publicly
+downloadable. Verified live (2026-10-14): all of those return 404.
 
-| Path | Who handles it |
+## 4. Routing
+
+| Path | Handled by |
 |---|---|
-| `/` | storefront (`site/index.html`) |
-| `/admin/` | admin panel (login required to do anything) |
-| `/data/products.json`, `/content.json`, `/file/…` | public static assets |
+| `/` | storefront (`index.html`) |
+| `/admin/` | admin panel (login required) |
+| `/data/products.json`, `/content.json`, `/file/…` | static assets, revalidated (`Cache-Control: no-cache`) |
 | `POST /api/order` | Worker → validated → Telegram |
 | `/api/admin/*` | Worker → session-authenticated admin API |
 
-`wrangler.toml` sets `run_worker_first = ["/api/*"]`: API requests reach the Worker,
-everything else is served straight from Cloudflare's static layer.
+`run_worker_first = ["/api/*", "/data/*", "/content.json"]` sends those paths through
+the Worker (so caching headers can be controlled); everything else is served straight
+from Cloudflare's static asset layer.
 
-The storefront posts to `window.location.origin + '/api/order'` — same origin, no
-hard-coded external Worker URL anywhere.
+## 5. Required secrets and variables
 
----
+Set these as **secrets** (Cloudflare → Worker → Settings → Variables and Secrets, or
+`npx wrangler secret put <NAME>`):
 
-## 3. One-time setup
+| Secret | Purpose |
+|---|---|
+| `TELEGRAM_BOT_TOKEN` | sends order notifications |
+| `TELEGRAM_OWNER_CHAT_ID` | your Telegram user id |
+| `GITHUB_TOKEN` | commits catalog/content/image changes — **required for the admin to work** |
+| `ADMIN_PASSWORD` | bootstrap admin password |
+| `SESSION_SECRET` | signs the admin session cookie |
 
-### 3.1 GitHub personal access token (for automatic publishing)
+Non-secret variables, already in `wrangler.toml`: `GITHUB_OWNER`, `GITHUB_REPO`,
+`GITHUB_BRANCH`, `ALLOWED_ORIGINS`.
 
-1. GitHub → **Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token**.
-2. Repository access: **Only select repositories → M1616D/TSI-COSMOTICS-AND-SUPPLEMENTS**.
-3. Permissions → Repository permissions → **Contents: Read and write**. Nothing else.
-4. Generate and copy the token. Treat it like a password.
+Bindings in `wrangler.toml`: `ASSETS` (static files) and `ADMIN_KV`
+(the password hash + session epoch).
 
-### 3.2 Cloudflare — connect the Worker to this repo (automatic deploys)
+## 6. Automatic publishing (admin → GitHub → Cloudflare)
 
-1. Push this project to the repo above (branch `main`).
-2. Cloudflare dashboard → **Workers & Pages → tsicosmeticsandsupplements → Settings → Builds → Connect to Git**.
-3. Select the repo and branch `main`.
-4. Build settings: **no build command**, deploy command `npx wrangler deploy` (Wrangler
-   reads the root `wrangler.toml`). Root directory: repository root.
-5. Save. From now on every commit to `main` triggers a deploy.
+Every save in the admin panel commits to this repo through the GitHub API. To make
+Cloudflare redeploy automatically on that commit:
 
-### 3.3 Required secrets — names and placeholders only
+1. Cloudflare dashboard → **Workers & Pages → tsicosmeticsandsupplements → Settings → Builds → Connect to Git**.
+2. Choose this repository, branch `main`.
+3. Build settings: **no build command**, deploy command `npx wrangler deploy`,
+   root directory = repository root.
+4. Save.
 
-Set every one of these in Cloudflare: **Worker → Settings → Variables and Secrets → Add → Secret**,
-or from a terminal with `npx wrangler secret put <NAME>`.
+After that, an admin save is live about a minute later, with no manual step. The
+admin panel is honest about it: it shows the **commit link**, and **Check Live Site**
+compares the catalog served by the live site with the catalog in the repo — it only
+reports "live" when they are identical.
 
-| Secret name | Placeholder value | Purpose |
-|---|---|---|
-| `TELEGRAM_BOT_TOKEN` | `1234567890:AAA...your-bot-token` | sends order notifications |
-| `TELEGRAM_OWNER_CHAT_ID` | `000000000` | your Telegram user id |
-| `GITHUB_TOKEN` | `github_pat_xxxxxxxxxxxx` | commits catalog/content/image changes |
-| `ADMIN_PASSWORD` | `choose-a-strong-password` | admin panel login |
-| `SESSION_SECRET` | `a-long-random-32+-char-string` | signs the admin session cookie |
-
-Non-secret variables (already in `wrangler.toml`): `GITHUB_OWNER`, `GITHUB_REPO`, `GITHUB_BRANCH`.
-
-**Never** put any of these values in `site/`, in this README, or in git. Real values
-belong only in Cloudflare secrets (production) and `.dev.vars` (local, git-ignored).
-
----
-
-## 4. Run it locally (Windows)
-
-Prerequisite: Node.js 18+ (this project was tested on Node 26).
+## 7. Local development (Windows)
 
 ```cmd
 cd "C:\Users\HP\Downloads\TSI COSMETICS"
 
-rem 1. Local secrets (copy the template, then edit it)
+rem 1. Local secrets (only needed once)
 copy worker\.dev.vars.example .dev.vars
 notepad .dev.vars
 
-rem 2. Start the Worker + site + local static assets
-npx wrangler dev --port 8788
-
-rem 3. Open http://127.0.0.1:8788/        (storefront)
-rem         http://127.0.0.1:8788/admin/  (admin panel)
+rem 2. Start the Worker + site
+npx wrangler dev --port 8788 --ip 127.0.0.1 --persist-to "..\tsi-dev-state"
 ```
 
-Change the cache / force a clean start with `npx wrangler dev --port 8788 --ip 127.0.0.1`.
+Open <http://127.0.0.1:8788/> and <http://127.0.0.1:8788/admin/> (password `localtest1234`).
 
-> Local note: over plain `http://` the session cookie omits the `Secure` flag so login
-> works on localhost. In production (https) the cookie is always `HttpOnly; Secure; SameSite=Strict`.
+**`--persist-to` is required here.** The assets directory is the repository root, so
+Wrangler's own local state files (`.wrangler/state`) would otherwise sit inside the
+watched folder and trigger an endless reload loop ("Reloading local server…" forever,
+and the port never opens). Pointing the state outside the project, as above, fixes it.
 
-## 5. Deploying
+To reset the local password back to `.dev.vars` (`localtest1234`), delete the local
+state folder (`..\tsi-dev-state`).
+
+## 8. Testing
+
+`npx wrangler dev` was run against a **fresh** KV state and a 59-assertion API battery
+was executed against it — all 59 pass. Re-run it with:
 
 ```cmd
-npx wrangler deploy
+npx wrangler dev --port 8788 --ip 127.0.0.1 --persist-to "%TEMP%\tsi-test-state"
+node worker\test\api-test.js
 ```
 
-and set/rotate secrets the same way:
+What the battery covers: static asset content types, that source/secrets are **not**
+public, catalog + content JSON shape, `Cache-Control`, login (wrong password, foreign
+`Origin`, correct password), cookie flags, admin 401s, input validation happening
+*before* any GitHub call, honest GitHub errors, upload/delete path validation,
+password change + session invalidation, order validation + honeypot, and CORS
+preflight for the mirror.
 
-```cmd
-npx wrangler secret put ADMIN_PASSWORD
-```
+Browser checks (local): checkout overlay sits above the navbar, the order panel lists
+all products when the cart is empty, multi-item line amounts and totals, admin login,
+all five tabs, the honest config banner, settings form mapping, theme preview,
+password change and forced re-sign-in.
 
-## 6. Using the admin panel
+Live checks (deployed): `/`, `/admin/`, `/content.json`, `/data/products.json` return
+200 with correct types; `/wrangler.toml`, `/worker/src/index.js`, `README.md`,
+`DEPLOYMENT.md`, `.dev.vars`, `.git/`, `.wrangler/` return 404; `/api/admin/status` is
+401 unauthenticated; `/api/order` rejects a bad phone with 400; the cross-origin
+preflight from `https://m1616d.github.io` is allowed; and one real test order was
+delivered to the owner's Telegram (confirming the live order path end-to-end).
 
-Sign in at `/admin/` with `ADMIN_PASSWORD`. Three tabs:
+## 9. GitHub Pages mirror (optional)
 
-- **Products** — add, edit, duplicate, hide/publish, delete (with confirmation),
-  search, filter by category, sort, and reorder up/down. Each product keeps a stable
-  `id`, so renaming a product never breaks a cart or an existing order.
-- **Media** — drag-and-drop or choose images (PNG/JPEG/WEBP/GIF/AVIF, ≤ ~6 MB each).
-  Images are committed to `site/file/products|brands|gallery/`. You can copy a path,
-  assign it to a product (via *Pick from library* in the product form), and delete —
-  deletion is **refused while a product still references the image** unless you
-  explicitly confirm a forced delete.
-- **Content** — the announcement bar and hero text.
+The repo root is also a working static copy of the storefront, so
+<https://m1616d.github.io/TSI-COSMOTICS-AND-SUPPLEMENTS/> keeps working.
 
-### How automatic publishing works
+- It fetches `data/products.json` and `content.json` **relatively**, so it works both
+  at the domain root (Worker) and under the `/TSI-COSMOTICS-AND-SUPPLEMENTS/` sub-path
+  (GitHub Pages).
+- GitHub Pages cannot run the order API, so on a `github.io` host the storefront sends
+  orders to the origin in `content.json → store.siteUrl`. `ALLOWED_ORIGINS` in
+  `wrangler.toml` authorises that one origin for cross-origin POSTs.
+- The admin panel **must** be used on the Worker URL: a session cookie set on
+  `github.io` would never be sent to `workers.dev`.
 
-Every save commits a change to this GitHub repo. Cloudflare Workers Builds notices the
-commit and redeploys the Worker automatically — you never edit files or redeploy by
-hand for routine product changes. The panel is deliberately honest about this: it
-shows the **commit link** and a **Check live site** button that re-fetches the live
-`/data/products.json` from the site origin. If a build fails, nothing is reported as
-"live" and the previous working site keeps serving — the commit simply sits on `main`
-until the build is fixed.
+## 10. Security model
 
----
-
-## 7. Security model
-
-- The admin session is an HMAC-signed cookie (`SESSION_SECRET`), `HttpOnly`,
-  `Secure`, `SameSite=Strict`, 8-hour expiry. All `/api/admin/*` routes (except
-  login/logout) return **401** without a valid cookie.
-- Login is throttled after repeated failures, and wrong passwords are rejected after
+- Admin sessions are HMAC-signed cookies (`SESSION_SECRET`): `HttpOnly`,
+  `SameSite=Strict`, `Secure` on https, 8-hour expiry.
+- **A password change bumps a session epoch stored in KV**, which invalidates every
+  previously issued session cookie at once.
+- Login and password changes are throttled per IP; wrong passwords are rejected after
   a deliberate delay.
 - Cookie-authenticated mutations reject cross-origin requests (`Origin` check).
-- The admin API may only write to an explicit allow-list of paths
-  (`site/data/products.json`, `site/content.json`, `site/file/{products,brands,gallery}/<file>`).
-  Path traversal and writes to `worker/`, `wrangler.toml`, etc. are rejected.
-- Uploads are validated by MIME type and size, and filenames are sanitised.
+- The admin API can write to exactly three path patterns: `data/products.json`,
+  `content.json`, `file/{products,brands,gallery}/<file>`. Path traversal and writes to
+  `worker/`, `wrangler.toml`, etc. are rejected.
+- Uploads are validated by MIME type and size (~6 MB) and filenames are sanitised.
+- An image cannot be deleted while a product still references it (409) unless the
+  owner explicitly forces it.
+- Saved content is coerced to a fixed schema, so it cannot be oversized or inject markup.
 - Order input is validated and length-capped server-side; a honeypot catches bots.
-- **No secret is ever sent to the browser.** Tokens live only in Worker secrets.
+- No secret is ever sent to the browser, and no secret is served as a static asset.
 
----
+## 11. What still needs the owner
 
-## 8. Test checklist
-
-Legend: ✅ passed · ❌ failed · ⚠️ not tested here (needs live credentials / a real order)
-
-| # | Check | Result |
-|---|---|---|
-| 1 | Main homepage returns HTML and displays correctly | ✅ passed (local `wrangler dev`) |
-| 2 | CSS, JS, fonts, icons, images load (no downloads) | ✅ passed (200s, no console errors) |
-| 3 | Product search, categories, cart, quantity controls | ✅ passed |
-| 4 | Checkout opens and preserves items/quantities | ✅ passed (cart survived; subtotal correct) |
-| 5 | Form validation + customer consent | ✅ passed (all 5 errors shown; empty submit blocked) |
-| 6 | Order reaches the owner's Telegram | ⚠️ not tested here (needs real bot token) |
-| 7 | Storefront + API on one Worker origin | ✅ passed (`/api/order` same-origin) |
-| 8 | Admin requests fail when unauthenticated | ✅ passed (401 on status/catalog/files/upload) |
-| 9 | Only the owner can publish changes | ✅ passed (401 unauthenticated; 403 cross-origin) |
-| 10 | Admin creates/edits a product | ✅ passed (UI + validation verified in browser) |
-| 11 | Admin uploads/previews/replaces an image | ⚠️ upload path validated; live commit not tested (no real token) |
-| 12 | Image delete blocked while referenced | ✅ passed (409 + forced-delete confirm) |
-| 13 | Products/images saved to intended GitHub paths | ⚠️ not tested here (no real `GITHUB_TOKEN`) |
-| 14 | Commit triggers Cloudflare auto-deploy | ⚠️ requires Workers Builds connected (owner action) |
-| 15 | Admin shows honest publishing status | ✅ passed (commit link + live-check; failures reported) |
-| 16 | Failed deploy does not report success | ✅ passed (errors surfaced, never "live") |
-| 17 | GitHub + Telegram tokens absent from browser | ✅ passed (grep of served pages) |
-| 18 | Unexpected paths cannot be written | ✅ passed (traversal + non-allowlisted → 400) |
-| 19 | Checkout works during normal admin activity | ✅ passed (separate routes/credentials) |
-| 20 | Desktop, tablet, mobile | ✅ passed (responsive CSS; desktop + narrow verified) |
-| 21 | No critical JS errors / broken controls | ✅ passed (clean console) |
-| 22 | No unintended file downloads | ✅ passed (correct content types) |
-
-31 automated API assertions pass, plus browser checks of the storefront and admin.
-
-## 9. What is done vs. what still needs you
-
-**Done in the repository:** the integrated Worker, the merged single-page storefront
-+ checkout, the admin panel with product/media/content management, the GitHub-backed
-catalog, path/authorisation hardening, and this documentation.
-
-**Still requires you (cannot be done from the repo):**
-1. Set the five secrets in Cloudflare (§3.3).
-2. Create the fine-grained GitHub token (§3.1).
-3. Connect Workers Builds to this repo for automatic deploys (§3.2).
-4. Run one real end-to-end test order to your Telegram (§8 row 6).
-5. After that passes, retire the old worker (§`DEPLOYMENT.md`).
-
-Nothing above is claimed as already configured or deployed unless you have done it.
+1. **Add the `GITHUB_TOKEN` secret** (§1) — without it nothing can be saved.
+2. **Connect Workers Builds** to the repo (§6) for automatic deploys.
+3. **Change the admin password** in the Security tab if the current one has ever been
+   shared or written down anywhere public.
+4. `.dev.vars` was previously committed to this public repository. It has been removed
+   from the repo, but treat any value that was in it as public: rotate the token and
+   password if you reused them, and delete them from the file in your working copy.
+5. Run the local battery (§8) after any future Worker change.

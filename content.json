@@ -1,4 +1,21 @@
 {
+  "store": {
+    "name": "TSI Cosmetics",
+    "tagline": "Cosmetics",
+    "siteUrl": "https://tsicosmeticsandsupplements.bereket1515mamuye.workers.dev",
+    "currency": "ETB",
+    "phone": "+251911695289",
+    "phoneDisplay": "+251 911 695 289",
+    "telegram": "https://t.me/Tsi27278",
+    "telegramHandle": "@Tsi27278",
+    "tiktok": "https://www.tiktok.com/@tsi.cosmotics",
+    "tiktokHandle": "@tsi.cosmotics",
+    "hours": "Monday – Saturday, 9:00 AM – 8:00 PM",
+    "addressLine": "Addis Ababa, Ethiopia"
+  },
+  "theme": {
+    "primary": "#C4896F"
+  },
   "announcement": {
     "enabled": true,
     "text": "Free delivery available across Addis Ababa",
@@ -10,5 +27,64 @@
     "title": "Premium Beauty,",
     "titleEm": "Curated for You",
     "text": "TSI Cosmetics brings original skincare, cosmetics, and wellness products to Ethiopia. Browse our collection and order with confidence."
+  },
+  "shop": {
+    "title": "Shop by",
+    "titleEm": "Category",
+    "subtitle": "Discover our full range of beauty, skincare, and wellness products.",
+    "priceNote": "Prices shown are indicative. Please confirm current pricing when you place your order.",
+    "supplementsNote": "Supplements are not evaluated by any regulatory authority and are not intended to diagnose, treat, cure, or prevent any disease. Consult a healthcare professional before use."
+  },
+  "about": {
+    "eyebrow": "About TSI Cosmetics",
+    "title": "Your Source for",
+    "titleEm": "Original Beauty",
+    "p1": "TSI Cosmetics brings a carefully selected range of beauty, skincare, and health products to customers in Ethiopia. We focus on sourcing quality products and making them accessible through straightforward, personal service.",
+    "p2": "Whether you are looking for daily skincare essentials, colour cosmetics, hair treatments, or wellness supplements, our goal is to offer products you can trust — with service that is fast, honest, and helpful.",
+    "points": [
+      "Quality products",
+      "Personal service",
+      "Honest pricing",
+      "Fast response"
+    ]
+  },
+  "ordering": {
+    "consentText": "I understand this is an order request. TSI Cosmetics will contact me to confirm availability, final pricing, and payment before the order is finalised.",
+    "subtotalLabel": "Estimated Subtotal",
+    "taxNote": "Final pricing, availability, delivery costs, and payment will be confirmed by the owner when they contact you.",
+    "deliveryNote": "Delivery available across major Ethiopian cities.",
+    "paymentNote": "Payment: Telebirr, bank transfer, or cash on delivery for eligible areas.",
+    "successNote": "Your request has been received by TSI Cosmetics."
+  },
+  "footer": {
+    "blurb": "Original imported cosmetics, skincare, and wellness products in Ethiopia. Order by phone or Telegram.",
+    "copyright": "All rights reserved.",
+    "creditName": "Triverse Studio",
+    "creditUrl": "https://m1616d.github.io/Triverse-Studio/"
+  },
+  "faq": {
+    "intro": "Everything you need to know about ordering from TSI Cosmetics.",
+    "items": [
+      {
+        "q": "Are your products original imports?",
+        "a": "We source our products carefully and aim to carry genuine imported goods. If you have questions about a specific product, please contact us before ordering."
+      },
+      {
+        "q": "How do I place an order?",
+        "a": "Click \"Order Now\" on any product or in the navigation, fill in your details on the order form, and submit. We will contact you to confirm. You can also reach us on Telegram or by phone."
+      },
+      {
+        "q": "Do you deliver across Ethiopia?",
+        "a": "We deliver to major cities and areas across Ethiopia. Contact us to confirm availability and delivery time for your area."
+      },
+      {
+        "q": "What payment methods do you accept?",
+        "a": "We accept Telebirr, bank transfer, and cash on delivery for eligible areas. The owner will confirm payment details when they contact you."
+      },
+      {
+        "q": "Can I return or exchange a product?",
+        "a": "If you receive an item that is damaged or not what you ordered, please contact us within 7 days of delivery and we will work with you to find a solution."
+      }
+    ]
   }
 }

@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Admin — TSI Cosmetics</title>
+<meta name="robots" content="noindex,nofollow"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{--rg:#C4896F;--rg-d:#a36b53;--rg-l:#ddb8a8;--ivory:#FDFAF7;--bg:#FAF7F4;--dark:#1A1A1A;--text:#3D3535;--muted:#7A6E6E;--border:rgba(196,137,111,.18);--white:#fff;--sh:0 4px 20px rgba(0,0,0,.08);--r:10px;--tr:.2s ease;--fh:'Playfair Display',serif;--fb:'Poppins',sans-serif}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;min-height:100vh}
+a{text-decoration:none;color:inherit}
+button{font-family:var(--fb);cursor:pointer}
+input,textarea,select{font-family:var(--fb)}
+/* LOGIN */
+#login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.login-box{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:44px 40px;width:100%;max-width:380px;box-shadow:var(--sh);text-align:center}
+.login-box .logo{display:flex;align-items:center;justify-content:center;gap:10px;font-family:var(--fh);font-size:1.6rem;font-weight:700;color:var(--dark);margin-bottom:6px}
+.lm{width:36px;height:36px;background:linear-gradient(135deg,var(--rg),var(--rg-d));border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.9rem}
+.la{color:var(--rg)}
+.login-box p{font-size:.84rem;color:var(--muted);font-weight:300;margin-bottom:28px}
+.lg{margin-bottom:14px;text-align:left}
+.lg label{display:block;font-size:.76rem;font-weight:600;color:var(--text);margin-bottom:4px}
+.lg input{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:var(--r);background:var(--bg);font-size:.88rem;color:var(--text);outline:none;transition:border-color var(--tr)}
+.lg input:focus{border-color:var(--rg)}
+.btn-login{width:100%;padding:13px;background:var(--rg);color:#fff;border:none;border-radius:50px;font-size:.9rem;font-weight:600;transition:all var(--tr);margin-top:6px}
+.btn-login:hover{background:var(--rg-d)}
+.login-err{font-size:.76rem;color:#d9534f;margin-top:8px;display:none}
+.login-err.on{display:block}
+/* ADMIN LAYOUT */
+#admin-screen{display:none;min-height:100vh;flex-direction:column}
+#admin-screen.on{display:flex}
+.adm-header{background:var(--dark);color:#fff;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-shrink:0;flex-wrap:wrap}
+.adm-header .hlogo{display:flex;align-items:center;gap:9px;font-family:var(--fh);font-size:1.2rem;font-weight:700}
+.adm-header .hlogo .la{color:var(--rg-l)}
+.adm-header .htag{font-size:.72rem;color:rgba(255,255,255,.45);font-weight:300;margin-left:4px}
+.adm-header .hright{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.status-pill{font-size:.72rem;padding:4px 12px;border-radius:50px;font-weight:500;border:1px solid transparent;white-space:nowrap}
+.status-pill.idle{background:rgba(255,255,255,.08);color:rgba(255,255,255,.5);border-color:rgba(255,255,255,.1)}
+.status-pill.saving{background:rgba(212,175,55,.15);color:#e8c84a;border-color:rgba(212,175,55,.3)}
+.status-pill.saved{background:rgba(80,180,100,.15);color:#6de89a;border-color:rgba(80,180,100,.3)}
+.status-pill.error{background:rgba(220,80,80,.15);color:#f08080;border-color:rgba(220,80,80,.3)}
+.btn-logout{background:none;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7);border-radius:50px;padding:6px 16px;font-size:.76rem;font-weight:500;transition:all var(--tr)}
+.btn-logout:hover{border-color:rgba(255,255,255,.5);color:#fff}
+.adm-body{flex:1;padding:28px;max-width:1180px;margin:0 auto;width:100%}
+/* TABS */
+.tabs{display:flex;gap:6px;margin-bottom:24px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.tab{background:none;border:none;padding:10px 18px;font-size:.84rem;font-weight:600;color:var(--muted);border-bottom:2px solid transparent;transition:all var(--tr);display:flex;align-items:center;gap:7px}
+.tab:hover{color:var(--text)}
+.tab.active{color:var(--rg);border-bottom-color:var(--rg)}
+.tab-panel{display:none}
+.tab-panel.on{display:block}
+/* TOOLBAR */
+.toolbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;margin-bottom:20px}
+.toolbar h1{font-family:var(--fh);font-size:1.5rem;font-weight:700;color:var(--dark)}
+.toolbar .tright{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.btn-add{background:var(--rg);color:#fff;border:none;border-radius:50px;padding:10px 22px;font-size:.84rem;font-weight:600;display:flex;align-items:center;gap:7px;transition:all var(--tr)}
+.btn-add:hover{background:var(--rg-d)}
+.search-adm{position:relative}
+.search-adm input{padding:9px 14px 9px 36px;border:1.5px solid var(--border);border-radius:50px;background:var(--white);font-size:.82rem;color:var(--text);outline:none;width:200px;transition:border-color var(--tr)}
+.search-adm input:focus{border-color:var(--rg)}
+.search-adm i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:.8rem}
+select.mini{padding:9px 12px;border:1.5px solid var(--border);border-radius:50px;background:var(--white);font-size:.8rem;color:var(--text);outline:none}
+select.mini:focus{border-color:var(--rg)}
+/* PRODUCT TABLE */
+.prod-table-wrap{background:var(--white);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh)}
+.prod-table{width:100%;border-collapse:collapse}
+.prod-table th{padding:12px 14px;font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);text-align:left;border-bottom:1px solid var(--border);background:var(--bg)}
+.prod-table td{padding:11px 14px;font-size:.84rem;color:var(--text);border-bottom:1px solid rgba(196,137,111,.08);vertical-align:middle}
+.prod-table tr:last-child td{border-bottom:none}
+.prod-table tr:hover td{background:rgba(196,137,111,.03)}
+.prod-thumb{width:44px;height:44px;border-radius:6px;object-fit:cover;background:var(--bg)}
+.prod-name-cell{font-weight:600;color:var(--dark);max-width:190px}
+.prod-brand{font-size:.72rem;color:var(--rg);font-weight:600;text-transform:uppercase;letter-spacing:1px}
+.prod-price{font-weight:600;color:var(--rg);white-space:nowrap}
+.badge-sm{padding:2px 9px;border-radius:50px;font-size:.6rem;font-weight:600;text-transform:uppercase}
+.badge-sm.featured{background:rgba(196,137,111,.15);color:var(--rg-d)}
+.badge-sm.new{background:rgba(26,26,26,.1);color:var(--dark)}
+.avail-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}
+.avail-dot.yes{background:#3a9a50}
+.avail-dot.no{background:#c0392b}
+.act-btns{display:flex;gap:5px}
+.btn-icon{width:30px;height:30px;border-radius:6px;border:1px solid var(--border);background:none;color:var(--muted);font-size:.78rem;display:flex;align-items:center;justify-content:center;transition:all var(--tr)}
+.btn-icon:hover{border-color:var(--rg);color:var(--rg)}
+.btn-icon.del:hover{border-color:#d9534f;color:#d9534f}
+.btn-icon:disabled{opacity:.35;cursor:not-allowed}
+.tbl-empty{text-align:center;padding:48px;color:var(--muted)}
+.tbl-empty i{font-size:2rem;margin-bottom:10px;opacity:.3;display:block}
+@media(max-width:900px){.prod-table-wrap{overflow-x:auto}}
+@media(max-width:600px){.adm-body{padding:16px}.toolbar h1{font-size:1.25rem}.search-adm input{width:150px}}
+/* MEDIA */
+.upload-box{background:var(--white);border:1.5px dashed var(--border);border-radius:var(--r);padding:26px;text-align:center;margin-bottom:22px;transition:border-color var(--tr)}
+.upload-box.drag{border-color:var(--rg);background:rgba(196,137,111,.04)}
+.upload-box i.big{font-size:1.9rem;color:var(--rg-l);display:block;margin-bottom:10px}
+.upload-box p{font-size:.84rem;color:var(--muted);font-weight:300;margin-bottom:12px}
+.upload-row{display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap}
+.upl-progress{font-size:.78rem;color:var(--rg);margin-top:12px;font-weight:500;min-height:18px}
+.media-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px}
+.media-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);display:flex;flex-direction:column}
+.media-card img{width:100%;aspect-ratio:1/1;object-fit:cover;background:var(--bg)}
+.media-meta{padding:9px 11px;font-size:.68rem;color:var(--muted);word-break:break-all;line-height:1.5}
+.media-meta strong{color:var(--dark);display:block;font-size:.74rem;font-weight:600;margin-bottom:2px}
+.media-acts{display:flex;gap:5px;padding:0 9px 11px;margin-top:auto}
+.media-acts button{flex:1;border:1px solid var(--border);background:none;color:var(--muted);border-radius:6px;padding:6px 4px;font-size:.68rem;font-weight:600;transition:all var(--tr)}
+.media-acts button:hover{border-color:var(--rg);color:var(--rg)}
+.media-acts button.del:hover{border-color:#d9534f;color:#d9534f}
+/* CONTENT FORM */
+.card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:22px;box-shadow:var(--sh);margin-bottom:20px}
+.card h3{font-family:var(--fh);font-size:1.1rem;color:var(--dark);margin-bottom:4px}
+.card .hint{font-size:.76rem;color:var(--muted);font-weight:300;margin-bottom:16px}
+/* SHARED FORM */
+.fg{margin-bottom:14px}
+.fg label{display:block;font-size:.76rem;font-weight:600;color:var(--text);margin-bottom:4px}
+.rq{color:var(--rg)}
+.fg input,.fg textarea,.fg select{width:100%;padding:10px 13px;border:1.5px solid var(--border);border-radius:var(--r);background:var(--white);font-family:var(--fb);font-size:.84rem;color:var(--text);outline:none;transition:border-color var(--tr)}
+.fg input:focus,.fg textarea:focus,.fg select:focus{border-color:var(--rg)}
+.fg input.err,.fg textarea.err,.fg select.err{border-color:#d9534f}
+.fg textarea{resize:vertical;min-height:72px}
+.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:480px){.fg-row{grid-template-columns:1fr}}
+.fg-check{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.fg-check input[type=checkbox]{width:16px;height:16px;accent-color:var(--rg)}
+.fg-check label{font-size:.82rem;font-weight:500;color:var(--text)}
+.img-preview{width:100%;aspect-ratio:4/3;border-radius:var(--r);object-fit:contain;background:var(--bg);border:1px solid var(--border);margin-top:6px;display:none}
+.img-preview.on{display:block}
+.fe{font-size:.7rem;color:#d9534f;margin-top:3px;display:none}
+.fe.on{display:block}
+.pm-foot{display:flex;gap:10px;justify-content:flex-end;padding:16px 24px;border-top:1px solid var(--border);background:var(--ivory);position:sticky;bottom:0}
+.btn-cancel{background:none;border:1.5px solid var(--border);color:var(--text);border-radius:50px;padding:9px 20px;font-size:.82rem;font-weight:500;transition:all var(--tr)}
+.btn-cancel:hover{border-color:var(--rg);color:var(--rg)}
+.btn-save{background:var(--rg);color:#fff;border:none;border-radius:50px;padding:9px 24px;font-size:.84rem;font-weight:600;transition:all var(--tr);display:flex;align-items:center;gap:7px}
+.btn-save:hover{background:var(--rg-d)}
+.btn-save:disabled{opacity:.6;cursor:not-allowed}
+.btn-ghost{background:none;border:1.5px solid var(--border);color:var(--text);border-radius:50px;padding:8px 16px;font-size:.78rem;font-weight:600;transition:all var(--tr);display:inline-flex;align-items:center;gap:7px}
+.btn-ghost:hover{border-color:var(--rg);color:var(--rg)}
+/* MODALS */
+.modal{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;visibility:hidden;transition:opacity .3s ease,visibility .3s ease}
+.modal.open{opacity:1;visibility:visible}
+.pm-box{background:var(--ivory);border-radius:16px;width:100%;max-width:600px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.pm-head{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--ivory);z-index:1}
+.pm-head h2{font-family:var(--fh);font-size:1.2rem;font-weight:700;color:var(--dark)}
+.pm-x{background:none;border:none;font-size:1.3rem;color:var(--muted);cursor:pointer;padding:4px;transition:color var(--tr)}
+.pm-x:hover{color:var(--dark)}
+.pm-body{padding:22px 24px}
+.cm-box{background:var(--ivory);border-radius:16px;padding:32px;width:100%;max-width:400px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.cm-box h3{font-family:var(--fh);font-size:1.2rem;color:var(--dark);margin-bottom:8px}
+.cm-box p{font-size:.84rem;color:var(--muted);font-weight:300;margin-bottom:22px}
+.cm-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.btn-danger{background:#d9534f;color:#fff;border:none;border-radius:50px;padding:9px 22px;font-size:.84rem;font-weight:600;transition:all var(--tr)}
+.btn-danger:hover{background:#c0392b}
+/* TOAST */
+#toast{position:fixed;bottom:28px;right:28px;z-index:2000;background:var(--dark);color:#fff;padding:12px 20px;border-radius:10px;font-size:.82rem;font-weight:500;transform:translateY(20px);opacity:0;transition:all .3s ease;pointer-events:none;max-width:340px;line-height:1.5}
+#toast.on{opacity:1;transform:none}
+#toast.ok-toast{background:#2d7a47}
+#toast.err-toast{background:#c0392b}
+/* CONFIG ALERT */
+.alert{display:none;background:rgba(220,80,80,.08);border:1px solid rgba(220,80,80,.3);border-left:3px solid #c0392b;border-radius:var(--r);padding:15px 18px;font-size:.84rem;color:#8f2f2f;margin-bottom:20px;line-height:1.65}
+.alert.on{display:block}
+.alert b{color:#7a2626}
+.alert code{background:rgba(0,0,0,.06);padding:1px 6px;border-radius:4px;font-size:.8rem}
+.alert ul{margin:8px 0 0 18px;list-style:disc}
+/* PUBLISH BAR */
+.publish-bar{background:var(--white);border:1px solid var(--border);border-left:3px solid var(--rg);border-radius:var(--r);padding:12px 16px;font-size:.78rem;color:var(--muted);margin-bottom:20px;display:none;align-items:center;gap:12px;flex-wrap:wrap}
+.publish-bar.on{display:flex}
+.publish-bar strong{color:var(--dark)}
+.publish-bar a{color:var(--rg);text-decoration:underline}
+/* SETTINGS / REPEATABLE LISTS / STATUS */
+.rep{display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
+.rep-row{display:flex;gap:8px;align-items:center}
+.rep-row input{flex:1;padding:9px 12px;border:1.5px solid var(--border);border-radius:var(--r);background:var(--white);font-size:.82rem;color:var(--text);outline:none;font-family:var(--fb)}
+.rep-row input:focus{border-color:var(--rg)}
+.rep-row button{width:32px;height:32px;border-radius:var(--r);border:1px solid var(--border);background:none;color:var(--muted);flex-shrink:0;transition:all var(--tr)}
+.rep-row button:hover{border-color:#d9534f;color:#d9534f}
+.rep-q{display:flex;flex-direction:column;gap:7px;border:1px solid var(--border);border-radius:var(--r);padding:11px;background:var(--white)}
+.rep-q input,.rep-q textarea{padding:9px 12px;border:1.5px solid var(--border);border-radius:var(--r);font-size:.82rem;background:var(--bg);color:var(--text);outline:none;font-family:var(--fb)}
+.rep-q input:focus,.rep-q textarea:focus{border-color:var(--rg);background:var(--white)}
+.rep-q textarea{resize:vertical}
+.rep-head{display:flex;justify-content:space-between;align-items:center;font-size:.68rem;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
+.rep-head button{width:26px;height:26px;border-radius:6px;border:1px solid var(--border);background:none;color:var(--muted)}
+.rep-head button:hover{border-color:#d9534f;color:#d9534f}
+.statlist{display:flex;flex-direction:column;gap:10px}
+.statrow{display:flex;align-items:flex-start;gap:11px;font-size:.84rem;color:var(--text);padding:12px 14px;border:1px solid var(--border);border-radius:var(--r);background:var(--white)}
+.statrow .dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;margin-top:7px}
+.dot.ok{background:#3a9a50}.dot.warn{background:#d99a2b}.dot.bad{background:#c0392b}
+.statrow small{display:block;color:var(--muted);font-weight:300;font-size:.76rem;line-height:1.55;margin-top:2px}
+.msgbox{font-size:.8rem;margin-top:14px;display:none;padding:11px 15px;border-radius:var(--r);line-height:1.6}
+.msgbox.on{display:block}
+.msgbox.ok{background:rgba(80,180,100,.12);color:#2d7a47;border:1px solid rgba(80,180,100,.3)}
+.msgbox.err{background:rgba(220,80,80,.1);color:#c0392b;border:1px solid rgba(220,80,80,.3)}
+.thprev{display:flex;align-items:center;gap:12px;font-size:.84rem;margin-top:8px}
+.thbtn{background:var(--rg);color:#fff;padding:7px 18px;border-radius:50px;font-size:.78rem;font-weight:600}
+.meter{height:8px;border-radius:50px;background:var(--bg);border:1px solid var(--border);overflow:hidden}
+.meter span{display:block;height:100%;width:0;background:#c0392b;transition:width .2s,background .2s}
+@media(max-width:600px){.fg-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="logo"><span class="lm"><i class="fas fa-leaf" aria-hidden="true"></i></span>TSI<span class="la">.</span></div>
+    <p>Admin Panel &mdash; TSI Cosmetics</p>
+    <div class="lg"><label for="pw">Password</label><input type="password" id="pw" placeholder="Enter admin password" autocomplete="current-password"/></div>
+    <button class="btn-login" id="btn-login"><i class="fas fa-lock" aria-hidden="true"></i> Sign In</button>
+    <div class="login-err" id="login-err">Incorrect password. Please try again.</div>
+  </div>
+</div>
+
+<!-- ADMIN SCREEN -->
+<div id="admin-screen">
+  <header class="adm-header">
+    <div class="hlogo"><span class="lm"><i class="fas fa-leaf" aria-hidden="true"></i></span>TSI<span class="la">.</span><span class="htag">Admin</span></div>
+    <div class="hright">
+      <span class="status-pill idle" id="status-pill"><i class="fas fa-circle" aria-hidden="true"></i> Ready</span>
+      <a href="/" target="_blank" rel="noopener" style="color:rgba(255,255,255,.6);font-size:.76rem;display:flex;align-items:center;gap:5px"><i class="fas fa-external-link-alt" aria-hidden="true"></i> View Site</a>
+      <button class="btn-logout" id="btn-logout"><i class="fas fa-sign-out-alt" aria-hidden="true"></i> Logout</button>
+    </div>
+  </header>
+
+  <div class="adm-body">
+    <div class="alert" id="cfg-alert"></div>
+    <div class="publish-bar" id="publish-bar"></div>
+
+    <div class="tabs" role="tablist">
+      <button class="tab active" data-tab="products" role="tab"><i class="fas fa-box-open" aria-hidden="true"></i> Products</button>
+      <button class="tab" data-tab="media" role="tab"><i class="fas fa-images" aria-hidden="true"></i> Media</button>
+      <button class="tab" data-tab="content" role="tab"><i class="fas fa-pen-to-square" aria-hidden="true"></i> Content</button>
+      <button class="tab" data-tab="settings" role="tab"><i class="fas fa-sliders" aria-hidden="true"></i> Settings</button>
+      <button class="tab" data-tab="security" role="tab"><i class="fas fa-shield-halved" aria-hidden="true"></i> Security</button>
+    </div>
+
+    <!-- PRODUCTS -->
+    <div class="tab-panel on" id="panel-products">
+      <div class="toolbar">
+        <h1>Products</h1>
+        <div class="tright">
+          <div class="search-adm"><i class="fas fa-search" aria-hidden="true"></i><input type="search" id="adm-search" placeholder="Search products…" aria-label="Search products"/></div>
+          <select class="mini" id="adm-filter" aria-label="Filter by category">
+            <option value="">All categories</option>
+            <option value="makeup">Makeup</option>
+            <option value="skincare">Skincare</option>
+            <option value="supplements">Supplements</option>
+            <option value="haircare">Hair Care</option>
+            <option value="accessories">Accessories</option>
+          </select>
+          <select class="mini" id="adm-sort" aria-label="Sort products">
+            <option value="manual">Manual order</option>
+            <option value="name">Name (A–Z)</option>
+            <option value="price-asc">Price (low → high)</option>
+            <option value="price-desc">Price (high → low)</option>
+            <option value="category">Category</option>
+          </select>
+          <button class="btn-add" id="btn-add-prod"><i class="fas fa-plus" aria-hidden="true"></i> Add Product</button>
+        </div>
+      </div>
+      <div class="prod-table-wrap">
+        <table class="prod-table" aria-label="Products">
+          <thead><tr>
+            <th>Order</th><th>Image</th><th>Name</th><th>Brand</th><th>Category</th>
+            <th>Price (ETB)</th><th>Status</th><th>Actions</th>
+          </tr></thead>
+          <tbody id="prod-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- MEDIA -->
+    <div class="tab-panel" id="panel-media">
+      <div class="toolbar"><h1>Media Library</h1>
+        <div class="tright">
+          <select class="mini" id="upl-dir" aria-label="Upload destination">
+            <option value="products">Products</option>
+            <option value="brands">Brands</option>
+            <option value="gallery">Gallery</option>
+          </select>
+          <button class="btn-ghost" id="btn-refresh-media"><i class="fas fa-rotate" aria-hidden="true"></i> Refresh</button>
+        </div>
+      </div>
+      <div class="upload-box" id="upload-box">
+        <i class="fas fa-cloud-arrow-up big" aria-hidden="true"></i>
+        <p>Drag images here, or choose files from your computer.<br><span style="font-size:.72rem">PNG, JPEG, WEBP, GIF or AVIF · max ~6 MB each</span></p>
+        <div class="upload-row">
+          <input type="file" id="file-input" accept="image/png,image/jpeg,image/webp,image/gif,image/avif" multiple hidden/>
+          <button class="btn-add" id="btn-choose"><i class="fas fa-folder-open" aria-hidden="true"></i> Choose Images</button>
+        </div>
+        <div class="upl-progress" id="upl-progress"></div>
+      </div>
+      <div class="media-grid" id="media-grid"></div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="tab-panel" id="panel-content">
+      <div class="toolbar"><h1>Site Content</h1>
+        <div class="tright">
+          <button class="btn-ghost" id="btn-verify"><i class="fas fa-signal" aria-hidden="true"></i> Check Live Site</button>
+          <button class="btn-add" id="btn-save-content"><i class="fas fa-save" aria-hidden="true"></i> Save Content</button>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Announcement Bar</h3>
+        <p class="hint">The thin strip at the very top of the storefront.</p>
+        <div class="fg-check"><input type="checkbox" id="ct-ann-on"/><label for="ct-ann-on">Show the announcement bar</label></div>
+        <div class="fg"><label for="ct-ann-text">Announcement text</label><input type="text" id="ct-ann-text" placeholder="Free delivery available across Addis Ababa"/></div>
+        <div class="fg-row">
+          <div class="fg"><label for="ct-ann-link">Link URL</label><input type="url" id="ct-ann-link" placeholder="https://t.me/Tsi27278"/></div>
+          <div class="fg"><label for="ct-ann-linktext">Link label</label><input type="text" id="ct-ann-linktext" placeholder="Order via Telegram"/></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Hero Section</h3>
+        <p class="hint">The large headline on the home page.</p>
+        <div class="fg"><label for="ct-hero-eyebrow">Small eyebrow text</label><input type="text" id="ct-hero-eyebrow" placeholder="Imported Products · Ethiopia"/></div>
+        <div class="fg-row">
+          <div class="fg"><label for="ct-hero-title">Headline line 1</label><input type="text" id="ct-hero-title" placeholder="Premium Beauty,"/></div>
+          <div class="fg"><label for="ct-hero-titleem">Headline line 2 (italic)</label><input type="text" id="ct-hero-titleem" placeholder="Curated for You"/></div>
+        </div>
+        <div class="fg"><label for="ct-hero-text">Paragraph</label><textarea id="ct-hero-text" rows="3"></textarea></div>
+      </div>
+      <div class="card">
+        <h3>Shop Section</h3>
+        <p class="hint">The heading above the product grid on the home page.</p>
+        <div class="fg-row">
+          <div class="fg"><label for="sh-title">Heading</label><input type="text" id="sh-title" placeholder="Shop by"/></div>
+          <div class="fg"><label for="sh-titleem">Heading accent (coloured)</label><input type="text" id="sh-titleem" placeholder="Category"/></div>
+        </div>
+        <div class="fg"><label for="sh-subtitle">Subtitle</label><input type="text" id="sh-subtitle"/></div>
+        <div class="fg"><label for="sh-pricenote">Price note under the grid</label><input type="text" id="sh-pricenote"/></div>
+        <div class="fg"><label for="sh-suppnote">Supplements notice</label><textarea id="sh-suppnote" rows="2"></textarea></div>
+      </div>
+      <div class="card">
+        <h3>About Section</h3>
+        <div class="fg"><label for="ab-eyebrow">Small label</label><input type="text" id="ab-eyebrow"/></div>
+        <div class="fg-row">
+          <div class="fg"><label for="ab-title">Heading</label><input type="text" id="ab-title"/></div>
+          <div class="fg"><label for="ab-titleem">Heading accent</label><input type="text" id="ab-titleem"/></div>
+        </div>
+        <div class="fg"><label for="ab-p1">Paragraph 1</label><textarea id="ab-p1" rows="3"></textarea></div>
+        <div class="fg"><label for="ab-p2">Paragraph 2</label><textarea id="ab-p2" rows="3"></textarea></div>
+        <div class="fg"><label>Tick list</label><div id="ab-points" class="rep"></div>
+          <button class="btn-ghost" id="ab-points-add" type="button"><i class="fas fa-plus" aria-hidden="true"></i> Add item</button></div>
+      </div>
+      <div class="card">
+        <h3>FAQ</h3>
+        <p class="hint">Question and answer pairs shown at the bottom of the home page.</p>
+        <div class="fg"><label for="fq-intro">Intro line</label><input type="text" id="fq-intro"/></div>
+        <div class="fg"><label>Questions</label><div id="fq-items" class="rep"></div>
+          <button class="btn-ghost" id="fq-add" type="button"><i class="fas fa-plus" aria-hidden="true"></i> Add question</button></div>
+      </div>
+      <div class="card">
+        <h3>Footer</h3>
+        <div class="fg"><label for="ft-blurb">Footer description</label><textarea id="ft-blurb" rows="2"></textarea></div>
+        <div class="fg"><label for="ft-copyright">Copyright line</label><input type="text" id="ft-copyright"/></div>
+        <div class="fg-row">
+          <div class="fg"><label for="ft-creditname">Developer credit name</label><input type="text" id="ft-creditname"/></div>
+          <div class="fg"><label for="ft-crediturl">Developer credit link</label><input type="url" id="ft-crediturl"/></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="tab-panel" id="panel-settings">
+      <div class="toolbar"><h1>Website Settings</h1>
+        <div class="tright">
+          <button class="btn-ghost" id="btn-verify2"><i class="fas fa-signal" aria-hidden="true"></i> Check Live Site</button>
+          <button class="btn-add" id="btn-save-content2"><i class="fas fa-save" aria-hidden="true"></i> Save Settings</button>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Store Identity</h3>
+        <p class="hint">The name and tagline used in the header, footer and page title.</p>
+        <div class="fg-row">
+          <div class="fg"><label for="st-name">Store name</label><input type="text" id="st-name" placeholder="TSI Cosmetics"/></div>
+          <div class="fg"><label for="st-tagline">Logo sub-label</label><input type="text" id="st-tagline" placeholder="Cosmetics"/></div>
+        </div>
+        <div class="fg-row">
+          <div class="fg"><label for="st-siteurl">Site URL <span style="font-weight:300;color:var(--muted)">(canonical + mirror orders)</span></label><input type="url" id="st-siteurl" placeholder="https://…workers.dev"/></div>
+          <div class="fg"><label for="st-currency">Currency label</label><input type="text" id="st-currency" placeholder="ETB"/></div>
+        </div>
+        <div class="fg"><label for="st-address">Address line</label><input type="text" id="st-address" placeholder="Addis Ababa, Ethiopia"/></div>
+      </div>
+      <div class="card">
+        <h3>Contact Details</h3>
+        <p class="hint">These update every phone, Telegram and TikTok link on the site — header, contact section, footer and buttons.</p>
+        <div class="fg-row">
+          <div class="fg"><label for="ct-phone">Phone (link value)</label><input type="text" id="ct-phone" placeholder="+251911695289"/></div>
+          <div class="fg"><label for="ct-phonedisplay">Phone (shown to customers)</label><input type="text" id="ct-phonedisplay" placeholder="+251 911 695 289"/></div>
+        </div>
+        <div class="fg-row">
+          <div class="fg"><label for="ct-telegram">Telegram URL</label><input type="url" id="ct-telegram"/></div>
+          <div class="fg"><label for="ct-telegramhandle">Telegram handle</label><input type="text" id="ct-telegramhandle" placeholder="@Tsi27278"/></div>
+        </div>
+        <div class="fg-row">
+          <div class="fg"><label for="ct-tiktok">TikTok URL</label><input type="url" id="ct-tiktok"/></div>
+          <div class="fg"><label for="ct-tiktokhandle">TikTok handle</label><input type="text" id="ct-tiktokhandle" placeholder="@tsi.cosmotics"/></div>
+        </div>
+        <div class="fg"><label for="ct-hours">Business hours</label><input type="text" id="ct-hours"/></div>
+      </div>
+      <div class="card">
+        <h3>Theme Colour</h3>
+        <p class="hint">Buttons, prices and accents across the whole storefront.</p>
+        <div class="fg-row">
+          <div class="fg"><label for="th-primary">Primary colour (hex)</label><input type="text" id="th-primary" placeholder="#C4896F"/></div>
+          <div class="fg"><label for="th-pick">Pick a colour</label><input type="color" id="th-pick" value="#C4896F" style="height:44px;padding:4px"/></div>
+        </div>
+        <div id="th-preview" class="thprev">Preview: <span class="thbtn">Button</span> <span style="color:var(--muted);font-size:.78rem">Save to apply it to the live site.</span></div>
+      </div>
+      <div class="card">
+        <h3>Ordering Text</h3>
+        <div class="fg"><label for="od-subtotal">Subtotal label</label><input type="text" id="od-subtotal" placeholder="Estimated Subtotal"/></div>
+        <div class="fg"><label for="od-consent">Consent checkbox text</label><textarea id="od-consent" rows="2"></textarea></div>
+        <div class="fg"><label for="od-taxnote">Note under the order total</label><textarea id="od-taxnote" rows="2"></textarea></div>
+        <div class="fg"><label for="od-success">Success message</label><input type="text" id="od-success"/></div>
+        <div class="fg-row">
+          <div class="fg"><label for="od-delivery">Delivery note</label><input type="text" id="od-delivery"/></div>
+          <div class="fg"><label for="od-payment">Payment note</label><input type="text" id="od-payment"/></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECURITY -->
+    <div class="tab-panel" id="panel-security">
+      <div class="toolbar"><h1>Security &amp; Status</h1>
+        <div class="tright"><button class="btn-ghost" id="btn-refresh-status"><i class="fas fa-rotate" aria-hidden="true"></i> Refresh</button></div>
+      </div>
+      <div class="card">
+        <h3>System status</h3>
+        <p class="hint">What this Worker can actually do right now — no guessing.</p>
+        <div id="stat-list" class="statlist"></div>
+      </div>
+      <div class="card">
+        <h3>Change Admin Password</h3>
+        <p class="hint">Stored as a salted PBKDF2 hash and takes effect immediately, without redeploying.</p>
+        <div class="fg"><label for="pw-cur">Current password</label><input type="password" id="pw-cur" autocomplete="current-password"/></div>
+        <div class="fg-row">
+          <div class="fg"><label for="pw-new">New password</label><input type="password" id="pw-new" autocomplete="new-password"/></div>
+          <div class="fg"><label for="pw-new2">Repeat new password</label><input type="password" id="pw-new2" autocomplete="new-password"/></div>
+        </div>
+        <div class="fg" style="max-width:300px"><label for="pw-meter">Strength</label><div class="meter"><span id="pw-meter"></span></div></div>
+        <button class="btn-add" id="btn-change-pw"><i class="fas fa-key" aria-hidden="true"></i> Change Password</button>
+        <div id="pw-msg" class="msgbox"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCT MODAL -->
+<div class="modal" id="prod-modal" role="dialog" aria-modal="true" aria-labelledby="pm-title">
+  <div class="pm-box">
+    <div class="pm-head"><h2 id="pm-title">Add Product</h2><button class="pm-x" id="pm-x" aria-label="Close"><i class="fas fa-times" aria-hidden="true"></i></button></div>
+    <div class="pm-body">
+      <form id="prod-form" novalidate>
+        <div class="fg-row">
+          <div class="fg"><label for="pf-id">Product ID <span class="rq">*</span></label><input type="text" id="pf-id" name="id" placeholder="e.g. p13"/><span class="fe" id="e-id">ID required and must be unique.</span></div>
+          <div class="fg"><label for="pf-name">Name <span class="rq">*</span></label><input type="text" id="pf-name" name="name" placeholder="Product name"/><span class="fe" id="e-name">Name is required.</span></div>
+        </div>
+        <div class="fg-row">
+          <div class="fg"><label for="pf-brand">Brand <span class="rq">*</span></label><input type="text" id="pf-brand" name="brand" placeholder="e.g. GlowLab"/><span class="fe" id="e-brand">Brand is required.</span></div>
+          <div class="fg"><label for="pf-cat">Category <span class="rq">*</span></label>
+            <select id="pf-cat" name="category">
+              <option value="">Select category…</option>
+              <option value="makeup">Makeup</option>
+              <option value="skincare">Skincare</option>
+              <option value="supplements">Supplements</option>
+              <option value="haircare">Hair Care</option>
+              <option value="accessories">Accessories</option>
+            </select>
+            <span class="fe" id="e-cat">Category is required.</span>
+          </div>
+        </div>
+        <div class="fg"><label for="pf-desc">Short Description <span class="rq">*</span></label><input type="text" id="pf-desc" name="shortDesc" placeholder="Brief product description"/><span class="fe" id="e-desc">Description is required.</span></div>
+        <div class="fg-row">
+          <div class="fg"><label for="pf-price">Price in ETB <span class="rq">*</span></label><input type="number" id="pf-price" name="price" placeholder="e.g. 2640" min="0" step="1"/><span class="fe" id="e-price">Valid price required.</span></div>
+          <div class="fg"><label for="pf-badge">Badge</label>
+            <select id="pf-badge" name="badge">
+              <option value="">None</option>
+              <option value="Featured">Featured</option>
+              <option value="New">New</option>
+            </select>
+          </div>
+        </div>
+        <div class="fg">
+          <label for="pf-img">Image URL or library path <span class="rq">*</span></label>
+          <input type="text" id="pf-img" name="image" placeholder="https://… or /file/products/photo.jpg"/>
+          <span class="fe" id="e-img">Enter an https:// URL or a /file/… library path.</span>
+          <img class="img-preview" id="img-preview" alt="Image preview"/>
+          <button type="button" class="btn-ghost" id="pf-pick" style="margin-top:8px"><i class="fas fa-images" aria-hidden="true"></i> Pick from library</button>
+        </div>
+        <div class="fg-check"><input type="checkbox" id="pf-avail" name="available"/><label for="pf-avail">Available for purchase</label></div>
+        <div class="fg-check"><input type="checkbox" id="pf-feat" name="featured"/><label for="pf-feat">Mark as Featured</label></div>
+      </form>
+    </div>
+    <div class="pm-foot">
+      <button class="btn-cancel" id="pm-cancel">Cancel</button>
+      <button class="btn-save" id="pm-save"><i class="fas fa-save" aria-hidden="true"></i> Save Product</button>
+    </div>
+  </div>
+</div>
+
+<!-- PICK IMAGE MODAL -->
+<div class="modal" id="pick-modal" role="dialog" aria-modal="true">
+  <div class="pm-box" style="max-width:720px">
+    <div class="pm-head"><h2>Choose an image</h2><button class="pm-x" id="pick-x" aria-label="Close"><i class="fas fa-times" aria-hidden="true"></i></button></div>
+    <div class="pm-body"><div class="media-grid" id="pick-grid"></div></div>
+  </div>
+</div>
+
+<!-- CONFIRM MODAL -->
+<div class="modal" id="confirm-modal" role="dialog" aria-modal="true">
+  <div class="cm-box">
+    <h3 id="confirm-title">Are you sure?</h3>
+    <p id="confirm-msg">This cannot be undone.</p>
+    <div class="cm-btns">
+      <button class="btn-cancel" id="cm-cancel">Cancel</button>
+      <button class="btn-danger" id="cm-confirm">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ── State ──────────────────────────────────────────────────── */
+let products = [], brands = [], mediaFiles = [], currentTab = 'products';
+let editingId = null, confirmAction = null;
+
+/* ── Toast ──────────────────────────────────────────────────── */
+let toastTimer;
+function toast(msg, type) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = 'on ' + (type === 'ok' ? 'ok-toast' : type === 'err' ? 'err-toast' : '');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove('on'), 3800);
+}
+
+/* ── Status pill ────────────────────────────────────────────── */
+function setStatus(state, msg) {
+  const el = document.getElementById('status-pill');
+  const map = { idle:'idle', saving:'saving', saved:'saved', error:'error' };
+  el.className = 'status-pill ' + (map[state] || 'idle');
+  const icons = { idle:'fa-circle', saving:'fa-spinner fa-spin', saved:'fa-check-circle', error:'fa-exclamation-circle' };
+  el.innerHTML = `<i class="fas ${icons[state]||'fa-circle'}" aria-hidden="true"></i> ${msg}`;
+}
+
+/* ── Publish bar (honest status) ────────────────────────────── */
+function showPublish(commitUrl, message) {
+  const bar = document.getElementById('publish-bar');
+  bar.innerHTML = `<i class="fas fa-code-branch" aria-hidden="true" style="color:var(--rg)"></i>
+    <span>${message || 'Committed to GitHub. Cloudflare Workers Builds will deploy it automatically.'}
+    ${commitUrl ? `<a href="${commitUrl}" target="_blank" rel="noopener">View commit</a>` : ''}</span>
+    <button class="btn-ghost" id="bar-verify" style="margin-left:auto;padding:5px 14px;font-size:.72rem"><i class="fas fa-signal" aria-hidden="true"></i> Check live site</button>`;
+  bar.classList.add('on');
+  document.getElementById('bar-verify').addEventListener('click', verifyLive);
+}
+async function verifyLive() {
+  setStatus('saving', 'Checking live…');
+  const data = await apiRaw('/api/admin/verify');
+  if (!data || !data.ok) { setStatus('error', 'Check failed'); toast('Could not reach the live site.', 'err'); return; }
+  setStatus('idle', 'Ready');
+  if (data.live) toast(`Live catalog now serves ${data.productCount} products and ${data.brandCount} brands.`, 'ok');
+  else toast(data.detail || 'Live site has not updated yet. Give the build a minute and check again.', 'err');
+}
+
+/* ── API helpers ────────────────────────────────────────────── */
+async function apiRaw(path, method, body) {
+  const opts = { method: method || 'GET', headers: { 'Content-Type': 'application/json' }, credentials: 'same-origin' };
+  if (body) opts.body = JSON.stringify(body);
+  try {
+    const res = await fetch(path, opts);
+    if (res.status === 401) { showLogin(); return null; }
+    return await res.json();
+  } catch { return null; }
+}
+const api = apiRaw;
+
+/* ── Auth ───────────────────────────────────────────────────── */
+function showLogin() { document.getElementById('login-screen').style.display='flex'; document.getElementById('admin-screen').classList.remove('on'); }
+function showAdmin() { document.getElementById('login-screen').style.display='none'; document.getElementById('admin-screen').classList.add('on'); loadCatalog(); loadContent(); }
+
+document.getElementById('btn-login').addEventListener('click', doLogin);
+document.getElementById('pw').addEventListener('keydown', e => e.key === 'Enter' && doLogin());
+
+async function doLogin() {
+  const pw = document.getElementById('pw').value;
+  const errEl = document.getElementById('login-err');
+  if (!pw) { errEl.textContent = 'Please enter your password.'; errEl.classList.add('on'); return; }
+  errEl.classList.remove('on');
+  const btn = document.getElementById('btn-login');
+  btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in…';
+  const data = await fetch('/api/admin/login', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ password: pw }), credentials: 'same-origin'
+  }).then(r => r.json()).catch(() => ({ ok: false }));
+  btn.disabled = false; btn.innerHTML = '<i class="fas fa-lock"></i> Sign In';
+  if (data && data.ok) { document.getElementById('pw').value = ''; showAdmin(); }
+  else { errEl.textContent = (data && data.error) || 'Incorrect password. Please try again.'; errEl.classList.add('on'); }
+}
+
+document.getElementById('btn-logout').addEventListener('click', async () => {
+  await fetch('/api/admin/logout', { method: 'POST', credentials: 'same-origin' });
+  showLogin();
+});
+
+/* ── Tabs ───────────────────────────────────────────────────── */
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    currentTab = tab.dataset.tab;
+    document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t === tab));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('on', p.id === 'panel-' + currentTab));
+    if (currentTab === 'media') loadMedia();
+    if (currentTab === 'content' || currentTab === 'settings') loadContent();
+    if (currentTab === 'security') loadStatus();
+  });
+});
+
+/* ── Load catalog ───────────────────────────────────────────── */
+/* ── Configuration alert (shown when publishing cannot work) ── */
+function showAlert(html) { const a = F('cfg-alert'); a.innerHTML = html; a.classList.add('on'); }
+function hideAlert() { F('cfg-alert').classList.remove('on'); }
+function publishAlert(err) {
+  showAlert('<b>This site cannot be edited yet — publishing is not set up.</b>'
+    + '<div style="margin-top:6px">' + (err || 'The Worker could not reach GitHub.') + '</div>'
+    + '<ul><li>Cloudflare dashboard → <b>Workers &amp; Pages</b> → this Worker → <b>Settings → Variables and Secrets</b>.</li>'
+    + '<li>Add a <b>secret</b> named <code>GITHUB_TOKEN</code>: a fine-grained GitHub token for <code>' + (document.body.dataset.repo || 'this repository') + '</code> with <b>Contents: Read and write</b>.</li>'
+    + '<li>Save, then reload this page. Nothing needs to be redeployed.</li></ul>');
+}
+
+async function loadCatalog() {
+  setStatus('saving', 'Loading…');
+  const data = await api('/api/admin/catalog');
+  if (!data || !data.ok) {
+    setStatus('error', 'Load failed');
+    toast((data && data.error) || 'Could not load products.', 'err');
+    publishAlert(data && data.error);
+    return;
+  }
+  hideAlert();
+  products = data.products || [];
+  brands = data.brands || [];
+  setStatus('idle', 'Ready');
+  renderTable();
+}
+
+/* ── Render table ───────────────────────────────────────────── */
+function escHtml(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function sortedList() {
+  const q = (document.getElementById('adm-search').value || '').toLowerCase();
+  const cat = document.getElementById('adm-filter').value;
+  const sort = document.getElementById('adm-sort').value;
+  let list = products.slice();
+  if (q) list = list.filter(p => (p.name||'').toLowerCase().includes(q) || (p.brand||'').toLowerCase().includes(q) || (p.category||'').toLowerCase().includes(q));
+  if (cat) list = list.filter(p => p.category === cat);
+  if (sort === 'name') list.sort((a,b) => (a.name||'').localeCompare(b.name||''));
+  if (sort === 'price-asc') list.sort((a,b) => (a.price||0)-(b.price||0));
+  if (sort === 'price-desc') list.sort((a,b) => (b.price||0)-(a.price||0));
+  if (sort === 'category') list.sort((a,b) => (a.category||'').localeCompare(b.category||''));
+  return { list, manual: sort === 'manual' };
+}
+
+function renderTable() {
+  const tbody = document.getElementById('prod-tbody');
+  const { list, manual } = sortedList();
+  if (!list.length) {
+    tbody.innerHTML = '<tr><td colspan="8" class="tbl-empty"><i class="fas fa-box-open"></i>No products found.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = list.map(p => {
+    const idx = products.findIndex(x => x.id === p.id);
+    return `<tr data-id="${escHtml(p.id)}">
+    <td><div class="act-btns">
+      <button class="btn-icon" data-action="up" data-id="${escHtml(p.id)}" title="Move up" ${!manual||idx===0?'disabled':''}><i class="fas fa-arrow-up" aria-hidden="true"></i></button>
+      <button class="btn-icon" data-action="down" data-id="${escHtml(p.id)}" title="Move down" ${!manual||idx===products.length-1?'disabled':''}><i class="fas fa-arrow-down" aria-hidden="true"></i></button>
+    </div></td>
+    <td><img class="prod-thumb" src="${escHtml(p.image)}" alt="" loading="lazy" onerror="this.style.opacity='.3'"/></td>
+    <td><div class="prod-name-cell">${escHtml(p.name)}</div>${p.badge?`<span class="badge-sm ${escHtml((p.badge||'').toLowerCase())}">${escHtml(p.badge)}</span>`:''}</td>
+    <td><span class="prod-brand">${escHtml(p.brand)}</span></td>
+    <td>${escHtml(p.category)}</td>
+    <td class="prod-price">${(p.price||0).toLocaleString()} ETB</td>
+    <td><span class="avail-dot ${p.available?'yes':'no'}"></span>${p.available?'Live':'Hidden'}</td>
+    <td><div class="act-btns">
+      <button class="btn-icon" data-action="edit" data-id="${escHtml(p.id)}" title="Edit"><i class="fas fa-pen" aria-hidden="true"></i></button>
+      <button class="btn-icon" data-action="duplicate" data-id="${escHtml(p.id)}" title="Duplicate"><i class="fas fa-copy" aria-hidden="true"></i></button>
+      <button class="btn-icon" data-action="toggle" data-id="${escHtml(p.id)}" title="${p.available?'Hide':'Publish'}"><i class="fas fa-eye${p.available?'-slash':''}" aria-hidden="true"></i></button>
+      <button class="btn-icon del" data-action="delete" data-id="${escHtml(p.id)}" title="Delete"><i class="fas fa-trash" aria-hidden="true"></i></button>
+    </div></td>
+  </tr>`; }).join('');
+
+  tbody.querySelectorAll('[data-action]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const { action, id } = btn.dataset;
+      if (action === 'edit') openEditModal(id);
+      else if (action === 'duplicate') duplicateProduct(id);
+      else if (action === 'toggle') toggleAvailable(id);
+      else if (action === 'delete') askDeleteProduct(id);
+      else if (action === 'up') moveProduct(id, -1);
+      else if (action === 'down') moveProduct(id, 1);
+    });
+  });
+}
+
+['adm-search','adm-filter','adm-sort'].forEach(id => {
+  const el = document.getElementById(id);
+  el.addEventListener(id === 'adm-search' ? 'input' : 'change', renderTable);
+});
+
+/* ── Save catalog to GitHub ─────────────────────────────────── */
+async function saveCatalog(successMsg) {
+  setStatus('saving', 'Saving…');
+  const data = await api('/api/admin/catalog', 'PUT', { products, brands });
+  if (data && data.ok) {
+    setStatus('saved', 'Committed');
+    toast(successMsg || 'Saved to GitHub. Cloudflare is deploying.', 'ok');
+    showPublish(data.commitUrl, 'Saved to GitHub. Cloudflare Workers Builds is deploying your change.');
+    setTimeout(() => setStatus('idle', 'Ready'), 8000);
+    return true;
+  }
+  setStatus('error', 'Save failed');
+  toast((data && data.error) || 'Save failed. Please try again.', 'err');
+  return false;
+}
+
+/* ── Row actions ────────────────────────────────────────────── */
+function toggleAvailable(id) {
+  const p = products.find(x => x.id === id);
+  if (!p) return;
+  p.available = !p.available;
+  renderTable();
+  saveCatalog(`"${p.name}" is now ${p.available ? 'live' : 'hidden'}.`);
+}
+
+function moveProduct(id, dir) {
+  const i = products.findIndex(p => p.id === id);
+  const j = i + dir;
+  if (i < 0 || j < 0 || j >= products.length) return;
+  [products[i], products[j]] = [products[j], products[i]];
+  renderTable();
+  saveCatalog('Product order updated.');
+}
+
+function duplicateProduct(id) {
+  const p = products.find(x => x.id === id);
+  if (!p) return;
+  let base = p.id.replace(/-copy\d*$/, '');
+  let n = 1, newId;
+  do { newId = `${base}-copy${n++}`; } while (products.some(x => x.id === newId));
+  const copy = JSON.parse(JSON.stringify(p));
+  copy.id = newId;
+  copy.name = p.name + ' (Copy)';
+  copy.available = false;
+  copy.featured = false;
+  copy.badge = null;
+  const idx = products.findIndex(x => x.id === p.id);
+  products.splice(idx + 1, 0, copy);
+  renderTable();
+  saveCatalog(`Duplicated as "${copy.name}" (hidden until you publish it).`);
+}
+
+/* ── Confirm modal ──────────────────────────────────────────── */
+function confirmAsk(title, msg, label, fn) {
+  document.getElementById('confirm-title').textContent = title;
+  document.getElementById('confirm-msg').textContent = msg;
+  document.getElementById('cm-confirm').textContent = label || 'Confirm';
+  confirmAction = fn;
+  document.getElementById('confirm-modal').classList.add('open');
+}
+document.getElementById('cm-cancel').addEventListener('click', () => { document.getElementById('confirm-modal').classList.remove('open'); confirmAction = null; });
+document.getElementById('cm-confirm').addEventListener('click', async () => {
+  document.getElementById('confirm-modal').classList.remove('open');
+  const fn = confirmAction; confirmAction = null;
+  if (fn) await fn();
+});
+
+function askDeleteProduct(id) {
+  const p = products.find(x => x.id === id);
+  if (!p) return;
+  confirmAsk('Delete product?', `Delete "${p.name}"? This removes it from the catalog and cannot be undone.`, 'Delete', async () => {
+    products = products.filter(x => x.id !== id);
+    renderTable();
+    await saveCatalog('Product deleted.');
+  });
+}
+
+/* ── Product modal ──────────────────────────────────────────── */
+function clearFormErrors() {
+  document.querySelectorAll('#prod-form .err').forEach(el => el.classList.remove('err'));
+  document.querySelectorAll('#prod-form .fe').forEach(el => el.classList.remove('on'));
+}
+function fErr(fid, eid, show) {
+  document.getElementById(fid).classList.toggle('err', show);
+  document.getElementById(eid).classList.toggle('on', show);
+}
+function validImage(v) {
+  if (!v) return false;
+  if (/^https:\/\/\S+$/i.test(v)) return true;
+  if (/^\/?file\/(products|brands|gallery)\/[A-Za-z0-9._-]+$/i.test(v)) return true;
+  return false;
+}
+
+function openAddModal() {
+  editingId = null;
+  document.getElementById('pm-title').textContent = 'Add Product';
+  document.getElementById('prod-form').reset();
+  document.getElementById('pf-id').readOnly = false;
+  document.getElementById('pf-avail').checked = true;
+  document.getElementById('img-preview').classList.remove('on');
+  document.getElementById('e-id').textContent = 'ID required and must be unique.';
+  clearFormErrors();
+  document.getElementById('prod-modal').classList.add('open');
+}
+
+function openEditModal(id) {
+  const p = products.find(x => x.id === id);
+  if (!p) return;
+  editingId = id;
+  document.getElementById('pm-title').textContent = 'Edit Product';
+  document.getElementById('pf-id').value = p.id;
+  document.getElementById('pf-id').readOnly = true;
+  document.getElementById('pf-name').value = p.name || '';
+  document.getElementById('pf-brand').value = p.brand || '';
+  document.getElementById('pf-cat').value = p.category || '';
+  document.getElementById('pf-desc').value = p.shortDesc || '';
+  document.getElementById('pf-price').value = p.price || '';
+  document.getElementById('pf-badge').value = p.badge || '';
+  document.getElementById('pf-img').value = p.image || '';
+  document.getElementById('pf-avail').checked = !!p.available;
+  document.getElementById('pf-feat').checked = !!p.featured;
+  updateImgPreview(p.image);
+  clearFormErrors();
+  document.getElementById('prod-modal').classList.add('open');
+}
+
+function closeModal() { document.getElementById('prod-modal').classList.remove('open'); editingId = null; }
+document.getElementById('pm-x').addEventListener('click', closeModal);
+document.getElementById('pm-cancel').addEventListener('click', closeModal);
+document.getElementById('btn-add-prod').addEventListener('click', openAddModal);
+document.getElementById('prod-modal').addEventListener('click', e => { if (e.target === document.getElementById('prod-modal')) closeModal(); });
+
+document.getElementById('pf-img').addEventListener('input', function() { updateImgPreview(this.value); });
+function updateImgPreview(url) {
+  const prev = document.getElementById('img-preview');
+  if (validImage(url)) {
+    prev.src = url; prev.classList.add('on');
+    prev.onerror = () => prev.classList.remove('on');
+  } else prev.classList.remove('on');
+}
+
+document.getElementById('pm-save').addEventListener('click', async () => {
+  const id = document.getElementById('pf-id').value.trim();
+  const name = document.getElementById('pf-name').value.trim();
+  const brand = document.getElementById('pf-brand').value.trim();
+  const category = document.getElementById('pf-cat').value;
+  const shortDesc = document.getElementById('pf-desc').value.trim();
+  const price = parseFloat(document.getElementById('pf-price').value);
+  const badge = document.getElementById('pf-badge').value || null;
+  const image = document.getElementById('pf-img').value.trim();
+  const available = document.getElementById('pf-avail').checked;
+  const featured = document.getElementById('pf-feat').checked;
+
+  let valid = true;
+  const idFormatOk = /^[A-Za-z0-9_-]{1,40}$/.test(id);
+  const idTaken = !editingId && products.some(p => p.id === id);
+  fErr('pf-id','e-id', !idFormatOk || idTaken);
+  if (!idFormatOk) { document.getElementById('e-id').textContent = 'Use letters, numbers, - and _ only.'; valid = false; }
+  else if (idTaken) { document.getElementById('e-id').textContent = 'That ID is already used.'; valid = false; }
+  fErr('pf-name','e-name', !name); if (!name) valid = false;
+  fErr('pf-brand','e-brand', !brand); if (!brand) valid = false;
+  fErr('pf-cat','e-cat', !category); if (!category) valid = false;
+  fErr('pf-desc','e-desc', !shortDesc); if (!shortDesc) valid = false;
+  fErr('pf-price','e-price', isNaN(price) || price < 0); if (isNaN(price) || price < 0) valid = false;
+  const imgOk = validImage(image);
+  fErr('pf-img','e-img', !imgOk); if (!imgOk) valid = false;
+  if (!valid) return;
+
+  const prod = { id, name, brand, category, shortDesc, price, image, badge, available, featured };
+
+  if (editingId) {
+    const idx = products.findIndex(p => p.id === editingId);
+    if (idx >= 0) products[idx] = prod;
+  } else {
+    products.push(prod);
+  }
+  const wasEdit = !!editingId;
+  closeModal();
+  renderTable();
+  await saveCatalog(`"${name}" ${wasEdit ? 'updated' : 'added'} successfully.`);
+});
+
+/* ── Pick images from library ───────────────────────────────── */
+document.getElementById('pf-pick').addEventListener('click', async () => {
+  await loadMedia(true);
+  const grid = document.getElementById('pick-grid');
+  if (!mediaFiles.length) {
+    grid.innerHTML = '<p style="color:var(--muted);font-size:.84rem">No images yet. Add some in the Media tab.</p>';
+  } else {
+    grid.innerHTML = mediaFiles.map(f => `<div class="media-card">
+      <img src="${escHtml(f.url)}" alt="" loading="lazy"/>
+      <div class="media-meta"><strong>${escHtml(f.name)}</strong>${escHtml(f.dir)}</div>
+      <div class="media-acts"><button data-pick="${escHtml(f.url)}">Use this image</button></div>
+    </div>`).join('');
+    grid.querySelectorAll('[data-pick]').forEach(b => b.addEventListener('click', () => {
+      document.getElementById('pf-img').value = b.dataset.pick;
+      updateImgPreview(b.dataset.pick);
+      document.getElementById('pick-modal').classList.remove('open');
+    }));
+  }
+  document.getElementById('pick-modal').classList.add('open');
+});
+document.getElementById('pick-x').addEventListener('click', () => document.getElementById('pick-modal').classList.remove('open'));
+document.getElementById('pick-modal').addEventListener('click', e => { if (e.target === document.getElementById('pick-modal')) document.getElementById('pick-modal').classList.remove('open'); });
+
+/* ── Media library ──────────────────────────────────────────── */
+async function loadMedia(silent) {
+  if (!silent) setStatus('saving', 'Loading media…');
+  const data = await api('/api/admin/files');
+  if (!data || !data.ok) { if (!silent) { setStatus('error', 'Media failed'); toast((data && data.error) || 'Could not load media.', 'err'); } return; }
+  mediaFiles = data.files || [];
+  if (!silent) {
+    setStatus('idle', 'Ready');
+    renderMedia();
+  }
+}
+function renderMedia() {
+  const grid = document.getElementById('media-grid');
+  if (!mediaFiles.length) {
+    grid.innerHTML = '<p style="color:var(--muted);font-size:.84rem">No images uploaded yet.</p>';
+    return;
+  }
+  grid.innerHTML = mediaFiles.map(f => `<div class="media-card">
+    <img src="${escHtml(f.url)}" alt="" loading="lazy"/>
+    <div class="media-meta"><strong>${escHtml(f.name)}</strong>${escHtml(f.dir)} · ${Math.round((f.size||0)/1024)} KB<br>${escHtml(f.url)}</div>
+    <div class="media-acts">
+      <button data-copy="${escHtml(f.url)}" title="Copy path"><i class="fas fa-copy" aria-hidden="true"></i> Copy</button>
+      <button class="del" data-del="${escHtml(f.path)}" title="Delete image"><i class="fas fa-trash" aria-hidden="true"></i></button>
+    </div>
+  </div>`).join('');
+  grid.querySelectorAll('[data-copy]').forEach(b => b.addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(b.dataset.copy); toast('Path copied: ' + b.dataset.copy, 'ok'); }
+    catch { toast('Copy failed — path: ' + b.dataset.copy); }
+  }));
+  grid.querySelectorAll('[data-del]').forEach(b => b.addEventListener('click', () => askDeleteFile(b.dataset.del)));
+}
+document.getElementById('btn-refresh-media').addEventListener('click', () => loadMedia());
+
+async function askDeleteFile(path) {
+  confirmAsk('Delete image?', `Delete ${path}? If a product still uses it, deletion is refused so you do not break the storefront.`, 'Delete', async () => {
+    setStatus('saving', 'Deleting…');
+    let data = await api('/api/admin/file', 'DELETE', { path });
+    if (data && data.referenced) {
+      confirmAsk('Image still in use', data.error, 'Delete anyway', async () => {
+        setStatus('saving', 'Deleting…');
+        const forced = await api('/api/admin/file', 'DELETE', { path, force: true });
+        finishDelete(forced);
+      });
+      return;
+    }
+    finishDelete(data);
+  });
+}
+async function finishDelete(data) {
+  if (data && data.ok) { setStatus('saved', 'Deleted'); toast('Image deleted.', 'ok'); loadMedia(); }
+  else { setStatus('error', 'Delete failed'); toast((data && data.error) || 'Delete failed.', 'err'); }
+}
+
+/* ── Uploads ────────────────────────────────────────────────── */
+const fileInput = document.getElementById('file-input');
+document.getElementById('btn-choose').addEventListener('click', () => fileInput.click());
+fileInput.addEventListener('change', () => { if (fileInput.files.length) handleFiles([...fileInput.files]); });
+
+const upBox = document.getElementById('upload-box');
+['dragenter','dragover'].forEach(ev => upBox.addEventListener(ev, e => { e.preventDefault(); upBox.classList.add('drag'); }));
+['dragleave','drop'].forEach(ev => upBox.addEventListener(ev, e => { e.preventDefault(); upBox.classList.remove('drag'); }));
+upBox.addEventListener('drop', e => { const files = [...(e.dataTransfer.files||[])].filter(f => f.type.startsWith('image/')); if (files.length) handleFiles(files); });
+
+function readAsDataURL(file) {
+  return new Promise((resolve, reject) => {
+    const fr = new FileReader();
+    fr.onload = () => resolve(fr.result);
+    fr.onerror = reject;
+    fr.readAsDataURL(file);
+  });
+}
+
+async function handleFiles(files) {
+  const dir = document.getElementById('upl-dir').value;
+  const prog = document.getElementById('upl-progress');
+  let done = 0, failed = 0;
+  fileInput.value = '';
+  for (const file of files) {
+    if (file.size > 6 * 1024 * 1024) { failed++; prog.textContent = `${file.name} is larger than 6 MB — skipped.`; continue; }
+    prog.textContent = `Uploading ${done + 1} of ${files.length}: ${file.name}…`;
+    try {
+      const dataUrl = await readAsDataURL(file);
+      const res = await api('/api/admin/upload', 'POST', { dir, name: file.name, dataUrl });
+      if (res && res.ok) done++; else { failed++; toast((res && res.error) || `Upload failed for ${file.name}`, 'err'); }
+    } catch { failed++; }
+  }
+  prog.textContent = `Finished: ${done} uploaded${failed ? `, ${failed} failed` : ''}.`;
+  toast(`Uploaded ${done} image${done === 1 ? '' : 's'}${failed ? ` (${failed} failed)` : ''}.`, done ? 'ok' : 'err');
+  await loadMedia();
+  if (done) showPublish(null, 'Uploaded images were committed to GitHub and will appear on the live site after the build.');
+}
+
+/* ── Content + Settings (content.json) ──────────────────────── */
+const F = id => document.getElementById(id);
+const val = id => (F(id) ? F(id).value.trim() : '');
+const setVal = (id, v) => { if (F(id)) F(id).value = v == null ? '' : v; };
+
+function repPointRow(text) {
+  const row = document.createElement('div');
+  row.className = 'rep-row';
+  row.innerHTML = '<input type="text" placeholder="e.g. Quality products"/><button type="button" aria-label="Remove"><i class="fas fa-times" aria-hidden="true"></i></button>';
+  row.querySelector('input').value = text || '';
+  row.querySelector('button').addEventListener('click', () => row.remove());
+  return row;
+}
+function repFaqRow(q, a) {
+  const row = document.createElement('div');
+  row.className = 'rep-q';
+  row.innerHTML = '<div class="rep-head"><span>Question</span><button type="button" aria-label="Remove"><i class="fas fa-times" aria-hidden="true"></i></button></div>'
+    + '<input type="text" placeholder="Question"/>'
+    + '<textarea rows="2" placeholder="Answer"></textarea>';
+  const inputs = row.querySelectorAll('input, textarea');
+  inputs[0].value = q || ''; inputs[1].value = a || '';
+  row.querySelector('button').addEventListener('click', () => row.remove());
+  return row;
+}
+function readPoints() {
+  return [...document.querySelectorAll('#ab-points .rep-row input')].map(i => i.value.trim()).filter(Boolean);
+}
+function readFaq() {
+  return [...document.querySelectorAll('#fq-items .rep-q')].map(r => {
+    const i = r.querySelectorAll('input, textarea');
+    return { q: i[0].value.trim(), a: i[1].value.trim() };
+  }).filter(x => x.q);
+}
+function renderPoints(list) {
+  const box = F('ab-points'); if (!box) return;
+  box.innerHTML = '';
+  (Array.isArray(list) ? list : []).forEach(p => box.appendChild(repPointRow(p)));
+}
+function renderFaq(list) {
+  const box = F('fq-items'); if (!box) return;
+  box.innerHTML = '';
+  (Array.isArray(list) ? list : []).forEach(it => box.appendChild(repFaqRow(it.q, it.a)));
+}
+if (F('ab-points-add')) F('ab-points-add').addEventListener('click', () => F('ab-points').appendChild(repPointRow('')));
+if (F('fq-add')) F('fq-add').addEventListener('click', () => F('fq-items').appendChild(repFaqRow('', '')));
+
+/* Fills every form field from a content object (shared by loading and testing). */
+function fillContentForm(c) {
+  c = c || {};
+  const st = c.store || {}, th = c.theme || {}, a = c.announcement || {}, h = c.hero || {};
+  const sh = c.shop || {}, ab = c.about || {}, od = c.ordering || {}, ft = c.footer || {}, fq = c.faq || {};
+
+  setVal('st-name', st.name); setVal('st-tagline', st.tagline); setVal('st-siteurl', st.siteUrl);
+  setVal('st-currency', st.currency); setVal('st-address', st.addressLine);
+  setVal('ct-phone', st.phone); setVal('ct-phonedisplay', st.phoneDisplay);
+  setVal('ct-telegram', st.telegram); setVal('ct-telegramhandle', st.telegramHandle);
+  setVal('ct-tiktok', st.tiktok); setVal('ct-tiktokhandle', st.tiktokHandle); setVal('ct-hours', st.hours);
+  setVal('th-primary', th.primary);
+  if (F('th-pick') && /^#[0-9a-f]{6}$/i.test(th.primary || '')) F('th-pick').value = th.primary;
+  updateThemePreview();
+
+  F('ct-ann-on').checked = a.enabled !== false;
+  setVal('ct-ann-text', a.text); setVal('ct-ann-link', a.link); setVal('ct-ann-linktext', a.linkText);
+  setVal('ct-hero-eyebrow', h.eyebrow); setVal('ct-hero-title', h.title); setVal('ct-hero-titleem', h.titleEm); setVal('ct-hero-text', h.text);
+  setVal('sh-title', sh.title); setVal('sh-titleem', sh.titleEm); setVal('sh-subtitle', sh.subtitle);
+  setVal('sh-pricenote', sh.priceNote); setVal('sh-suppnote', sh.supplementsNote);
+  setVal('ab-eyebrow', ab.eyebrow); setVal('ab-title', ab.title); setVal('ab-titleem', ab.titleEm);
+  setVal('ab-p1', ab.p1); setVal('ab-p2', ab.p2); renderPoints(ab.points);
+  setVal('od-subtotal', od.subtotalLabel); setVal('od-consent', od.consentText); setVal('od-taxnote', od.taxNote);
+  setVal('od-success', od.successNote); setVal('od-delivery', od.deliveryNote); setVal('od-payment', od.paymentNote);
+  setVal('ft-blurb', ft.blurb); setVal('ft-copyright', ft.copyright);
+  setVal('ft-creditname', ft.creditName); setVal('ft-crediturl', ft.creditUrl);
+  setVal('fq-intro', fq.intro); renderFaq(fq.items);
+}
+
+async function loadContent() {
+  setStatus('saving', 'Loading…');
+  const data = await api('/api/admin/content');
+  if (!data || !data.ok) {
+    setStatus('error', 'Load failed');
+    toast((data && data.error) || 'Could not load content.', 'err');
+    publishAlert(data && data.error);
+    return;
+  }
+  hideAlert();
+  fillContentForm(data.content || {});
+  setStatus('idle', 'Ready');
+}
+
+function collectContent() {
+  return {
+    store: { name: val('st-name'), tagline: val('st-tagline'), siteUrl: val('st-siteurl'), currency: val('st-currency'), addressLine: val('st-address'),
+      phone: val('ct-phone'), phoneDisplay: val('ct-phonedisplay'), telegram: val('ct-telegram'), telegramHandle: val('ct-telegramhandle'),
+      tiktok: val('ct-tiktok'), tiktokHandle: val('ct-tiktokhandle'), hours: val('ct-hours') },
+    theme: { primary: val('th-primary') },
+    announcement: { enabled: F('ct-ann-on').checked, text: val('ct-ann-text'), link: val('ct-ann-link'), linkText: val('ct-ann-linktext') },
+    hero: { eyebrow: val('ct-hero-eyebrow'), title: val('ct-hero-title'), titleEm: val('ct-hero-titleem'), text: val('ct-hero-text') },
+    shop: { title: val('sh-title'), titleEm: val('sh-titleem'), subtitle: val('sh-subtitle'), priceNote: val('sh-pricenote'), supplementsNote: val('sh-suppnote') },
+    about: { eyebrow: val('ab-eyebrow'), title: val('ab-title'), titleEm: val('ab-titleem'), p1: val('ab-p1'), p2: val('ab-p2'), points: readPoints() },
+    ordering: { subtotalLabel: val('od-subtotal'), consentText: val('od-consent'), taxNote: val('od-taxnote'), successNote: val('od-success'), deliveryNote: val('od-delivery'), paymentNote: val('od-payment') },
+    footer: { blurb: val('ft-blurb'), copyright: val('ft-copyright'), creditName: val('ft-creditname'), creditUrl: val('ft-crediturl') },
+    faq: { intro: val('fq-intro'), items: readFaq() },
+  };
+}
+
+async function saveContent() {
+  setStatus('saving', 'Saving…');
+  const data = await api('/api/admin/content', 'PUT', { content: collectContent() });
+  if (data && data.ok) {
+    setStatus('saved', 'Committed');
+    toast('Saved to GitHub. Cloudflare is deploying.', 'ok');
+    showPublish(data.commitUrl, 'Content and settings saved to GitHub. Cloudflare Workers Builds is deploying them.');
+    setTimeout(() => setStatus('idle', 'Ready'), 8000);
+  } else {
+    setStatus('error', 'Save failed');
+    toast((data && data.error) || 'Save failed.', 'err');
+  }
+}
+F('btn-save-content').addEventListener('click', saveContent);
+if (F('btn-save-content2')) F('btn-save-content2').addEventListener('click', saveContent);
+F('btn-verify').addEventListener('click', verifyLive);
+if (F('btn-verify2')) F('btn-verify2').addEventListener('click', verifyLive);
+
+function updateThemePreview() {
+  const p = val('th-primary'), box = F('th-preview');
+  if (!box) return;
+  const ok = /^#[0-9a-f]{6}$/i.test(p);
+  box.querySelector('.thbtn').style.background = ok ? p : 'var(--rg)';
+}
+if (F('th-primary')) F('th-primary').addEventListener('input', updateThemePreview);
+if (F('th-pick')) F('th-pick').addEventListener('input', () => { F('th-primary').value = F('th-pick').value; updateThemePreview(); });
+
+/* ── Security: live status ──────────────────────────────────── */
+function statRow(state, title, detail) {
+  return `<div class="statrow"><span class="dot ${state}"></span><div><strong>${title}</strong><small>${detail}</small></div></div>`;
+}
+async function loadStatus() {
+  const list = F('stat-list');
+  if (!list) return;
+  const s = await api('/api/admin/status');
+  if (!s || !s.ok) { list.innerHTML = statRow('bad', 'Could not read status', 'The admin API did not respond.'); return; }
+  const pub = s.publishing || (s.canPublish ? 'ok' : 'missing');
+  const pubMap = {
+    ok: ['ok', 'Publishing connected', `Saving writes to ${s.repo} and Cloudflare redeploys automatically.`],
+    missing: ['bad', 'Publishing NOT configured', 'The GITHUB_TOKEN secret is missing, so products, images and content cannot be saved yet.'],
+    'invalid-token': ['bad', 'GitHub token rejected', 'GitHub refused the GITHUB_TOKEN (expired, revoked, or missing Contents: Read and write). Create a new fine-grained token and set it in Cloudflare.'],
+    'repo-not-found': ['bad', 'Repository not found', 'Check the GITHUB_OWNER and GITHUB_REPO variables in wrangler.toml, then redeploy.'],
+  };
+  const row = pubMap[pub] || ['warn', 'Could not reach GitHub', `GitHub returned: ${pub}. Saving may fail until this is resolved.`];
+  list.innerHTML = [
+    statRow(row[0], row[1], row[2]),
+    statRow(s.ordersConfigured ? 'ok' : 'warn', s.ordersConfigured ? 'Order notifications connected' : 'Order notifications not configured',
+      s.ordersConfigured ? 'New orders are sent to your Telegram.' : 'TELEGRAM_BOT_TOKEN / TELEGRAM_OWNER_CHAT_ID are missing, so order submissions will fail.'),
+    statRow(s.canChangePassword ? 'ok' : 'warn', s.canChangePassword ? 'Password can be changed here' : 'Password change unavailable',
+      s.canChangePassword ? 'The ADMIN_KV store is bound and ready.' : 'The ADMIN_KV binding is missing on this Worker.'),
+    statRow('ok', 'Password source', s.passwordFromKv ? 'Using the password set in this panel (stored as a hash).' : 'Using the ADMIN_PASSWORD secret — change it here to move to the hashed store.'),
+  ].join('');
+}
+if (F('btn-refresh-status')) F('btn-refresh-status').addEventListener('click', loadStatus);
+
+/* ── Security: change password ──────────────────────────────── */
+function pwStrength(p) {
+  let s = 0;
+  if (p.length >= 8) s++;
+  if (p.length >= 12) s++;
+  if (/[a-z]/.test(p) && /[A-Z]/.test(p)) s++;
+  if (/\d/.test(p)) s++;
+  if (/[^A-Za-z0-9]/.test(p)) s++;
+  return Math.min(s, 4);
+}
+if (F('pw-new')) F('pw-new').addEventListener('input', () => {
+  const s = pwStrength(F('pw-new').value), m = F('pw-meter');
+  m.style.width = (s / 4 * 100) + '%';
+  m.style.background = s <= 1 ? '#c0392b' : s === 2 ? '#d99a2b' : s === 3 ? '#8bbf3f' : '#3a9a50';
+});
+if (F('btn-change-pw')) F('btn-change-pw').addEventListener('click', async () => {
+  const msg = F('pw-msg');
+  const show = (text, cls) => { msg.className = 'msgbox on ' + cls; msg.textContent = text; };
+  const cur = F('pw-cur').value, nw = F('pw-new').value, nw2 = F('pw-new2').value;
+  if (!cur || !nw) return show('Fill in your current password and the new password.', 'err');
+  if (nw !== nw2) return show('The two new passwords do not match.', 'err');
+  if (nw.length < 8) return show('The new password must be at least 8 characters.', 'err');
+  const btn = F('btn-change-pw');
+  btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin" aria-hidden="true"></i> Saving…';
+  const data = await api('/api/admin/password', 'POST', { current: cur, next: nw });
+  btn.disabled = false; btn.innerHTML = '<i class="fas fa-key" aria-hidden="true"></i> Change Password';
+  if (data && data.ok) {
+    F('pw-cur').value = ''; F('pw-new').value = ''; F('pw-new2').value = '';
+    F('pw-meter').style.width = '0';
+    show('Password changed. Use the new password the next time you sign in.', 'ok');
+    toast('Password changed.', 'ok');
+    loadStatus();
+  } else {
+    show((data && data.error) || 'Could not change the password.', 'err');
+  }
+});
+
+/* ── Boot ───────────────────────────────────────────────────── */
+(async function boot() {
+  const data = await fetch('/api/admin/status', { credentials: 'same-origin' }).then(r => r.ok ? r.json() : null).catch(() => null);
+  if (data && data.repo) document.body.dataset.repo = data.repo;
+  if (data && data.ok) showAdmin(); else showLogin();
+})();
+</script>
+</body>
+</html>

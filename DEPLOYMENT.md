@@ -1,69 +1,71 @@
 # Deployment runbook — TSI Cosmetics
 
-The build, structure, secret names and test checklist live in [`README.md`](README.md).
-This file covers **deploying, rolling back, and retiring the old order Worker**.
+Setup, secret names and the test checklist live in [`README.md`](README.md). This file
+covers **deploying, rolling back, automatic deploys and rotating secrets**.
 
 ---
 
 ## Current state (be precise about this)
 
-- The integrated Worker is **implemented in this repo** and was verified locally with
-  `wrangler dev` (31 API assertions + browser checks). It is **not yet deployed** by
-  this work.
-- The live site `https://tsicosmeticsandsupplements.bereket1515mamuye.workers.dev`
-  is the existing deployment; this project's `wrangler.toml` uses the same Worker
-  name, so deploying keeps the same URL.
-- The old standalone worker `tsi-order-worker` — recorded as deployed and end-to-end
-  tested on 2026-10-12 — **has not been touched**. Keep it until §4 is complete.
+- The Worker was **deployed to production on 2026-10-14** by this work, version
+  `47e745f5-eb59-4930-b8a9-7c4c1a9d308e`, using the repo-root layout
+  (`worker/src/index.js` + the repository root as static assets).
+- Live URL: <https://tsicosmeticsandsupplements.bereket1515mamuye.workers.dev>
+  — admin panel at `/admin/`. The URL did not change.
+- Secrets present on the Worker: `TELEGRAM_BOT_TOKEN`, `TELEGRAM_OWNER_CHAT_ID`,
+  `ADMIN_PASSWORD`, `SESSION_SECRET`. **`GITHUB_TOKEN` is still missing**, so the
+  admin panel cannot save anything until it is added (README §1).
+- The `ADMIN_KV` KV namespace is created and bound
+  (`f58ecd40eb2940f3b5798f9f141dcc74`); it stores the admin password hash and the
+  session epoch.
+- The old standalone worker `tsi-order-worker` is **untouched**. The main worker
+  handles `/api/order` on the same origin, so nothing points at the old one.
 
 ---
 
-## 1. Deploy the integrated Worker (Windows)
+## 1. Deploy
 
 ```cmd
 cd "C:\Users\HP\Downloads\TSI COSMETICS"
 
-rem Build/type-check locally first (optional but recommended)
-npx wrangler dev --port 8788
-rem  → check http://127.0.0.1:8788/ and /admin/ , then Ctrl+C
+rem Optional: preview locally first (see README §7 for why --persist-to is needed)
+npx wrangler dev --port 8788 --ip 127.0.0.1 --persist-to "%TEMP%\tsi-dev-state"
 
-rem Deploy (uses the root wrangler.toml → worker/src/index.js + ./site assets)
+rem Deploy
 npx wrangler deploy
-```
-
-Then set the secrets once, if you have not already:
-
-```cmd
-npx wrangler secret put TELEGRAM_BOT_TOKEN
-npx wrangler secret put TELEGRAM_OWNER_CHAT_ID
-npx wrangler secret put GITHUB_TOKEN
-npx wrangler secret put ADMIN_PASSWORD
-npx wrangler secret put SESSION_SECRET
 ```
 
 Verify after deploying:
 
 ```cmd
 curl -I https://tsicosmeticsandsupplements.bereket1515mamuye.workers.dev/
-curl -s https://tsicosmeticsandsupplements.bereket1515mamuye.workers.dev/data/products.json
+curl -s https://tsicosmeticsandsupplements.bereket1515mamuye.workers.dev/content.json | head
+curl -o /dev/null -w "%{http_code}\n" https://tsicosmeticsandsupplements.bereket1515mamuye.workers.dev/wrangler.toml
 ```
 
-…and in a browser: the homepage, `/admin/`, one test order, and one admin save.
+The last one must print **404** — it proves `.assetsignore` is still keeping source and
+secrets out of the public asset upload. Check `.dev.vars` and `/worker/src/index.js`
+the same way.
 
-## 2. Automatic publishing
+## 2. Automatic deploys (admin save → live site)
 
-Connect the Worker to this GitHub repo once (Cloudflare → Workers & Pages →
-tsicosmeticsandsupplements → Settings → Builds → Connect to Git, branch `main`,
-no build command, deploy `npx wrangler deploy`). After that, every admin save commits
-to GitHub and Cloudflare redeploys automatically — no manual step.
+Connect the repository once:
+
+1. Cloudflare → **Workers & Pages → tsicosmeticsandsupplements → Settings → Builds → Connect to Git**.
+2. Repository `M1616D/TSI-COSMOTICS-AND-SUPPLEMENTS`, branch `main`.
+3. No build command; deploy command `npx wrangler deploy`; root directory = repository root.
+
+After that, every admin save commits to `main` and Cloudflare redeploys within about a
+minute. If a build fails, the previous working version keeps serving and the admin
+panel never reports the change as "live" (its **Check Live Site** compares the live
+catalog with the repo and only says yes when they match).
 
 ## 3. Rollback
 
-**Fastest — unpublish the new build:** Cloudflare dashboard → the Worker →
-**Deployments** → pick the last good deployment → **Rollback**. Traffic returns to it
-immediately; no rebuild needed.
+**Fastest:** Cloudflare → the Worker → **Deployments** → pick the last good version →
+**Rollback**. Traffic switches immediately; nothing is rebuilt.
 
-**From git:** revert the offending commit and push. Workers Builds redeploys the
+**From git:** revert the offending commit and push; Workers Builds redeploys the
 previous state.
 
 ```cmd
@@ -71,37 +73,57 @@ git revert <commit-sha>
 git push origin main
 ```
 
-Admin saves are normal commits on `main`, so they can be reverted individually —
-for example to undo one bad catalog edit without losing unrelated changes.
+Admin saves are normal commits, so a single bad catalog edit can be reverted on its own.
 
-**Last resort:** re-deploy a known-good commit locally with
-`npx wrangler deploy --var ... ` from that checkout. Because all content lives in git,
-`git revert` is almost always the right tool.
+## 4. Rotating a secret or the admin password
 
-## 4. Retiring the old `tsi-order-worker` (only after §1 is verified)
-
-Do **not** delete it before the combined `/api/order` has delivered a real test order.
-
-1. Confirm the integrated endpoint works end-to-end: place a test order on the main
-   site and confirm you receive the Telegram message (fake customer details only).
-2. Confirm the storefront posts to `/api/order` on the **same** origin (it does — see
-   `site/index.html`), so nothing points at the old worker anymore.
-3. In Cloudflare → Workers & Pages → `tsi-order-worker` → **Settings**:
-   - Option A (reversible): **Unpublish** / disable the Worker. It keeps its code and
-     URL and can be re-enabled in seconds.
-   - Option B: **Delete** it once you are confident. Prefer Option A for a week.
-4. If a custom route pointed `…/api/order` at the old worker, remove that route so the
-   request is handled by the main worker.
-
-The old config is preserved in-repo as `worker/wrangler.toml.legacy` for reference.
-
-## 5. Rotating a leaked secret
-
-| Leaked | What to do |
+| What | How |
 |---|---|
-| `TELEGRAM_BOT_TOKEN` | BotFather → `/revoke` → new token → `wrangler secret put TELEGRAM_BOT_TOKEN` |
-| `GITHUB_TOKEN` | GitHub → revoke the PAT → create a new fine-grained token → `wrangler secret put GITHUB_TOKEN` |
-| `ADMIN_PASSWORD` | `wrangler secret put ADMIN_PASSWORD` (all sessions keep working until they expire; rotate `SESSION_SECRET` to force everyone out) |
-| `SESSION_SECRET` | `wrangler secret put SESSION_SECRET` — this immediately invalidates every existing admin session |
+| Admin password (normal way) | Admin panel → **Security → Change Admin Password**. Stored as a PBKDF2 hash in `ADMIN_KV`; all existing sessions are signed out. |
+| Admin password (if locked out) | `npx wrangler secret put ADMIN_PASSWORD`, then delete the KV entry: `npx wrangler kv key delete admin_password --namespace-id f58ecd40eb2940f3b5798f9f141dcc74` (the secret becomes active again). |
+| `TELEGRAM_BOT_TOKEN` | BotFather → `/revoke` → new token → `npx wrangler secret put TELEGRAM_BOT_TOKEN` |
+| `GITHUB_TOKEN` | GitHub → revoke the old token → create a new fine-grained token (Contents: Read and write) → `npx wrangler secret put GITHUB_TOKEN` |
+| `SESSION_SECRET` | `npx wrangler secret put SESSION_SECRET` — immediately invalidates every admin session |
 
-Deploy is not required after `wrangler secret put`; secrets take effect immediately.
+`wrangler secret put` takes effect immediately; a redeploy is not required.
+
+## 5. KV namespace
+
+```cmd
+rem list namespaces
+npx wrangler kv namespace list
+
+rem inspect the stored password hash / epoch
+npx wrangler kv key list --namespace-id f58ecd40eb2940f3b5798f9f141dcc74
+```
+
+Keys used: `admin_password` (PBKDF2 hash) and `session_epoch` (integer). If the
+namespace is missing, the panel cannot change passwords and says so; logins keep
+working off the `ADMIN_PASSWORD` secret.
+
+## 6. Retiring the old `tsi-order-worker`
+
+Only after a real order has been delivered by this Worker.
+
+1. Place a test order on the live site and confirm the Telegram message arrives.
+2. Confirm nothing points at the old worker (the storefront posts to
+   `window.location.origin + '/api/order'`).
+3. Cloudflare → Workers & Pages → `tsi-order-worker` → **Unpublish** it. Keep it that
+   way for a week before deleting — unpublishing is reversible in seconds.
+4. If a route pointed `…/api/order` at the old worker, delete that route.
+
+The old config is kept in-repo for reference at `worker/wrangler.toml.legacy`.
+
+## 7. GitHub Pages mirror
+
+The repository root is also the GitHub Pages site, so
+<https://m1616d.github.io/TSI-COSMOTICS-AND-SUPPLEMENTS/> keeps working as a static
+copy. Two things to know:
+
+- Orders from the mirror are posted cross-origin to `store.siteUrl` in `content.json`.
+  That origin must be listed in `ALLOWED_ORIGINS` in `wrangler.toml`.
+- The admin panel must be used on the Worker URL — a cookie from `github.io` is never
+  sent to `workers.dev`.
+
+If you would rather not maintain the mirror, turn GitHub Pages off in the repository
+settings; nothing else depends on it.

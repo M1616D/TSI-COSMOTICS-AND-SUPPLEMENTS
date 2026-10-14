@@ -21,3 +21,6 @@ worker/dist/
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Agent/editor scratch
+.freebuff/

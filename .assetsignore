@@ -1,0 +1,22 @@
+# Files in this directory are served publicly as static assets.
+# Anything listed here is NEVER uploaded / served. Keep secrets out of the web root.
+.git/
+.gitignore
+.gitattributes
+.editorconfig
+.dev.vars
+.dev.vars.*
+.env
+.env.*
+worker/
+wrangler.toml
+wrangler.toml.*
+README.md
+DEPLOYMENT.md
+.assetsignore
+.wrangler/
+.freebuff/
+.vscode/
+node_modules/
+*.zip
+*.log

@@ -1,27 +1,44 @@
 # TSI Cosmetics — single integrated Worker
-# Serves the storefront (site/) as static assets AND the API + admin panel.
 #
-# Deploy from the project root (the folder containing this file):
-#   npx wrangler deploy
+# The public storefront files live at the REPOSITORY ROOT (index.html, admin/,
+# data/, file/, content.json) so that the same repo also works as a GitHub Pages
+# mirror. The Worker serves those files as static assets and adds the APIs.
+#
+#   npx wrangler dev      → local preview
+#   npx wrangler deploy   → deploy (or let Cloudflare Workers Builds do it on push)
 
 name = "tsicosmeticsandsupplements"
 main = "worker/src/index.js"
 compatibility_date = "2024-09-23"
 
 [assets]
-directory = "./site"
+directory = "."
 binding = "ASSETS"
-# Let real API requests reach the Worker; everything else is served straight
-# from Cloudflare's static asset layer (fast, cached, no Worker invocation).
-run_worker_first = ["/api/*"]
+# .assetsignore keeps worker/, wrangler.toml, README/DEPLOYMENT and .dev.vars
+# out of the public asset upload — never serve source or secrets.
+# Route the API and the JSON data files through the Worker so we can control
+# caching (admin edits must appear immediately); everything else is served
+# straight from Cloudflare's static asset layer.
+run_worker_first = ["/api/*", "/data/*", "/content.json"]
+
+# Admin password store. The admin panel can change the password at runtime;
+# the current (PBKDF2-hashed) value lives in KV and takes priority over the
+# ADMIN_PASSWORD secret. Bootstrap: if KV is empty, ADMIN_PASSWORD is used.
+[[kv_namespaces]]
+binding = "ADMIN_KV"
+id = "f58ecd40eb2940f3b5798f9f141dcc74"
 
 [vars]
 GITHUB_OWNER  = "M1616D"
-GITHUB_REPO   = "TSI-COSMOTICS-AND-SUPPLEMENTS"
+GITHUB_REPO   = "TSI-COSMETICS-AND-SUPPLEMENTS"
 GITHUB_BRANCH = "main"
 
-# ── Secrets: never put real values here ──────────────────────────────────────
-# Set each one interactively (it is stored encrypted, not in this file):
+# Origins allowed to POST orders cross-origin (comma separated). This is what lets
+# the GitHub Pages copy of the storefront submit orders to this Worker.
+ALLOWED_ORIGINS = "https://m1616d.github.io"
+
+# ── Secrets: never put real values in this file ──────────────────────────────
+# Set each one interactively (stored encrypted in Cloudflare, not in git):
 #   npx wrangler secret put TELEGRAM_BOT_TOKEN
 #   npx wrangler secret put TELEGRAM_OWNER_CHAT_ID
 #   npx wrangler secret put GITHUB_TOKEN
