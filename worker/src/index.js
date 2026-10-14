@@ -887,17 +887,32 @@ async function handleFiles(req, env, pathname) {
 }
 
 /* ── Admin: honest publish verification ─────────────────────── */
+/* Reads a file the way a visitor receives it: from the assets of the deployment
+   that is currently serving. An HTTP request back to our own hostname does not
+   work (a Worker fetching its own origin is not routed back through the Worker,
+   so the live check used to fail with a bogus "returned HTTP 404"), while the
+   ASSETS binding is exactly the bytes the asset layer hands to visitors. */
+async function fetchLiveFile(env, url, path) {
+  if (env.ASSETS) {
+    try {
+      const res = await env.ASSETS.fetch(new URL(path, url.origin).toString());
+      if (res.ok) return res;
+    } catch { /* fall through to the network */ }
+  }
+  return fetch(`${url.origin}${path}?cb=${Date.now()}`, { cf: { cacheTtl: 0, cacheEverything: false } });
+}
+
 /* Compares the catalog currently served by the live site with the catalog in the
    repo. Equal ⇒ the deploy finished and the change is really live. */
 async function handleVerify(req, env, url) {
   if (req.method !== 'GET') return j({ ok: false, error: 'Method not allowed' }, 405);
   let live, liveContentOk = false;
   try {
-    const res = await fetch(`${url.origin}/data/products.json?cb=${Date.now()}`, { cf: { cacheTtl: 0, cacheEverything: false } });
+    const res = await fetchLiveFile(env, url, '/data/products.json');
     if (!res.ok) return j({ ok: true, live: false, detail: `The live catalog returned HTTP ${res.status}.` });
     live = await res.json();
     try {
-      const c = await fetch(`${url.origin}/content.json?cb=${Date.now()}`, { cf: { cacheTtl: 0, cacheEverything: false } });
+      const c = await fetchLiveFile(env, url, '/content.json');
       liveContentOk = c.ok;
     } catch { liveContentOk = false; }
   } catch (e) {
