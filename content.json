@@ -66,24 +66,24 @@
     "intro": "Everything you need to know about ordering from TSI Cosmetics.",
     "items": [
       {
-        "q": "",
-        "a": ""
+        "q": "Are your products original imports?",
+        "a": "We source our products carefully and aim to carry genuine imported goods. If you have questions about a specific product, please contact us before ordering."
       },
       {
-        "q": "",
-        "a": ""
+        "q": "How do I place an order?",
+        "a": "Click \"Order Now\" on any product or in the navigation, fill in your details on the order form, and submit. We will contact you to confirm. You can also reach us on Telegram or by phone."
       },
       {
-        "q": "",
-        "a": ""
+        "q": "Do you deliver across Ethiopia?",
+        "a": "We deliver to major cities and areas across Ethiopia. Contact us to confirm availability and delivery time for your area."
       },
       {
-        "q": "",
-        "a": ""
+        "q": "What payment methods do you accept?",
+        "a": "We accept Telebirr, bank transfer, and cash on delivery for eligible areas. The owner will confirm payment details when they contact you."
       },
       {
-        "q": "",
-        "a": ""
+        "q": "Can I return or exchange a product?",
+        "a": "If you receive an item that is damaged or not what you ordered, please contact us within 7 days of delivery and we will work with you to find a solution."
       }
     ]
   }
