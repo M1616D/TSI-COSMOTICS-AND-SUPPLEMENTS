@@ -9,8 +9,12 @@
  *
  * Exit code 0 = every check passed.
  */
+const fs = require('fs');
+const path = require('path');
+
 const BASE = process.argv[2] || 'http://127.0.0.1:8788';
 const PASSWORD = process.argv[3] || process.env.TSI_ADMIN_PASSWORD || 'tsi-local-dev-2026';
+const LOCAL_CONTENT = JSON.parse(fs.readFileSync(path.resolve(__dirname, '..', '..', 'content.json'), 'utf8'));
 
 let pass = 0, fail = 0;
 const failures = [];
@@ -109,6 +113,31 @@ async function call(path, { method = 'GET', body, origin = BASE } = {}) {
   /* 5. Write path is origin-guarded --------------------------------------- */
   const crossPut = await call('/api/admin/content', { method: 'PUT', body: { content: stored || {} }, origin: 'https://evil.example' });
   check('content PUT from a foreign Origin is rejected (403)', crossPut.status === 403, `got ${crossPut.status}`);
+
+  /* 5b. A save must not alter a single value ------------------------------ */
+  /* Regression guard: the template sanitiser used to cut anything deeper than
+     three levels, which silently turned every faq.items[].q/.a into null on
+     save. Round-trip the real content.json and compare value-for-value. */
+  console.log('\nSave round-trip (no value may change)');
+  const rtSave = await call('/api/admin/content', { method: 'PUT', body: { content: LOCAL_CONTENT } });
+  check('full content.json saves', rtSave.status === 200 && rtSave.json && rtSave.json.ok === true,
+    `status ${rtSave.status} ${rtSave.json && rtSave.json.error ? rtSave.json.error : ''}`);
+  const rtRead = await call('/api/admin/content');
+  const rtContent = rtRead.json && rtRead.json.content;
+  const nulls = [];
+  (function findNulls(v, p = '') {
+    if (v === null) { nulls.push(p); return; }
+    if (Array.isArray(v)) v.forEach((x, i) => findNulls(x, `${p}[${i}]`));
+    else if (v && typeof v === 'object') Object.keys(v).forEach((k) => findNulls(v[k], p ? `${p}.${k}` : k));
+  })(rtContent);
+  check('saved content contains no null fields', nulls.length === 0, nulls.length ? 'nulls at ' + nulls.slice(0, 6).join(', ') : '');
+  check('saved content is value-for-value identical to content.json',
+    JSON.stringify(rtContent) === JSON.stringify(LOCAL_CONTENT),
+    JSON.stringify(rtContent) === JSON.stringify(LOCAL_CONTENT) ? '' : 'first difference between\n' + JSON.stringify(rtContent).slice(0, 200) + '\nand\n' + JSON.stringify(LOCAL_CONTENT).slice(0, 200));
+  check('FAQ questions and answers survive the save',
+    !!(rtContent && rtContent.faq && rtContent.faq.items && rtContent.faq.items.length === LOCAL_CONTENT.faq.items.length
+      && rtContent.faq.items.every((it, i) => it.q === LOCAL_CONTENT.faq.items[i].q && it.a === LOCAL_CONTENT.faq.items[i].a)),
+    JSON.stringify(rtContent && rtContent.faq && rtContent.faq.items && rtContent.faq.items[0]));
 
   /* 6. Publish verification ---------------------------------------------- */
   console.log('\nPublish verification');

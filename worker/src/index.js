@@ -715,8 +715,13 @@ const DEFAULT_CONTENT = {
 function limitStr(v, max) {
   return typeof v === 'string' ? v.slice(0, max) : '';
 }
+/* Deepest legitimate path in DEFAULT_CONTENT is faq.items[].q / .a, which sits
+   at depth 4 (root → faq → items → item → field). A limit of 3 cut those fields
+   to null on every save, silently blanking the FAQ, so allow headroom and make
+   the fallback the template's own default — a value, never null. */
+const MAX_TEMPLATE_DEPTH = 6;
 function sanitizeByTemplate(tpl, val, depth = 0) {
-  if (depth > 3) return null;
+  if (depth > MAX_TEMPLATE_DEPTH) return tpl === undefined ? null : JSON.parse(JSON.stringify(tpl));
   if (Array.isArray(tpl)) {
     const itemTpl = tpl[0];
     const arr = Array.isArray(val) ? val.slice(0, 12) : [];
